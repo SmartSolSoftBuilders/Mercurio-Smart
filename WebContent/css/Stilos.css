@@ -1,0 +1,525 @@
+.Hora {
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-size: 7pt;
+	color: #FFFFFF;
+	background-color: #336699;
+	border-top-width: 1px;
+	border-right-width: 0px;
+	border-bottom-width: 1px;
+	border-left-width: 0px;
+	border-top-style: solid;
+	border-right-style: solid;
+	border-bottom-style: solid;
+	border-left-style: solid;
+	border-top-color: #FFFFFF;
+	border-right-color: #FFFFFF;
+	border-bottom-color: #FFFFFF;
+	border-left-color: #FFFFFF;
+}
+.Usuario {
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-size: 7.5pt;
+	color: #FFFFFF;
+	background-color: #003366;
+	border-top-width: 1px;
+	border-right-width: 0px;
+	border-bottom-width: 1px;
+	border-left-width: 0px;
+	border-top-style: solid;
+	border-right-style: solid;
+	border-bottom-style: solid;
+	border-left-style: solid;
+	border-top-color: #FFFFFF;
+	border-right-color: #FFFFFF;
+	border-bottom-color: #FFFFFF;
+	border-left-color: #FFFFFF;
+}
+.SISI {
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-size: 10pt;
+	font-weight: bolder;
+	color: #FFFFFF;
+	background-color: #003366;
+	border-top-width: 1px;
+	border-right-width: 0px;
+	border-bottom-width: 1px;
+	border-left-width: 0px;
+	border-top-style: solid;
+	border-right-style: solid;
+	border-bottom-style: solid;
+	border-left-style: solid;
+	border-top-color: #FFFFFF;
+	border-right-color: #FFFFFF;
+	border-bottom-color: #FFFFFF;
+	border-left-color: #FFFFFF;
+}
+.Migajas {
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-size: 7.5pt;
+	color: #FFFFFF;
+	background-color: #6699CC;
+	border-top-width: 0px;
+	border-right-width: 0px;
+	border-bottom-width: 1px;
+	border-left-width: 0px;
+	border-top-style: solid;
+	border-right-style: solid;
+	border-bottom-style: solid;
+	border-left-style: solid;
+	border-top-color: #003366;
+	border-right-color: #003366;
+	border-bottom-color: #003366;
+	border-left-color: #003366;
+}
+.TopMenu {
+	background-image: url(../images/Bullet_Menu.gif);
+	background-repeat: no-repeat;
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-size: 7.5pt;
+	font-weight: bold;
+	color: #FFFFFF;
+	background-color: #80A3C7;
+	border: 1px solid #FFFFFF;
+	left: auto;
+	clip: auto;
+	letter-spacing: 0em;
+	word-spacing: normal;
+    cursor:auto;
+}
+.SubMenu {
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-size: 7.5pt;
+	color: #336699;
+	background-color: #CEE1F4;
+	border-top-width: 0px;
+	border-right-width: 1px;
+	border-bottom-width: 1px;
+	border-left-width: 1px;
+	border-top-style: solid;
+	border-right-style: solid;
+	border-bottom-style: solid;
+	border-left-style: solid;
+	border-top-color: #FFFFFF;
+	border-right-color: #FFFFFF;
+	border-bottom-color: #FFFFFF;
+	border-left-color: #FFFFFF;
+}
+.TopMenuOver {
+	background-color: #CCCC66;
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-size: 8pt;
+	font-weight: bold;
+	color: #336699;
+	background-image: url(../images/Bullet_Menu_Ov.gif);
+	background-repeat: no-repeat;
+
+
+}
+.TopTabla {
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-size: 8pt;
+	color: #336699;
+	background-color: #A3C7EB;
+	border-top: 1px solid #598CBE;
+	border-right: 0px solid #598CBE;
+	border-bottom: 1px solid #598CBE;
+	border-left: 0px solid #598CBE;
+
+}
+.ContenTabla {
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-size: 7.5pt;
+	color: #003366;
+	border-top-width: 0px;
+	border-right-width: 0px;
+	border-bottom-width: 1px;
+	border-left-width: 0px;
+	border-top-style: solid;
+	border-right-style: solid;
+	border-bottom-style: solid;
+	border-left-style: solid;
+	border-top-color: #598CBE;
+	border-right-color: #598CBE;
+	border-bottom-color: #598CBE;
+	border-left-color: #598CBE;
+	background-color: #FFFFFF;
+
+}
+.ContenTablaColor {
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-size: 7.5pt;
+	color: #003366;
+	background-color: #CEDDEC;
+	border-top-width: 0px;
+	border-right-width: 0px;
+	border-bottom-width: 1px;
+	border-left-width: 0px;
+	border-top-style: solid;
+	border-right-style: solid;
+	border-bottom-style: solid;
+	border-left-style: solid;
+	border-top-color: #598CBE;
+	border-right-color: #598CBE;
+	border-bottom-color: #598CBE;
+	border-left-color: #598CBE;
+}
+.FormaTablaColor {
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-size: 7.5pt;
+	color: #003366;
+	background-color: #CEDDEC;
+	border: 1px solid #598CBE;
+	text-transform: uppercase;
+}
+
+.FormaTablaBotonColor {
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-size: 7.5pt;
+	color: #003366;
+	background-color: #CEDDEC;
+	border: 1px solid #598CBE;
+}
+
+.FormaReadOnlyColor {
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-size: 7.5pt;
+	color: #666666;
+	background-color: #CEDDEC;
+	border: 1px solid #598CBE;
+  text-transform: uppercase;
+
+}
+
+.FormaLabelColor {
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-size: 7.5pt;
+	color: #003366;
+	background-color: #CEDDEC;
+	border: 0px;
+  text-transform: uppercase;
+
+}
+
+
+.FormaTabla {
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-size: 7.5pt;
+	color: #003366;
+	border-top-width: 1px;
+	border-right-width: 1px;
+	border-bottom-width: 1px;
+	border-left-width: 1px;
+	border-top-style: solid;
+	border-right-style: solid;
+	border-bottom-style: solid;
+	border-left-style: solid;
+	border-top-color: #598CBE;
+	border-right-color: #598CBE;
+	border-bottom-color: #598CBE;
+	border-left-color: #598CBE;
+	background-color: #FFFFFF;
+	text-transform: uppercase;
+}
+
+.FormaReadOnly {
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-size: 7.5pt;
+	color: #666666;
+	border-top-width: 1px;
+	border-right-width: 1px;
+	border-bottom-width: 1px;
+	border-left-width: 1px;
+	border-top-style: solid;
+	border-right-style: solid;
+	border-bottom-style: solid;
+	border-left-style: solid;
+	border-top-color: #598CBE;
+	border-right-color: #598CBE;
+	border-bottom-color: #598CBE;
+	border-left-color: #598CBE;
+	background-color: #FFFFFF;
+	text-transform: uppercase;
+
+}
+
+.FormaLabel {
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-size: 7.5pt;
+	color: #003366;
+	border-top-width: 0px;
+	border-right-width: 0px;
+	border-bottom-width: 0px;
+	border-left-width: 0px;
+	border-top-style: solid;
+	border-right-style: solid;
+	border-bottom-style: solid;
+	border-left-style: solid;
+	border-top-color: #598CBE;
+	border-right-color: #598CBE;
+	border-bottom-color: #598CBE;
+	border-left-color: #598CBE;
+	background-color: #FFFFFF;
+	text-transform: uppercase;
+
+}
+
+
+	A:link {color:#336699; text-decoration :  none;}
+        A:visited {color:#336699; text-decoration:none}
+        A:active{color:#336699; text-decoration:none}
+        A:hover {color:#336699 ; text-decoration:underline} 
+
+.LinPuntos {
+	background-image: url(../images/LinPuntos.gif);
+	background-repeat: repeat-x;
+	background-color: #FFFFFF;
+}
+.Avisos {
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	color: #333333;
+	background-color: #CCCCCC;
+	font-size: 8pt;
+	border-top: 1px solid #999999;
+	border-right: 1px solid #999999;
+	border-bottom: 1px solid #999999;
+	border-left: 0px solid #999999;
+	left: 0px;
+	text-align: left;
+
+
+
+
+}
+.Logg {
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-size: 9pt;
+	font-weight: bold;
+	color: #FFFFFF;
+}
+.TituloAzul {
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-size: 8pt;
+	color: #333366;
+	font-weight: bold;
+}.PopUp {
+	background-image: url(../images/BG_PopUp.gif);
+}
+.TituloBlanco {
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-size: 8pt;
+	font-weight: bolder;
+	color: #FFFFFF;
+}
+.ContenPopUp {
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-size: 8pt;
+	color: #000000;
+}
+.BgTopLogg {
+	background-image: url(../images/BG_Top.gif);
+}
+.Detalle {
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-size: 8pt;
+	color: #333333;
+	background-color: #CCCCCC;
+}
+.DetalleInterior {
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-size: 7.5pt;
+	color: #333333;
+	background-color: #B3B3B5;
+}
+.MarcoDetalles {
+	border: 1px solid #B3B3B5;
+}
+.BGBuscar {
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-size: 8pt;
+	font-weight: bold;
+	color: #003366;
+	background-color: #9CBFE1;
+	border-top-width: 0px;
+	border-right-width: 1px;
+	border-bottom-width: 0px;
+	border-left-width: 1px;
+	border-top-style: solid;
+	border-right-style: solid;
+	border-bottom-style: solid;
+	border-left-style: solid;
+	border-top-color: #003366;
+	border-right-color: #003366;
+	border-bottom-color: #003366;
+	border-left-color: #003366;
+}
+.FormaBuscar {
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-size: 8pt;
+	color: #003366;
+	border: 1px solid #003366;
+	background-color: #FFFFFF;
+
+}
+.AvisoError {
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	color: #333333;
+	background-color: #CCCCCC;
+	font-size: 8pt;
+	border-top: 1px solid #999999;
+	border-right: 0px solid #999999;
+	border-bottom: 1px solid #999999;
+	border-left: 1px solid #999999;
+	background-image: url(../images/Ico_Mensaje_Error.gif);
+	background-repeat: no-repeat;
+	text-indent: 50pt;
+
+
+
+}
+.AvisoInfo {
+
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	color: #333333;
+	background-color: #CCCCCC;
+	font-size: 8pt;
+	border-top: 1px solid #999999;
+	border-right: 0px solid #999999;
+	border-bottom: 1px solid #999999;
+	border-left: 1px solid #999999;
+	background-image: url(../images/Ico_Mensaje_Info.gif);
+	background-repeat: no-repeat;
+	text-indent: 50pt;
+}
+.AvisoAdvertencia{
+
+
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	color: #333333;
+	background-color: #CCCCCC;
+	font-size: 8pt;
+	border-top: 1px solid #999999;
+	border-right: 0px solid #999999;
+	border-bottom: 1px solid #999999;
+	border-left: 1px solid #999999;
+	background-image: url(../images/Ico_Mensaje_Advertencia.gif);
+	background-repeat: no-repeat;
+	text-indent: 50pt;
+}
+.CopyR {
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-size: 7pt;
+	color: #537AA5;
+	background-color: #DCE9F7;
+	border-top-width: 1px;
+	border-right-width: 0px;
+	border-bottom-width: 1px;
+	border-left-width: 0px;
+	border-top-style: solid;
+	border-right-style: solid;
+	border-bottom-style: solid;
+	border-left-style: solid;
+	border-top-color: #80A3C7;
+	border-right-color: #80A3C7;
+	border-bottom-color: #80A3C7;
+	border-left-color: #80A3C7;
+}
+.TopCalendario {
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-size: 8pt;
+	color: #FFFFFF;
+	background-color: #666666;
+	font-weight: bold;
+}
+.CalendarioContenido {
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-size: 8pt;
+	color: #333333;
+}
+.CalendarioBotones {
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-size: 7.5pt;
+	color: #333333;
+	background-color: #CCCCCC;
+	border-top-width: 1px;
+	border-bottom-width: 1px;
+	border-top-style: solid;
+	border-right-style: solid;
+	border-bottom-style: solid;
+	border-left-style: solid;
+	border-top-color: #333333;
+	border-right-color: #333333;
+	border-bottom-color: #333333;
+	border-left-color: #333333;
+	border-right-width: 0px;
+	border-left-width: 0px;
+
+}
+.CalendarioInteriorBotones {
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-size: 8pt;
+	color: #999999;
+	background-color: #FFFFFF;
+}
+.CalendarioAsueto {
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-size: 8pt;
+	color: #FFFFFF;
+	background-color: #CCCCCC;
+	
+}
+.HoraTxt {
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-size: 7pt;
+	font-weight: bold;
+	color: #FFFFFF;
+	background-color: #336699;
+	border-top-width: 0px;
+	border-right-width: 0px;
+	border-bottom-width: 0px;
+	border-left-width: 0px;
+	border-top-style: solid;
+	border-right-style: solid;
+	border-bottom-style: solid;
+	border-left-style: solid;
+	border-top-color: #336699;
+	border-right-color: #336699;
+	border-bottom-color: #336699;
+	border-left-color: #336699;
+}
+.LabelVersion {
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-size: 11pt;
+	color: #FFFFFF;
+	background-color: #6699CC;
+	border-top-width: 0px;
+	border-right-width: 0px;
+	border-bottom-width: 1px;
+	border-left-width: 0px;
+	border-top-style: solid;
+	border-right-style: solid;
+	border-bottom-style: solid;
+	border-left-style: solid;
+	border-top-color: #003366;
+	border-right-color: #003366;
+	border-bottom-color: #003366;
+	border-left-color: #003366;
+}	
+.AlertaAvisoSiniestro {
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-size: 7.5pt;
+	color: #00FFFF;
+	border-top-width: 0px;
+	border-right-width: 0px;
+	border-bottom-width: 1px;
+	border-left-width: 0px;
+	border-top-style: solid;
+	border-right-style: solid;
+	border-bottom-style: solid;
+	border-left-style: solid;
+	border-top-color: #598CBE;
+	border-right-color: #598CBE;
+	border-bottom-color: #598CBE;
+	border-left-color: #598CBE;
+	background-color: #FF0000;
+
+}

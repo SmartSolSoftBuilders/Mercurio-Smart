@@ -1,0 +1,217 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="CancelacionesAgente" pageWidth="650" pageHeight="100" orientation="Landscape" whenNoDataType="AllSectionsNoDetail" columnWidth="650" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0">
+	<property name="ireport.scriptlethandling" value="0"/>
+	<property name="ireport.encoding" value="UTF-8"/>
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<import value="net.sf.jasperreports.engine.*"/>
+	<import value="java.util.*"/>
+	<import value="net.sf.jasperreports.engine.data.*"/>
+	<parameter name="cveAgenteParam" class="java.lang.Integer" isForPrompting="false"/>
+	<queryString>
+		<![CDATA[select
+pla.cvePlaza,
+tar.importeTarifa,
+cer.numCertificado,
+sol.cveAgente as AgtSol,
+sol.folioSolicitud AS Folio,
+asg.apPaternoAsegurado,
+asg.apMaternoAsegurado,
+asg.nombre1Asegurado,
+asg.nombre2Asegurado,
+(select count(*) FROM DescuentosAplicados descAp , PolizaIndividual pol
+ WHERE pol.folioSolicitud = Folio
+ AND descAp.numPoliza = pol.numPoliza
+ AND descAp.numConsignatario = pol.numConsignatario
+ GROUP BY descAp.numPoliza, descAp.numConsignatario) as PagosAsgALaFecha
+ from PolizaIndividual  pol
+inner join Solicitud sol on sol.folioSolicitud=pol.folioSolicitud
+inner join Asegurado asg on asg.numPoliza=pol.numPoliza
+inner join Agente agt on agt.cveAgente = sol.cveAgente
+inner join CertificadoIndividual cer on cer.folioSolicitud=sol.folioSolicitud
+inner join Plaza pla on pla.idPlaza=cer.idPlaza
+inner join TarifaAportMensual tar on tar.cveTarifa=sol.cveTarifa
+inner join DetalleDescuentoComisionSolicitud det on det.folioSolicitud=sol.folioSolicitud
+where  agt.cveAgente=$P{cveAgenteParam}]]>
+	</queryString>
+	<field name="cvePlaza" class="java.lang.String"/>
+	<field name="importeTarifa" class="java.math.BigDecimal"/>
+	<field name="numCertificado" class="java.lang.Long"/>
+	<field name="AgtSol" class="java.lang.Long"/>
+	<field name="Folio" class="java.lang.Long"/>
+	<field name="apPaternoAsegurado" class="java.lang.String"/>
+	<field name="apMaternoAsegurado" class="java.lang.String"/>
+	<field name="nombre1Asegurado" class="java.lang.String"/>
+	<field name="nombre2Asegurado" class="java.lang.String"/>
+	<field name="PagosAsgALaFecha" class="java.lang.Long"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band splitType="Stretch"/>
+	</title>
+	<pageHeader>
+		<band splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band height="53" splitType="Stretch">
+			<staticText>
+				<reportElement key="staticText-3" x="521" y="23" width="128" height="30" forecolor="#0033FF" backcolor="#99CCFF"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="SansSerif" isBold="false" isItalic="true" isUnderline="false" pdfFontName="Helvetica-Oblique"/>
+				</textElement>
+				<text><![CDATA[Pagos del Aseg a la Fecha]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-5" x="222" y="23" width="299" height="30" forecolor="#0033FF" backcolor="#99CCFF"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="SansSerif" isBold="false" isItalic="true" isUnderline="false" pdfFontName="Helvetica-Oblique"/>
+				</textElement>
+				<text><![CDATA[Asegurado]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-7" x="73" y="23" width="72" height="30" forecolor="#0033FF" backcolor="#99CCFF"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="SansSerif" isBold="false" isItalic="true" isUnderline="false" pdfFontName="Helvetica-Oblique"/>
+				</textElement>
+				<text><![CDATA[No. Cert.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-8" x="145" y="23" width="77" height="30" forecolor="#0033FF" backcolor="#99CCFF"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="SansSerif" isBold="false" isItalic="true" isUnderline="false" pdfFontName="Helvetica-Oblique"/>
+				</textElement>
+				<text><![CDATA[Tárifa]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-9" x="0" y="23" width="74" height="30" forecolor="#0033FF" backcolor="#99CCFF"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="SansSerif" isBold="false" isItalic="true" isUnderline="false" pdfFontName="Helvetica-Oblique"/>
+				</textElement>
+				<text><![CDATA[Plaza]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-10" mode="Opaque" x="0" y="2" width="648" height="21" forecolor="#FFFFFF" backcolor="#3399FF"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="SansSerif" size="12" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[                                     Cancelaciones]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="17" splitType="Stretch">
+			<textField isBlankWhenNull="false">
+				<reportElement key="textField-1" x="0" y="0" width="73" height="17"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="SansSerif"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{cvePlaza}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="false">
+				<reportElement key="textField-2" x="145" y="0" width="77" height="17"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="SansSerif"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{importeTarifa}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="false">
+				<reportElement key="textField-3" x="73" y="0" width="72" height="17"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="SansSerif"/>
+				</textElement>
+				<textFieldExpression class="java.lang.Long"><![CDATA[$F{numCertificado}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="false">
+				<reportElement key="textField-5" x="222" y="0" width="299" height="17"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="SansSerif"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{apPaternoAsegurado} + ' ' + $F{apMaternoAsegurado} + ' ' + $F{nombre1Asegurado} +' ' +  $F{nombre2Asegurado}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement key="textField-7" x="521" y="0" width="128" height="17"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="SansSerif"/>
+				</textElement>
+				<textFieldExpression class="java.lang.Long"><![CDATA[$F{PagosAsgALaFecha}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band splitType="Stretch"/>
+	</summary>
+</jasperReport>

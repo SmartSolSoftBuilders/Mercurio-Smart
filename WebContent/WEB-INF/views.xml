@@ -1,0 +1,42 @@
+<?xml version="1.0"?>
+<!DOCTYPE beans PUBLIC
+"-//SPRING//DTD BEAN//EN"
+"http://www.springframework.org/dtd/spring-beans.dtd">
+<beans>
+    <bean id="registroSolicitudExitoso"
+          class="org.springframework.web.servlet.view.RedirectView">
+        <property name="contextRelative" value="true" />
+        <property name="url" value="/registroSolicitudExitoso" />
+    </bean>
+    <!--bean id="reporteCertificadoIndividual"
+          class="org.springframework.web.servlet.view.jasperreports.JasperReportsPdfView">
+        <property name="contextRelative" value="true" />
+        <property name="url" value="/WEB-INF/reportes/reporteCertificadoIndividual.jasper"/>
+    </bean-->
+    <bean id="registroPolizaExitoso"
+          class="org.springframework.web.servlet.view.RedirectView">
+        <property name="contextRelative" value="true" />
+        <property name="url" value="/registroPolizaExitoso" />
+    </bean>
+    
+    <bean id="initparamsubmit" class="org.springframework.web.servlet.view.InternalResourceView">
+        <property name="url">
+            <value>/WEB-INF/jsp/seguridad/usuariosAutentificados.jsp</value>
+        </property>
+    </bean>
+    
+    <bean id="initadminresult" class="org.springframework.web.servlet.view.InternalResourceView">
+        <property name="url">
+            <value>/WEB-INF/jsp/seguridad/admin/administrador.jsp</value>
+        </property>
+    </bean>
+    
+    
+    <!--
+    <bean id="listaPolizasEmitidasEntregadas"
+        class="org.springframework.web.servlet.view.velocity.VelocityView">
+       <property name="url"><value>jsp/views/_tablaPolizaEmitidaEntregada.jsp</value></property>
+       <property name="exposeSpringMacroHelpers"><value>true</value></property>
+   </bean>
+    -->
+</beans>

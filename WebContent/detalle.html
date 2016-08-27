@@ -1,0 +1,792 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+   "http://www.w3.org/TR/html4/loose.dtd">
+
+
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=windows-1252">
+        <title>Detalle de la Solicitud de Seguro</title>
+        <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+        <link href="css/stilosForms.css" rel="stylesheet" type="text/css"/>
+        <link href="css/stilosCal.css" rel="stylesheet" type="text/css"/>
+        <link href="css/stilosTablas.css" rel="stylesheet" type="text/css"/>
+        <script language="JavaScript" type="text/javascript"
+                src="js/calendario.js">
+        </script>
+        <script type="text/javascript" src="js/jquery-1.5.1.js"></script>
+        <script language="JavaScript" type="text/javascript"
+                src="js/AnchorPosition.js">
+        </script>
+        <script language="JavaScript" type="text/javascript"
+                src="js/date.js">
+        </script>
+        <script language="JavaScript" type="text/javascript"
+                src="js/PopupWindow.js">
+        </script>
+        <script language="JavaScript" type="text/javascript"
+                src="js/GUIHelper.js">
+        </script>
+        <script type="text/javascript">
+        	function modificarSolicitud(){
+        		window.location = 
+        		'app/capturaSolicitudController?folioSolicitud=270826&formatoSolicitud=F-2111-1&idRegistro=0&numPoliza=93034951&numConsignatario=10215';
+             	}
+        	function tramites(){
+        		window.location = 
+            		'app/listadoTramitesPolizaController?numPoliza=93034951&numConsignatario=10215';
+                 	
+        	}
+        </script>
+        <script language="JavaScript" type="text/javascript">
+           function validaEstatusPoliza(){
+            var param=w01.idEstatusPagosPolizaFrm.value;
+           // alert(param);
+                if(param >1){
+                alert("A continuación de clic en el boton 'Generar Reporte Desc.' ");
+                
+	                w01.val.type="hidden";
+	                w01.desc.type="submit";
+	                w01.val.disabled=true;
+                }else{
+                	alert("La póliza no cuenta aún con descuentos aplicados");
+                }
+            }
+			
+           function registrarTicket(){
+        		numPoliza = document.getElementById("numPolizaFrm").value;
+        		
+        		if(numPoliza != ""){
+        			 document.location.href = 'app/registrarTicketCorreccion?numPoliza=93034951&numConsignatario=10215&folioSolicitud=270826&formatoSolicitud=F-2111-1';
+        		}else{
+        			alert("La solicitud todavía no cuenta con póliza");
+        		}
+        	  
+           }
+           
+           function  mostrarTarifas(campoRef){
+        	   tarifas =document.getElementById("historialTarifas");
+        	   if( tarifas.style.visibility == 'visible'){
+        		   tarifas.style.visibility = 'hidden';
+        		   return;
+        	   }
+        	   
+        	   
+        	   
+        	   tarifas.style.left = (getDimensions(campoRef).x+25) + "px";
+        	   tarifas.style.top = getDimensions(campoRef).y + "px";
+        	   tarifas.style.visibility = 'visible';
+           }
+           
+           function ocultarTarifas(){
+        	   document.getElementById("historialTarifas").style.visibility = 'hidden';
+           }
+           getDimensions = function(oElement) {
+        	    var x, y, w, h;
+        	    x = y = w = h = 0;
+        	    if (document.getBoxObjectFor) { // Mozilla
+        	      var oBox = document.getBoxObjectFor(oElement);
+        	      x = oBox.x-1;
+        	      w = oBox.width;
+        	      y = oBox.y-1;
+        	      h = oBox.height;
+        	    }
+        	    else if (oElement.getBoundingClientRect) { // IE
+        	      var oRect = oElement.getBoundingClientRect();
+        	      x = oRect.left-2;
+        	      w = oElement.clientWidth;
+        	      y = oRect.top-2;
+        	      h = oElement.clientHeight;
+        	    }
+        	    return {x: x, y: y, w: w, h: h};
+        	 }
+
+           
+           function abrirPopUpReporte(tipoReporte){
+
+           	numPoliza = document.getElementById("numPolizaFrm").value;
+           	numCertificado = document.getElementById("numCertificadoFrm").value;
+           	cvePlaza = document.getElementById("cvePlazaFrm").value;
+           	folioSolicitud = document.getElementById("folioSolicitudFrm").value;
+           	formatoSolicitud = document.getElementById("formatoSolicitudFrm").value;
+           	
+               urlBase     = 'app/generarReportesPolizaController';
+               propiedades = 'width='+700+',height='+800+',toolbar=no,directories=no,menubar=no,resizable=yes,status=yes,dependent=yes';
+               params = 'numPoliza='+numPoliza+'&numCertificado='+numCertificado+'&cvePlaza='+cvePlaza+'&tipoReporte='+tipoReporte+
+               '&folioSolicitud='+folioSolicitud+"&formatoSolicitud="+formatoSolicitud;
+               url    = urlBase + '?' + params;
+              
+               vent   = window.open(url, "detalle", propiedades);
+               isOpen = true;
+           }
+           
+           function generarCarta(){
+           	abrirPopUpReporte('carta');
+           }
+           
+           function generarAcuse(){
+           	abrirPopUpReporte('acuse');
+           }
+           
+           function generarCertificado(){
+        	   abrirPopUpReporte('certificado');
+           }
+           
+
+        </script>
+    </head>
+    <body>
+    
+    
+    
+   
+    
+
+
+
+
+
+
+
+
+
+
+
+<script language="JavaScript" type="text/javascript">
+           
+           
+           function  mostrarCalculo(campoRef){
+        	   detalle =document.getElementById("detalleCalculo");
+        	   if( detalle.style.visibility == 'visible'){
+        		   detalle.style.visibility = 'hidden';
+        		   return;
+        	   }
+        	   
+        	   
+        	   
+        	   detalle.style.left = (getDimensions(campoRef).x+25) + "px";
+        	   detalle.style.top = getDimensions(campoRef).y + "px";
+        	   detalle.style.visibility = 'visible';
+           }
+           
+           function ocultarCalculo(){
+        	   document.getElementById("detalleCalculo").style.visibility = 'hidden';
+           }
+           getDimensions = function(oElement) {
+        	    var x, y, w, h;
+        	    x = y = w = h = 0;
+        	    if (document.getBoxObjectFor) { // Mozilla
+        	      var oBox = document.getBoxObjectFor(oElement);
+        	      x = oBox.x-1;
+        	      w = oBox.width;
+        	      y = oBox.y-1;
+        	      h = oBox.height;
+        	    }
+        	    else if (oElement.getBoundingClientRect) { // IE
+        	      var oRect = oElement.getBoundingClientRect();
+        	      x = oRect.left-2;
+        	      w = oElement.clientWidth;
+        	      y = oRect.top-2;
+        	      h = oElement.clientHeight;
+        	    }
+        	    return {x: x, y: y, w: w, h: h};
+        	 }
+
+           
+           function cargarDetalleCalculo(numPoliza,numConsignatario){
+        	   
+        	   $.ajax({
+		    		type: 'POST',
+		    		url: 'app/consultarDetalleCalculoSumaAseguradaController',
+		    		data: 'numPoliza='+numPoliza+'&numConsignatario='+numConsignatario,
+		    		dataType: 'xml',
+		    		async: false,
+		    		success: function(xml){
+		    			conTarifas = false;
+		    			
+		    			$(xml).find('detalleCalculoSumaAsegurada').each(function(){
+		    				
+		    				
+		    			    $('#tablaCalculo').append(
+		    			    		'<tr>'+
+			    		    			'<td class="ContenTabla">' + 
+			    		    			'Vida' +
+			    		    			'</td>'+
+			    		    			'<td class="ContenTabla" style="text-align: right" nowrap>$  '+
+			    		    				$(this).find("sumaSeguroVidaString").text()+
+			    		    			'</td>'+
+		    		    			'</tr>' + 
+		    		    			'<tr>'+
+			    		    			'<td class="ContenTabla">' + 
+			    		    			'Gastos Funerarios (GF)' +
+			    		    			'</td>'+
+			    		    			'<td class="ContenTabla" style="text-align: right" nowrap>$  '+
+			    		    				$(this).find("sumaGastosFunerariosString").text()+
+			    		    			'</td>'+
+	    		    				'</tr>' +
+	    		    				'<tr>'+
+			    		    			'<td class="ContenTabla">' + 
+			    		    			'Enfermedades Graves (SEVI)' +
+			    		    			'</td>'+
+			    		    			'<td class="ContenTabla" style="text-align: right" nowrap>$  '+
+			    		    				$(this).find("sumaSEVIString").text()+
+			    		    			'</td>'+
+    		    					'</tr>'+
+	    		    					($(this).find("formatoAnterior").text() == "false"?
+	    		    						'<tr>'+
+	    			    		    			'<td class="ContenTabla">' + 
+	    			    		    			'BAF' +
+	    			    		    			'</td>'+
+	    			    		    			'<td class="ContenTabla" style="text-align: right" nowrap>$  '+
+	    			    		    				$(this).find("sumaBAFString").text()+
+	    			    		    			'</td>'+
+	        		    					'</tr>'	:""));
+		    			    
+		    			    
+		    			    
+		    			    
+				    			    $(this).find('detalleCalculoBeneficio').each(function(){
+				    			    	
+				    			    	$('#tablaCalculo').append(	 
+				    			    		
+				    			    		'<tr>'+
+					    		    			'<td class="ContenTabla">' + 
+					    		    				$(this).find("descripcionBeneficio").text() +
+					    		    			'</td>'+
+					    		    			'<td class="ContenTabla" style="text-align: right" nowrap>$  '+
+					    		    				$(this).find("montoCobertura").text()+
+				    		    				'</td>'+
+				    						'</tr>'
+				    			    			
+				    			    			
+				    			    	);
+				    			    	
+				    			    });
+		    			    
+		    			    
+    					
+    					
+	    		    				$('#tablaCalculo').append(	 
+    		    					'<tr><td class="ContenTabla" colspan="2">&nbsp;</td></tr>'+
+    		    				'<tr>'+
+		    		    			'<td class="ContenTabla">' + 
+		    		    				'Total de Protecci&oacute;n' +
+		    		    			'</td>'+
+		    		    			'<td class="ContenTabla" style="text-align: right" nowrap>$  '+
+		    		    				$(this).find("sumaAseguradaTotalString").text()+
+		    		    			'</td>'+
+		    					'</tr>'
+		    			    
+		    			    		);
+		    			    		
+		    			});
+		      		}
+		    		
+		    	});
+        	   
+           }
+           
+
+        </script>
+
+
+<div id="detalleCalculo"  style="visibility:hidden;z-index: 900;position:fixed;background-color: #FFFFFF;" >
+    	<table cellpadding="0" cellspacing="2" width="310px" style="line-height:normal;" id="tablaCalculo" >
+    		<tr>
+    			<td class="ContenTablaColor" colspan="2" >
+    				Detalle del C&aacute;lculo de la Suma Asegurada Total
+    			</td>
+    		</tr>
+    		
+    	</table>
+</div>
+    
+    
+    
+    <div id="historialTarifas"  style="visibility:hidden;z-index: 900;position:fixed;background-color: #FFFFFF;" >
+    	<table cellpadding="0" cellspacing="2" width="310px" style="line-height:normal;" >
+    		<tr>
+    			<td class="ContenTablaColor">
+    				Tarifa anterior
+    			</td>
+    			<td class="ContenTablaColor">
+    				Modificda por
+    			</td>
+    			<td class="ContenTablaColor">
+    				Fecha
+    			</td>
+    		</tr>
+    		
+    		
+    			<tr>
+	    			<td class="ContenTabla" colspan="3" style="text-align: center">
+	    				No existe informaci&oacute;n hist&oacute;rica de tarifas.
+	    			</td>
+    			</tr>
+    		
+    	</table>
+    </div>
+    
+     <form action="#" method="post" name="w01">            
+                <input type="hidden" name="_page0" value="0" />
+        <div class="row660" align="center">&nbsp;</div>
+            <div id="titleg664x16">Resultados de consulta</div>
+            
+            <div class="row660">
+                <input type="hidden" name="importePrimaInd" id="importePrimaIndFrm" />
+               
+                <label class="label330">Folio de la solicitud:&nbsp;&nbsp;</label>
+                <span class="field330">
+                   
+                        <input type="text" name="folioSolicitudFrm" id="folioSolicitudFrm" value="270826" readonly class="input"/>
+                   
+                </span>
+            </div>
+            <div class="row660">
+                <label class="label330">N&uacute;mero de Formato:&nbsp;&nbsp;</label>
+                <span class="field330">
+                   
+                        <input type="text" name="formatoSolicitudFrm" id="formatoSolicitudFrm" value="F-2111-1" readonly class="input"/>
+                   
+                </span>
+            </div>
+            <div class="row660">
+                <label class="label330">Estatus de solicitud:&nbsp;&nbsp;</label>
+                <span class="field330">
+                    <!--spring:bind path="solicitud.estatussolicitud.descripcionEstatusSolicitud"-->
+                    <input type="text" name="descripcionEstatusSolicitud" id="descripcionEstatusSolicitudFrm" value="POLIZA EMITIDA" readonly class="input" />
+                    <!--/spring:bind-->
+                   
+                </span>
+
+            </div>
+            <div class="row660" align="center">&nbsp;</div>
+            <div id="titleg664x16">Contratante</div>
+            <div class="row660">
+                <label class="label135">Apellido materno:&nbsp;&nbsp;</label>
+                <span class="field195">
+                    <input type="text" name="apPaternoContratante" value="HERNANDEZ" id="apPaternoContratanteFrm" readonly class="input" onChange="javascript:this.value=this.value.toUpperCase();"/>
+                </span>
+                <label class="label135">Apellido paterno:&nbsp;&nbsp;</label>
+                <span class="field195">
+                    <input type="text" name="apMaternoContratante" value="NAVA"  id="apMaternoContratanteFrm" readonly class="input" onChange="javascript:this.value=this.value.toUpperCase();"/>
+                </span>
+            </div>
+            <div class="row660">
+            <label class="label135">Primer nombre:&nbsp;&nbsp;</label>
+            <span class="field195">
+                <input type="text" name="nombre1Contratante" value="YAZMIN"  id="nombre1ContratanteFrm" readonly class="input" onChange="javascript:this.value=this.value.toUpperCase();"/>
+            </span>
+            <label class="label135">Segundo nombre:&nbsp;&nbsp;</label>
+            <span class="field195">
+                <input type="text" name="nombre2Contratante" value=""  id="nombre2ContratanteFrm" readonly class="input" onChange="javascript:this.value=this.value.toUpperCase();"/>
+            </span>
+            </div>
+            <div class="row660">
+                <label class="label330">No. de empleado:&nbsp;&nbsp;</label>
+                <span class="field330">
+                    
+                        <input type="text" name="solicitud.contratante.numNominaContratante"  id="numNominaContratanteFrm" readonly value="NAHY830406UW6" class="input"/>
+                    
+                </span>
+            </div>
+            <div class="row660" align="center">&nbsp;</div>
+            <div id="titleg664x16">Solicitante</div>
+            <div class="row660">
+                <label class="label135">Apellido paterno:&nbsp;&nbsp;</label>
+                <span class="field195">
+                  
+                        <input type="text" name="apPaternoSolicitanteFrm" id="apPaternoSolicitanteFrm" readonly value="NAVA" class="input" />
+                    
+                </span>
+                <label class="label135">Apellido materno:&nbsp;&nbsp;</label>
+                <span class="field195">
+                    <input type="text" name="apMaternoSolicitanteFrm" id="apMaternoSolicitanteFrm" readonly value="HERNANDEZ" class="input" />
+                </span>
+            </div>
+            <div class="row660">
+                <label class="label135">Primer nombre:&nbsp;&nbsp;</label>
+                <span class="field195">
+                    
+                        <input type="text" name="nombre1SolicitanteFrm" id="nombre1SolicitanteFrm" readonly value="YAZMIN" class="input" onChange="javascript:this.value=this.value.toUpperCase();"/>
+                    
+                </span>
+                <label class="label135">Segundo nombre:&nbsp;&nbsp;</label>
+                <span class="field195">
+                    
+                        <input type="text" name="nombre2SolicitanteFrm"  id="nombre2SolicitanteFrm" readonly value="" class="input" onChange="javascript:this.value=this.value.toUpperCase();"/>
+                    
+                </span>
+            </div>
+            <div class="row660">
+                <label class="label135">RFC:&nbsp;&nbsp;</label>
+                <span class="field195">
+                    
+                        <input type="text" name="RFCsolicitanteFrm" id="RFCsolicitanteFrm" readonly value="NAHY830406UW6" class="input" onChange="javascript:this.value=this.value.toUpperCase();"/>
+                   
+                </span>
+                <label class="label135">Fecha nacimiento:&nbsp;&nbsp;</label>
+                <span class="field195">
+                    
+                        <input type="text" name="fechaNacimientoSolicitanteFrm"  id="fechaNacimientoSolicitanteFrm"
+                               readonly value="06/04/1983" class="input" />
+                    
+                </span>
+            </div>
+            
+            
+            <div class="row660" align="center">&nbsp;</div>
+            <div id="title589x16">Domicilio del Solicitante</div>
+            <div class="row592">
+                <label class="label195x21">Calle:&nbsp;&nbsp;</label>
+                <label class="label195x21">Edificio:&nbsp;&nbsp;</label>
+                <label class="label195x21">No. ext./ No. int.:&nbsp;&nbsp;</label>
+            </div>
+            <div class="row592">
+                <span class="field195">
+                    
+                        <input type="text" name="solicitud.solicitante.calle" id="calleFrm" readonly value="VALERIO TRUJANO" class="input" size="28" onChange="javascript:this.value=this.value.toUpperCase();"/>
+                    
+                </span>
+                <span class="field195">
+                    
+                        <input type="text" name="solicitud.solicitante.edificio" id="edificioFrm" readonly value="" class="input" onChange="javascript:this.value=this.value.toUpperCase();"/>
+                    
+                </span>
+
+                <span class="field195">
+                    
+                        <input type="text" name="solicitud.solicitante.numExtInt" id="numExtIntFrm" readonly value="4" class="input"/>
+                    
+                </span>
+            </div>
+            <div class="row592">
+                <label class="label195x21">Colonia/Fraccionamiento:&nbsp;&nbsp;</label>
+                <label class="label195x21">&nbsp;</label>
+                <label class="label195x21">C&oacute;digo Postal:&nbsp;&nbsp;</label>
+            </div>
+            <div class="row660">
+                <span class="field296">
+                    
+                        <input type="text" name="solicitud.solicitante.colonia" id="coloniaFrm"  size="40" readonly value="AZTECA" class="input" onChange="javascript:this.value=this.value.toUpperCase();"/>
+                    
+                </span>
+                <label class="label97x31">&nbsp;</label>
+                <!--span class="field195">&nbsp;&nbsp;</span-->
+                <span class="field195">
+                    
+                        <input type="text" name="solicitud.solicitante.codPostal" id="codPostalFrm" readonly value="62588" class="input"/>
+                    
+                </span>
+            </div>
+            <div class="row592">
+                <label class="label195x21">Delegaci&oacute;n/Municipio:&nbsp;&nbsp;</label>
+                <label class="label195x21">Ciudad/Poblaci&oacute;n:&nbsp;&nbsp;</label>
+                <label class="label195x21">Entidad Federativa:&nbsp;&nbsp;</label>
+            </div>
+            <div class="row592">
+                <span class="field195">
+                    
+                        <input type="text" name="solicitud.solicitante.delegacionMpio" id="delegacionMpioFrm" readonly value="TEMIXCO" class="input" onChange="javascript:this.value=this.value.toUpperCase();"/>
+                    
+                </span>
+                <span class="field195">
+                    
+                        <input type="text" name="solicitud.solicitante.ciudadPoblacion" id="ciudadPoblacionFrm" readonly value="TEMIXCO" class="input" onChange="javascript:this.value=this.value.toUpperCase();"/>
+                    
+                </span>
+                <span class="field195">
+                    
+                        <input type="text" name="solicitud.solicitante.entidadFederativa" id="entidadFederativaFrm" readonly value="MORELOS" class="input" onChange="javascript:this.value=this.value.toUpperCase();"/>
+                    
+                </span>
+            </div>
+            <div class="row660" align="center">&nbsp;</div>
+
+            <div id="titleg664x16">Escuela</div>
+            <div class="row660">
+            <label class="label135">Escuela:&nbsp;&nbsp;</label>
+            <span class="field195">
+            	 <input type="text"
+                       value="GUADALUPE VICTORIA"
+                       title="GUADALUPE VICTORIA"
+                       name="nombreEmpresa" id="nombreEmpresaFrm" size="50" readonly class="input" 
+                       onChange="javascript:this.value=this.value.toUpperCase();"/>
+           		                 
+                </span>
+                <label class="label135">Colonia:&nbsp;&nbsp;</label>
+                <span class="field195">
+                    <input type="text" name="colonia"
+                           value="Azteca"
+                           title="Azteca"
+                           id="coloniaFrm" readonly class="input" onChange="javascript:this.value=this.value.toUpperCase();"/>
+                </span>
+                <label class="label135">Municipio o Delegaci&oacute;n:&nbsp;&nbsp;</label>
+                <span class="field195">
+                    <input type="text" name="nombreSucursal"
+                           value="TEMIXCO"
+                           id="nombreSucursalFrm" readonly class="input" onChange="javascript:this.value=this.value.toUpperCase();"/>
+                </span>
+                <label class="label135">Grupo:&nbsp;&nbsp;</label>
+                <span class="field195">
+                    <input type="text" name="nombreGrupoAsegurado"
+                           value="IEBEM SNTE 19"
+                            title="IEBEM SNTE 19"
+                           id="nombreGrupoAseguradoFrm" readonly class="input" onChange="javascript:this.value=this.value.toUpperCase();"/>
+                </span>
+                
+            </div>
+            
+
+            <div class="row660" align="center">&nbsp;</div>
+			<div id="titleg664x16" >P&oacute;liza individual</div>
+                <div class="row660">
+                    
+                    <label class="label135">N&uacute;mero:&nbsp;&nbsp;</label>
+                    <span class="field195">
+                       
+                            <input type="text" name="poliza.numPoliza"  id="numPolizaFrm" value="93034951" readonly class="input"/>    
+                        
+                        
+                    </span>                    
+                        
+                            <input type="hidden" name="poliza.numConsignatario"  id="numConsignatarioFrm" value="10215" readonly class="input"/>    
+                                        
+                    <label class="label135">Certificado individual:&nbsp;&nbsp;</label>
+                    <span class="field195">
+                        <!--spring:bind path="poliza.solicitud.asegurado.numCertificadoIndividual"-->
+                        <input type="text" name="cvePlaza" id="cvePlazaFrm" value="MO" size="4" readonly class="input"/>
+                        <input type="text" name="numCertificado" value="10410" id="numCertificadoFrm" size="7" readonly class="input"/>
+                        <!--/spring:bind-->
+                    </span>
+                    
+                    <label class="label135">Tipo de Seguro:&nbsp;&nbsp;</label>
+                    <span class="field195">
+                        <input type="text" name="tipoSeguro" value="VIINT035"  id="tipoSeguroFrm" readonly class="input"/>    
+                    </span>
+                    <label class="label135">Imp de Tarifa.:&nbsp;&nbsp;</label>
+                    <span class="field195">
+                        <input type="text" name="importeTarifa" 
+                        value="276.0" id="importeTarifaFrm"  readonly class="input"/>
+                       <a href="javascript:void();">
+                       <img title="Ver historial de tarifas" src='img/skin/onebit_39.png' border="0"
+                        	onclick="javascript:mostrarTarifas(this);"
+                        	width="20"
+                        	/>
+                       
+                       </a>
+                        	
+                       
+                    </span>
+                    
+                    <label class="label135">Imp prima indiv.:&nbsp;&nbsp;</label>
+                    
+                    <span class="field195">
+                        <input type="text" name="importePrimaInd" value="230.0" id="importePrimaIndFrm"  readonly class="input"/>
+                    </span> 
+                    <label class="label135">Imp prima colect.:&nbsp;&nbsp;</label>
+                    <span class="field195">
+                        <input type="text" name="importePrimaColectiva" 
+                        value="0"
+                        id="importePrimaColectivaFrm"  readonly class="input"/>
+                    </span>
+                    <label class="label135">Suma asg individual:&nbsp;&nbsp;</label>
+                    <span class="field195">
+                        <input type="text" name="sumaAseguradaIndividual" 
+                        value="832781.0"
+                        id="sumaAseguradaIndividualFrm"  readonly class="input" />
+                    </span>
+                    <label class="label135">Suma asg colectiva:&nbsp;&nbsp;</label>
+                    <span class="field195">
+                        <input type="text"  name="sumaAseguradaColectiva" 
+                        value="0.0"
+                        id="sumaAseguradaColectivaFrm"  readonly class="input" />
+                    </span>
+                    <label class="label330" >Total de protecci&oacute;n:&nbsp;&nbsp;</label>
+                    <span class="field330">
+                         <input type="text" name="txtCampo" value="1,308,533" 
+                         id="totalProteccionFrm"
+                         MAXLENGTH="16" class="input" readonly/>
+                       <!--input type="text" name="totalProteccion" id="totalProteccionFrm"   class="input"/-->
+                       <a href="javascript:void();">
+	                       <img title="Ver Detalle del C&aacute;lculo" src='img/skin/onebit_39.png' border="0"
+	                        	onclick="javascript:mostrarCalculo(this);"
+	                        	width="20"
+	                        	/>
+                       </a>
+                        
+                    </span>
+                    
+                    
+                    <label class="label330">Estatus de seguimiento:&nbsp;&nbsp;</label>
+                    <span class="field330">
+                        <input type="text" name="descripcionEstatusPoliza" 
+                        size="40" id="descripcionEstatusPolizaFrm" readonly 
+                        value="CAPTURADA"
+                        class="input"/>
+                    </span>
+                    <label class="label330">Estatus en pagos:&nbsp;&nbsp;</label>
+                    <span class="field330">
+                        <input type="hidden" name="idEstatusPagosPolizaFrm"  id="idEstatusPagosPolizaFrm"
+                        value="1"
+                         />
+                        <input type="text" name="descripcionEstatusPagosPoliza" size="40" id="descripcionEstatusPagosPolizaFrm" 
+                        value="SIN PAGOS APLICADOS"
+                        readonly class="input"/>
+                    </span>
+                    
+                    <div class="row660" align="center">&nbsp;</div>
+               	 <div id="titleg664x16">Agente</div>
+                    <div class="row660">
+                        <div align="center" class="submit664">                       
+                            <input type="text" name="cveAgente" id="cveAgenteFrm" size="5" readonly
+                            value="1"
+                             class="input"/>
+                            <input type="text" align="center" name="apPaternoEmpleado" id="apPaternoEmpleadoFrm" 
+                            value="GARDUÑO"
+                            size="15" readonly class="input" />
+                            <input type="text" align="center" name="apMaternoEmpleado" id="apMaternoEmpleadoFrm"  
+                            value="SALCEDO"
+                            size="15" readonly class="input"/>
+                            <input align="center" type="text" name="nombre1Empleado" id="nombre1EmpleadoFrm" 
+                            value="GERARDO"
+                            size="15" readonly class="input"/>
+                            <input type="text" align="center" name="nombre2Empleado" id="nombre2EmpleadoFrm" 
+                            value=""
+                            size="15" readonly class="input"/>
+                        </div>
+                    </div>
+                    
+                    <div class="row660" align="center">&nbsp;</div>
+                    <div id="titleg664x16">Agente Inbursa</div>
+                     	<label class="label330">Clave Agente Inbursa:&nbsp;&nbsp;</label>
+		                <span class="field330">
+		                    <!--spring:bind path="poliza.solicitud.asegurado.fechaExpedicion"-->
+		                    <input type="text"  name="fechaExpedicion" id="fechaExpedicionFrm" 
+		                    value=""
+		                    readonly class="input"/>
+		                    <!--/spring:bind-->
+		                </span>
+                    <div class="row660">
+		                <label class="label135">Porcentaje Promotor:&nbsp;</label>
+		                <span class="field195">
+		                    <input type="text"  name="porcentajePromotor" id="porcentajePromotorFrm" readonly
+		                    value="100.0"
+		                    class="input"/>
+		                </span>
+		                <label class="label135">Porcentaje Agente :&nbsp;</label>
+		                <span class="field195">
+		                    <input type="text"  name="fechaFinVigencia" id="fechaFinVigenciaFrm" 
+		                    value="0.0"
+		                    readonly class="input"/>
+		                </span>
+                	</div>
+                    
+                    
+                </div>  
+                <div class="row660" align="left">&nbsp;</div>
+                <div id="titleg664x16">Vigencia</div>
+                <div class="row660">
+                <label class="label135">Fecha Inicio:&nbsp;&nbsp;</label>
+                <span class="field195">
+                    <!--spring:bind path="poliza.solicitud.asegurado.fechaInicioVigencia"-->
+                    <input type="text"  name="fechaInicioVigencia" id="fechaInicioVigenciaFrm" readonly
+                    value="15/08/2013"
+                    class="input"/>
+                    <!--/spring:bind--> 
+                </span>
+                <label class="label135">Fecha Fin:&nbsp;&nbsp;</label>
+                <span class="field195">
+                    <!--spring:bind path="poliza.solicitud.asegurado.fechaFinVigencia"-->
+                    <input type="text"  name="fechaFinVigencia" id="fechaFinVigenciaFrm" 
+                    value="15/08/2033"
+                    readonly class="input"/>
+                    <!--/spring:bind-->
+                </span>
+                <label class="label330">Fecha Expedici&oacute;n:&nbsp;&nbsp;</label>
+                <span class="field330">
+                    <!--spring:bind path="poliza.solicitud.asegurado.fechaExpedicion"-->
+                    <input type="text"  name="fechaExpedicion" id="fechaExpedicionFrm" 
+                    value="24/06/2013"
+                    readonly class="input"/>
+                    <!--/spring:bind-->
+                </span>
+                </div>
+                 <div class="row660" align="left">&nbsp;</div>
+                <div class="row660">
+                	<table width="100%">
+                	<tr align="left" valign="middle" height="20">
+                            <td colspan="6" class="TopTabla" align="center"><strong>Tr&aacute;mites de la P&oacute;liza</strong></td>
+                        </tr>
+                        
+                        <tr>
+                        	<td class="fieldRow" colspan="4" align="center" style="text-align: center">
+								<strong>No existen tr&aacute;mites asociados a esta p&oacute;liza</strong>
+                        	</td>
+                        </tr>
+                        
+                        
+                     </table>
+                </div>
+                <div class="row660" align="center">&nbsp;</div>
+                <div id="titleg664x16">Beneficios Adicionales</div>
+                
+            	<div class="row660" align="center">&nbsp;</div>
+            		<div class="row660">
+	                		<label class="label330"><b>Tarifa Total (Incluyendo beneficios):&nbsp;&nbsp;</b></label>
+	                		<span class="field330">
+	                   			<b>
+	                        	$ 276.00
+	                  			</b>
+	                		</span>
+	                
+	                </div>
+            	
+            	<div class="row660" align="center">&nbsp;</div>
+            	<div class="row660" align="center">&nbsp;</div>
+            <div class="row660" align="center">
+            
+            <input type="button" class="input" id="val" value="Ver Desc. Aplicados" onClick="validaEstatusPoliza();"/>
+            <input type="hidden" class="input" name="_finish" id="desc" value="Generar Reporte Desc." />
+            &nbsp;&nbsp;
+            <a href="javascript:registrarTicket();"><input class="input" type="button" value="Crear Ticket de Correcci&oacute;n de Datos"/></a>
+            &nbsp;&nbsp;&nbsp;
+            
+            </div>
+            <div align="center" class="row660">
+               
+                    <input type="button" class="input" name="bntAcuse" 
+                    value="Ver Acuse de Recibo" onclick="javascript:generarAcuse();"/>
+                    <input type="button" class="input" name="btnCarta" 
+                    value="Ver Carta Resumen" onclick="javascript:generarCarta();"/>
+                    <input type="button" class="input" name="btnCert" 
+                    value="Ver Certificado Individual" onclick="javascript:generarCertificado();"/>
+            </div>    
+           
+           	<div align="center" class="row660">
+           	
+            	<a href="javascript:tramites();"><input class="input" type="button" value="Tr&aacute;mites de P&oacute;liza"/></a>
+            	&nbsp;&nbsp;
+            	<a href="javascript:tramites();"><input class="input" type="button" value="Consultar Retiros"/></a>
+           	</div>
+           
+           
+           <div align="center" class="row660">
+           
+            <a href="javascript:close();"><input class="input" type="button" value="Cerrar"/></a>
+           </div>
+            
+    </form>       
+    
+     <script language="JavaScript" type="text/javascript">
+	 	cargarDetalleCalculo('93034951','10215');
+	 </script>
+    
+     
+    
+
+	
+
+
+
+    </body>
+</html>

@@ -1,0 +1,372 @@
+<?xml version="1.0" encoding="UTF-8"  ?>
+<!-- Created with iReport - A designer for JasperReports -->
+<!DOCTYPE jasperReport PUBLIC "//JasperReports//DTD Report Design//EN" "http://jasperreports.sourceforge.net/dtds/jasperreport.dtd">
+<jasperReport
+		 name="FormatoAltaAsegurados2"
+		 columnCount="1"
+		 printOrder="Vertical"
+		 orientation="Landscape"
+		 pageWidth="1120"
+		 pageHeight="842"
+		 columnWidth="1120"
+		 columnSpacing="0"
+		 leftMargin="0"
+		 rightMargin="0"
+		 topMargin="20"
+		 bottomMargin="20"
+		 whenNoDataType="NoPages"
+		 isTitleNewPage="false"
+		 isSummaryNewPage="false"
+		 isIgnorePagination="true">
+	<property name="ireport.scriptlethandling" value="0" />
+	<property name="ireport.encoding" value="UTF-8" />
+	<import value="java.util.*" />
+	<import value="net.sf.jasperreports.engine.*" />
+	<import value="net.sf.jasperreports.engine.data.*" />
+
+	<parameter name="cveRetenedorParam" isForPrompting="false" class="java.lang.Integer"/>
+	<queryString><![CDATA[SELECT DISTINCT
+pol.numConsignatario,
+pol.numPoliza,
+sol.RFCsolicitante,
+slc.apPaternoSolicitante,
+slc.apMaternoSolicitante,
+slc.nombre1Solicitante,
+slc.nombre2Solicitante,
+tar.importeTarifa,
+tar.importePrimaInd,
+tar.importePrimaColectiva
+FROM
+PolizaIndividual pol,
+Solicitud sol,
+Solicitante slc,
+TarifaAportMensual tar,
+Retenedor ret,
+GrupoAsegurado gpo,
+Empresa epr,
+ListaColumnas lis
+WHERE
+ret.cveRetenedor = $P{cveRetenedorParam}
+AND gpo.cveRetenedor = ret.cveRetenedor
+AND epr.cveGrupoAsegurado = gpo.cveGrupoAsegurado
+AND sol.cveEmpresa = epr.cveEmpresa
+AND pol.folioSolicitud = sol.folioSolicitud
+AND slc.RFCsolicitante = sol.RFCsolicitante
+AND tar.cveTarifa = sol.cveTarifa
+AND lis.RFC = sol.RFCsolicitante
+ORDER BY sol.RFCsolicitante]]></queryString>
+
+	<field name="numConsignatario" class="java.lang.Integer"/>
+	<field name="numPoliza" class="java.lang.Integer"/>
+	<field name="RFCsolicitante" class="java.lang.String"/>
+	<field name="apPaternoSolicitante" class="java.lang.String"/>
+	<field name="apMaternoSolicitante" class="java.lang.String"/>
+	<field name="nombre1Solicitante" class="java.lang.String"/>
+	<field name="nombre2Solicitante" class="java.lang.String"/>
+	<field name="importeTarifa" class="java.lang.Integer"/>
+	<field name="importePrimaInd" class="java.lang.Integer"/>
+	<field name="importePrimaColectiva" class="java.lang.Integer"/>
+
+		<background>
+			<band height="0"  isSplitAllowed="true" >
+			</band>
+		</background>
+		<title>
+			<band height="0"  isSplitAllowed="true" >
+			</band>
+		</title>
+		<pageHeader>
+			<band height="0"  isSplitAllowed="true" >
+			</band>
+		</pageHeader>
+		<columnHeader>
+			<band height="20"  isSplitAllowed="true" >
+				<staticText>
+					<reportElement
+						x="0"
+						y="0"
+						width="70"
+						height="20"
+						key="staticText-1"/>
+					<box></box>
+					<textElement textAlignment="Left">
+						<font pdfFontName="Helvetica-Bold" size="8" isBold="true"/>
+					</textElement>
+				<text><![CDATA[EMISOR]]></text>
+				</staticText>
+				<staticText>
+					<reportElement
+						x="70"
+						y="0"
+						width="100"
+						height="20"
+						key="staticText-2"/>
+					<box></box>
+					<textElement>
+						<font pdfFontName="Helvetica-Bold" size="8" isBold="true"/>
+					</textElement>
+				<text><![CDATA[CARPETA]]></text>
+				</staticText>
+				<staticText>
+					<reportElement
+						x="170"
+						y="0"
+						width="100"
+						height="20"
+						key="staticText-3"/>
+					<box></box>
+					<textElement>
+						<font pdfFontName="Helvetica-Bold" size="8" isBold="true"/>
+					</textElement>
+				<text><![CDATA[RFC]]></text>
+				</staticText>
+				<staticText>
+					<reportElement
+						x="270"
+						y="0"
+						width="140"
+						height="20"
+						key="staticText-4"/>
+					<box></box>
+					<textElement>
+						<font pdfFontName="Helvetica-Bold" size="8" isBold="true"/>
+					</textElement>
+				<text><![CDATA[APELLIDO PATERNO]]></text>
+				</staticText>
+				<staticText>
+					<reportElement
+						x="410"
+						y="0"
+						width="130"
+						height="20"
+						key="staticText-5"/>
+					<box></box>
+					<textElement>
+						<font pdfFontName="Helvetica-Bold" size="8" isBold="true"/>
+					</textElement>
+				<text><![CDATA[APELLIDO MATERNO]]></text>
+				</staticText>
+				<staticText>
+					<reportElement
+						x="540"
+						y="0"
+						width="140"
+						height="20"
+						key="staticText-6"/>
+					<box></box>
+					<textElement>
+						<font pdfFontName="Helvetica-Bold" size="8" isBold="true"/>
+					</textElement>
+				<text><![CDATA[NOMBRE]]></text>
+				</staticText>
+				<staticText>
+					<reportElement
+						x="680"
+						y="0"
+						width="120"
+						height="20"
+						key="staticText-7"/>
+					<box></box>
+					<textElement>
+						<font pdfFontName="Helvetica-Bold" size="8" isBold="true"/>
+					</textElement>
+				<text><![CDATA[2o. NOMBRE]]></text>
+				</staticText>
+				<staticText>
+					<reportElement
+						x="800"
+						y="0"
+						width="110"
+						height="20"
+						key="staticText-8"/>
+					<box></box>
+					<textElement>
+						<font pdfFontName="Helvetica-Bold" size="8" isBold="true"/>
+					</textElement>
+				<text><![CDATA[TOTAL PAGO]]></text>
+				</staticText>
+				<staticText>
+					<reportElement
+						x="910"
+						y="0"
+						width="100"
+						height="20"
+						key="staticText-9"/>
+					<box></box>
+					<textElement>
+						<font pdfFontName="Helvetica-Bold" size="8" isBold="true"/>
+					</textElement>
+				<text><![CDATA[PRIMA O.V.]]></text>
+				</staticText>
+				<staticText>
+					<reportElement
+						x="1010"
+						y="0"
+						width="110"
+						height="20"
+						key="staticText-10"/>
+					<box></box>
+					<textElement>
+						<font pdfFontName="Helvetica-Bold" size="8" isBold="true"/>
+					</textElement>
+				<text><![CDATA[PRIMA COLECTIVA]]></text>
+				</staticText>
+			</band>
+		</columnHeader>
+		<detail>
+			<band height="20"  isSplitAllowed="true" >
+				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="0"
+						y="0"
+						width="70"
+						height="20"
+						key="textField-1"
+						stretchType="RelativeToBandHeight"/>
+					<box></box>
+					<textElement>
+						<font/>
+					</textElement>
+				<textFieldExpression   class="java.lang.Integer"><![CDATA[$F{numConsignatario}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="70"
+						y="0"
+						width="100"
+						height="20"
+						key="textField-2"
+						stretchType="RelativeToBandHeight"/>
+					<box></box>
+					<textElement>
+						<font/>
+					</textElement>
+				<textFieldExpression   class="java.lang.Integer"><![CDATA[$F{numPoliza}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="170"
+						y="0"
+						width="100"
+						height="20"
+						key="textField-3"
+						stretchType="RelativeToBandHeight"/>
+					<box></box>
+					<textElement>
+						<font/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$F{RFCsolicitante}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="270"
+						y="0"
+						width="140"
+						height="20"
+						key="textField-4"
+						stretchType="RelativeToBandHeight"/>
+					<box></box>
+					<textElement>
+						<font/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$F{apPaternoSolicitante}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="410"
+						y="0"
+						width="130"
+						height="20"
+						key="textField-5"
+						stretchType="RelativeToBandHeight"/>
+					<box></box>
+					<textElement>
+						<font/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$F{apMaternoSolicitante}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="540"
+						y="0"
+						width="140"
+						height="20"
+						key="textField-6"
+						stretchType="RelativeToBandHeight"/>
+					<box></box>
+					<textElement>
+						<font/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$F{nombre1Solicitante}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="680"
+						y="0"
+						width="120"
+						height="20"
+						key="textField-7"
+						stretchType="RelativeToBandHeight"/>
+					<box></box>
+					<textElement>
+						<font/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$F{nombre2Solicitante}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="800"
+						y="0"
+						width="110"
+						height="20"
+						key="textField-8"
+						stretchType="RelativeToBandHeight"/>
+					<box></box>
+					<textElement>
+						<font/>
+					</textElement>
+				<textFieldExpression   class="java.lang.Integer"><![CDATA[$F{importeTarifa}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="910"
+						y="0"
+						width="100"
+						height="20"
+						key="textField-9"
+						stretchType="RelativeToBandHeight"/>
+					<box></box>
+					<textElement>
+						<font/>
+					</textElement>
+				<textFieldExpression   class="java.lang.Integer"><![CDATA[$F{importePrimaInd}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="1010"
+						y="0"
+						width="110"
+						height="20"
+						key="textField-10"
+						stretchType="RelativeToBandHeight"/>
+					<box></box>
+					<textElement verticalAlignment="Middle">
+						<font/>
+					</textElement>
+				<textFieldExpression   class="java.lang.Integer"><![CDATA[$F{importePrimaColectiva}]]></textFieldExpression>
+				</textField>
+			</band>
+		</detail>
+		<columnFooter>
+			<band height="0"  isSplitAllowed="true" >
+			</band>
+		</columnFooter>
+		<pageFooter>
+			<band height="0"  isSplitAllowed="true" >
+			</band>
+		</pageFooter>
+		<summary>
+			<band height="0"  isSplitAllowed="true" >
+			</band>
+		</summary>
+</jasperReport>

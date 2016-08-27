@@ -1,0 +1,64 @@
+
+
+
+
+
+
+.TopTabla {
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+    font: 9pt "Lucida Grande", "Trebuchet MS", Arial, Helvetica, sans-serif;
+	font-size: 12pt;
+	color: #336699;
+	background-color: #CCCCCC;
+	border-top: 1px solid #598CBE;
+	border-right: 0px solid #598CBE;
+	border-bottom: 1px solid #598CBE;
+	border-left: 0px solid #598CBE;
+
+}
+.ContenTabla {
+	font: 9pt "Lucida Grande", "Trebuchet MS", Arial, Helvetica, sans-serif;
+	font-size: 9pt;
+	color: #003366;
+	/*border-top-width: 0px;
+	border-right-width: 0px;
+	border-bottom-width: 1px;
+	border-left-width: 0px;
+	border-top-style: solid;
+	border-right-style: solid;
+	border-bottom-style: solid;
+	border-left-style: solid;
+	border-top-color: #598CBE;
+	border-right-color: #598CBE;
+	border-bottom-color: #598CBE;
+	border-left-color: #598CBE;*/
+	background-color: #EEEEEE;
+
+}
+.ContenTablaColor {
+	font: 9pt "Lucida Grande", "Trebuchet MS", Arial, Helvetica, sans-serif;
+	font-size: 9pt;
+	color: #003366;
+	background-color: #C3D5EF;
+	/*border-top-width: 0px;
+	border-right-width: 0px;
+	border-bottom-width: 1px;
+	border-left-width: 0px;
+	border-top-style: solid;
+	border-right-style: solid;
+	border-bottom-style: solid;
+	border-left-style: solid;
+	border-top-color: #598CBE;
+	border-right-color: #598CBE;
+	border-bottom-color: #598CBE;
+	border-left-color: #598CBE;*/
+}
+
+.input {
+	 font: 9px Verdana, Geneva, Arial, Helvetica, sans-serif;
+	 background-color: #D7E5F2;
+	 color: #102132;
+	 margin: 4px 0 5px 8px;
+}
+
+

@@ -1,0 +1,299 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+<beans>
+   
+    
+<bean id="messageSource" class="org.springframework.context.support.ResourceBundleMessageSource">
+    <property name="basename" value="messages"/>
+</bean>
+
+<bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+    <property name="dataSource" ref="jdbcDataSource"/>
+</bean>
+
+<bean id="transactionInterceptor" class="org.springframework.transaction.interceptor.TransactionInterceptor">
+    <property name="transactionManager">
+        <ref bean="transactionManager"/>
+    </property>
+    <property name="transactionAttributes">
+    	<props>
+    		<prop key="*">PROPAGATION_REQUIRED</prop>
+    	</props>
+    </property>
+</bean>
+<bean id="solicitudBusiness" class="org.springframework.aop.framework.ProxyFactoryBean">
+    <property name="target" ref="solicitudBusinessImpl" />
+    <property name="interceptorNames">
+    <list>
+    <value>transactionInterceptor</value>
+    </list>
+    </property>
+</bean>
+
+<bean id="polizaBusiness" class="org.springframework.aop.framework.ProxyFactoryBean">
+    <property name="target" ref="polizaBusinessImpl" />
+    <property name="interceptorNames">
+    <list>
+    <value>transactionInterceptor</value>
+    </list>
+    </property>
+</bean>
+
+
+<bean id="descuentosBusiness" class="mx.com.seguros.business.descuentos.DescuentosBusiness">
+    <property name="polizaBusiness" ref="polizaBusiness"/>
+    <property name="solicitudBusiness" ref="solicitudBusiness"/>
+    <property name="descuentosAplicadosDao" ref="descuentosDao"/>
+</bean>
+
+<bean id="solicitudBusinessImpl" class="mx.com.seguros.business.solicitud.SolicitudBusiness">
+    <property name="beneficiarioDao" ref="beneficiarioDao"/>
+    <property name="certificadoIndividualDao" ref="certificadoIndividualDao"/>
+    <property name="contratanteDao" ref="contratanteDao"/>
+    <property name="empresaDao" ref="empresaDao"/>
+    <property name="solicitanteDao" ref="solicitanteDao"/>
+    <property name="solicitudDao" ref="solicitudDao"/>
+    <property name="agenteDao" ref="agenteDao"/>
+</bean>
+
+<bean id="polizaBusinessImpl" class="mx.com.seguros.business.poliza.PolizaBusiness">
+    <!--property name="solicitudDao" ref="solicitudDao"/-->
+    
+    <property name="polizaDao" ref="polizaDao"/>
+    <property name="aseguradoDao" ref="aseguradoDao"/>
+    <property name="historialDao" ref="historialDao"/>
+    <property name="solicitudDao" ref="solicitudDao"/>
+    <property name="movimientosDependenciaDAO" ref="movimientosDependenciaDAO"/>
+    <property name="reporteBusiness" ref="reporteBusiness"/>
+    <property name="estatusPolizaSeguimientoDao" ref="estatusPolizaSeguimientoDao"></property>
+    <property name="estatusPolizaPagosDao" ref="estatusPolizaPagosDao"></property>
+    <property name="tramitePolizaDao" ref="tramitePolizaDao"></property>
+    <property name="productosInburnominaDao" ref="productosInburnominaDao"></property>
+   
+</bean>
+
+<bean id="calculoComisionesBusiness" class="mx.com.seguros.business.comisiones.CalculoComisionesBusiness">
+    <property name="agenteDao" ref="agenteDao"/>
+    <property name="solicitudDao" ref="solicitudDao"/>
+    <property name="polizaDao" ref="polizaDao"/>
+</bean>
+
+<bean id="bonoBusiness" class="mx.com.seguros.business.comisiones.BonoTrimestralBusiness">
+    <property name="agenteDao" ref="agenteDao"/>
+    <property name="solicitudDao" ref="solicitudDao"/>
+    <property name="polizaDao" ref="polizaDao"/>
+    <property name="esquemasRetencionDao" ref="esquemasRetencionDao"/>
+    <property name="reporteBusiness" ref="reporteBusiness"></property>
+</bean>
+
+<bean id="calculoDescuentoComisionesBusiness" class="mx.com.seguros.business.comisiones.CalculoDescuentoComisionesBusiness">
+    <property name="agenteDao" ref="agenteDao"/>
+    <property name="solicitudDao" ref="solicitudDao"/>
+    <property name="polizaDao" ref="polizaDao"/>
+</bean>
+
+<bean id="prestamosBusiness" class="mx.com.seguros.business.prestamos.PrestamosBusiness">
+    <property name="prestamosDao" ref="prestamosDao"/>
+</bean>
+
+<bean id="generarArchivoMovDepBusiness" class="mx.com.seguros.business.movimientosdependencia.GenerarArchivoMovDepBusiness">
+    <property name="movimientosDependenciaDAO" ref="movimientosDependenciaDAO"/> 
+    <property name="reporteBusiness" ref="reporteBusiness"/>   
+</bean>
+
+<bean id="generarArchivoPagosRetenedorBusiness" class="mx.com.seguros.business.movimientosdependencia.GenerarArchivoPagosRetenedorBusiness">
+    <property name="layoutDao" ref="layoutDao"/>    
+    <property name="reporteBusiness" ref="reporteBusiness"/>   
+</bean>
+
+<bean id="registroAbonoPrestamosBusiness" class="mx.com.seguros.business.comisiones.RegistroAbonoQuincenalPrestEmplBusiness">
+    <property name="agenteDao" ref="agenteDao"/>
+    <property name="prestamosDao" ref="prestamosDao"/>
+    
+</bean>
+
+
+<!-- Carga de archivos -->
+<bean id="archivoPolizasBusiness" class="mx.com.seguros.business.archivopolizas.ArchivoPolizasBusiness">
+    <property name="registroArchivoPolizasDao" ref="registroArchivoPolizasDao"/>
+    <property name="solicitudDao" ref="solicitudDao"/>
+    <property name="contratanteDao" ref="contratanteDao"/>
+    <property name="solicitanteDao" ref="solicitanteDao"/>
+    <property name="polizaDao" ref="polizaDao"/>
+    <property name="aseguradoDao" ref="aseguradoDao"/>
+    <property name="seguridadUtil" ref="seguridadUtil"></property>
+   
+</bean>
+
+<bean id="consultaGeneralSolicitudesBusiness" class="mx.com.seguros.business.consulta.ConsultaGeneralSolicitudesBusiness">
+    <property name="solicitudDao" ref="solicitudDao"/>
+     <property name="polizaDao" ref="polizaDao"/>
+</bean>
+
+<bean id="reporteBusiness" class="mx.com.seguros.business.reporte.ReporteBusiness">
+    <property name="jdbcDataSource" ref="jdbcDataSource"/>
+    <property name="reporteDao" ref="reporteDao" />
+    <property name="bitacoraEmisionReporteDao" ref="bitacoraEmisionReporteDao" />
+    <property name="certificadoIndividualDao" ref="certificadoIndividualDao"/>
+    <property name="solicitudDao" ref="solicitudDao"/>
+    <property name="polizaDao" ref="polizaDao"/>
+</bean>
+
+<bean id="seguridadUtil" class="mx.com.seguros.web.seguridad.util.SeguridadUtil">
+	<property name="agenteDao" ref="agenteDao"></property>
+</bean>
+
+<!-- / carga de archivos -->
+
+<!--Beans para Helper-->
+<bean id="helperBinder"
+      class="qtx.component.front.helper.ParametrosHelperRequestBinder" />
+
+<bean id="modelProvider" class="qtx.component.front.helper.bean.HelperModelProvider">
+    <property name="helperDao" ref="helperDao"/>
+</bean>
+
+<!--Beans para Helper-->
+
+	<bean id="procesoCorreccionDatosBusiness" class="mx.com.seguros.business.correccion.ProcesoCorreccionDatosBusinessImpl">
+		<property name="ticketCorreccionDao" ref="ticketCorreccionDao"></property>
+		<property name="solicitudBusiness" ref="solicitudBusiness"/>
+		<property name="polizaBusiness" ref="polizaBusiness"/>
+		<property name="contratanteDao" ref="contratanteDao"/>
+		<property name="solicitanteDao" ref="solicitanteDao"/>
+		<property name="solicitudDao" ref="solicitudDao"/>
+		<property name="beneficiarioDao" ref="beneficiarioDao"/>
+		<property name="aseguradoDao" ref="aseguradoDao"/>
+		 <property name="polizaDao" ref="polizaDao"/>
+		 <property name="descuentosAplicadosDao" ref="descuentosDao"></property>
+	</bean>
+	
+	<bean id="inventarioReportes" class="java.util.ArrayList">
+		<constructor-arg>
+			<list>
+				<map>
+					<entry key="claveReporte" value="cartaResumen"/>
+					<entry key="nombreReporte" value="Carta Resumen de Póliza"/>
+					<entry key="params" value="numCertificado, numPoliza, cvePlaza"/>
+					<entry key="nombreParams" value="Núm. de Certificado, Número de Póliza, Clave Plaza"/>
+				</map>
+				<map>
+					<entry key="claveReporte" value="acuseRecibo"/>
+					<entry key="nombreReporte" value="Acuse de Recibo de Póliza"/>
+					<entry key="params" value="numCertificado, numPoliza, cvePlaza"/>
+					<entry key="nombreParams" value="Núm. de Certificado, Número de Póliza, Clave Plaza"/>
+				</map>
+				<map>
+					<entry key="claveReporte" value="formatoAplicacionDescuentos"/>
+					<entry key="nombreReporte" value="Formato de Aplicación de Descuentos"/>
+					<entry key="params" value="numPoliza,numEmisor"/>
+					<entry key="nombreParams" value="Número de Póliza, Emisor"/>
+				</map>
+				<map>
+					<entry key="claveReporte" value="reporteCertificadoIndividual"/>
+					<entry key="nombreReporte" value="Certificado Individual"/>
+					<entry key="params" value="folioSolicitud,formatoSolicitud,numPoliza,numCertificado,cvePlaza"/>
+					<entry key="nombreParams" value="Folio Solicitud, Formato Solicitud, Número de Póliza, Número de Certificado,Clave Plaza"/>
+				</map>
+			</list>
+		</constructor-arg>
+		
+	</bean>
+
+
+	<bean name="autofinanciarPolizasJob" class="org.springframework.scheduling.quartz.JobDetailBean">
+ 
+		<property name="jobClass" value="mx.com.seguros.business.batch.ProcesoPagosAutofinanciarPolizas" />
+	 	
+		<property name="jobDataAsMap">
+			<map>
+				<entry key="pagosBusiness" value-ref="pagosBusiness" />
+			</map>
+		</property>
+	</bean>
+	
+	
+	<bean id="cronTrigger"
+		class="org.springframework.scheduling.quartz.CronTriggerBean">
+ 
+		<property name="jobDetail" ref="autofinanciarPolizasJob" />
+		<property name="cronExpression" value="0 15 14 2,25 * ? *" />
+		<!-- segundos minutos horas (dias del mes) mes (dia de la semana) año -->
+		<!-- Los días 6 y 25 en el minuto 0 hora 0 -->
+ 
+	</bean>
+	   <!-- bean class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
+		<property name="jobDetails">
+			   <list>
+			      <ref bean="autofinanciarPolizasJob" />
+			   </list>
+			</property>
+		 
+			<property name="triggers">
+			    <list>
+					<ref bean="cronTrigger" />
+			    </list>
+			</property>
+	   </bean -->
+	   
+	   
+	   <bean id="calculoBonoPolizaBusiness" class="mx.com.seguros.business.comisiones.impl.CalculoBonoPolizaBusinessImpl">
+	   	<property name="calculoBonoPolizaAgenteDao" ref="calculoBonoPolizaAgenteDao"></property>
+	   	<property name="descuentosAplicadosDao" ref="descuentosDao"/>
+	   	<property name="agenteDao" ref="agenteDao"></property>
+	   	<property name="transactionManager" ref="transactionManager"></property>
+	   </bean> 
+	   
+	   <bean id="administracionEmpresasService" class="org.springframework.aop.framework.ProxyFactoryBean">
+		    <property name="target" ref="administracionEmpresasServiceImpl" />
+		    <property name="interceptorNames">
+			    <list>
+			    	<value>transactionInterceptor</value>
+			    </list>
+		    </property>
+		</bean>
+ 		
+ 		<bean id="administracionEmpresasServiceImpl" class="mx.com.seguros.business.empresa.impl.AdministracionEmpresasServiceImpl">
+ 			<property name="empresaDao" ref="empresaDao"/>
+	   </bean>
+	   
+	   <bean id="archivoCambioEstatusPolizaBusiness" class="mx.com.seguros.business.archivoestatus.impl.ArchivoCambioEstatusPolizaBusinessImpl">
+ 			<property name="archivoTramitePolizaDao" ref="archivoTramitePolizaDao"/>
+ 			<property name="archivoCambioEstatusPagosPolizaDao" ref="archivoCambioEstatusPagosPolizaDao"></property>
+ 			<property name="estatusPolizaPagosDao" ref="estatusPolizaPagosDao"></property>
+ 			 <property name="polizaDao" ref="polizaDao"/>
+	   </bean> 
+	   
+	   
+	   <bean id="archivoTramiteRetirosBusinessImpl" class="mx.com.seguros.business.archivoretiros.impl.ArchivoTramiteRetirosBusinessImpl">
+ 			<property name="archivoRetirosCargadoDao" ref="archivoRetirosCargadoDao"/>
+ 			<property name="polizaDao" ref="polizaDao"/>
+ 			<property name="cuentaClienteDao" ref="cuentaClienteDao"/>
+ 			<property name="transaccionCuentaClienteBusiness" ref="transaccionCuentaClienteBusiness"/>
+ 			<property name="tramiteRetiroDao" ref="tramiteRetiroDao"/>
+	   </bean> 
+	   
+	   <bean id="archivoTramiteRetirosBusiness" class="org.springframework.aop.framework.ProxyFactoryBean">
+	   		<property name="target" ref="archivoTramiteRetirosBusinessImpl" />
+		    <property name="interceptorNames">
+			    <list>
+			    	<value>transactionInterceptor</value>
+			    </list>
+		    </property>
+	   </bean>
+	   
+	   <bean id="administrarProductosInburnominaServiceImpl" class="mx.com.seguros.business.inburnomina.impl.AdministrarProductosInburnominaServiceImpl">
+	   		<property name="productosInburnominaDao" ref="productosInburnominaDao"></property>
+	   		<property name="polizaBusiness" ref="polizaBusiness"></property>
+	   </bean>
+	   <bean id="administrarProductosInburnominaService" class="org.springframework.aop.framework.ProxyFactoryBean">
+	   		<property name="target" ref="administrarProductosInburnominaServiceImpl" />
+		    <property name="interceptorNames">
+			    <list>
+			    	<value>transactionInterceptor</value>
+			    </list>
+		    </property>
+	   </bean>
+
+
+</beans>

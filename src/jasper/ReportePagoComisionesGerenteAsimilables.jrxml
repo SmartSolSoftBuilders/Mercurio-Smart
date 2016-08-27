@@ -1,0 +1,2179 @@
+<?xml version="1.0" encoding="UTF-8"  ?>
+<!-- Created with iReport - A designer for JasperReports -->
+<!DOCTYPE jasperReport PUBLIC "//JasperReports//DTD Report Design//EN" "http://jasperreports.sourceforge.net/dtds/jasperreport.dtd">
+<jasperReport
+		 name="ReportePagoComisionesGerenteAsimilables"
+		 columnCount="1"
+		 printOrder="Vertical"
+		 orientation="Portrait"
+		 pageWidth="918"
+		 pageHeight="1188"
+		 columnWidth="858"
+		 columnSpacing="0"
+		 leftMargin="30"
+		 rightMargin="30"
+		 topMargin="20"
+		 bottomMargin="20"
+		 whenNoDataType="AllSectionsNoDetail"
+		 isTitleNewPage="false"
+		 isSummaryNewPage="false"
+		 whenResourceMissingType="Empty">
+	<property name="ireport.scriptlethandling" value="0" />
+	<property name="ireport.encoding" value="UTF-8" />
+	<import value="java.util.*" />
+	<import value="net.sf.jasperreports.engine.*" />
+	<import value="net.sf.jasperreports.engine.data.*" />
+
+	<parameter name="SUBREPORT_DIR" isForPrompting="true" class="java.lang.String">
+		<defaultValueExpression ><![CDATA[".\\"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="numQuincenaReporteParam" isForPrompting="false" class="java.lang.Integer"/>
+	<parameter name="fechaInicioPeriodoComisionesParam" isForPrompting="false" class="java.util.Date"/>
+	<parameter name="fechaFinPeriodoComisionesParam" isForPrompting="false" class="java.util.Date"/>
+	<parameter name="cveSupervisorParam" isForPrompting="false" class="java.lang.Integer"/>
+	<parameter name="anioQuincenaReporteParam" isForPrompting="false" class="java.lang.Integer"/>
+	<parameter name="cveGerenteParam" isForPrompting="false" class="java.lang.Integer"/>
+	<queryString><![CDATA[SELECT
+	agt.cveGerente,
+	sol.cveAgente AS AgtSol,
+	solic.apPaternoSolicitante,
+	solic.apMaternoSolicitante,
+	solic.nombre1Solicitante,
+	solic.nombre2Solicitante,
+	pla.cvePlaza,
+	tar.importeTarifa,
+	cer.numCertificado,
+	
+	(SELECT emp.apPaternoEmpleado
+		FROM Empleado emp
+		WHERE emp.cveEmpleado=agt.cveGerente)AS ApellidoPaternoGerente,
+	(SELECT emp.apMaternoEmpleado
+		FROM Empleado emp
+		WHERE emp.cveEmpleado=agt.cveGerente)AS ApellidoMaternoGerente,
+	(SELECT emp.nombre1Empleado
+		FROM Empleado emp
+		WHERE emp.cveEmpleado=agt.cveGerente)AS PrimerNombreGerente,
+	(SELECT emp.nombre2Empleado
+		FROM Empleado emp
+		WHERE emp.cveEmpleado=agt.cveGerente)AS SegundoNombreGerente,
+	sol.folioSolicitud AS Folio,
+
+0.10 AS ISRretenido,
+0.10 AS IVAretenido,
+0.15 AS IVAtrasladado,
+(SELECT limiteInferior FROM ISRquinceDiAS WHERE idRango=1)AS limiteInferior1,
+(SELECT limiteSuperior FROM ISRquinceDiAS WHERE idRango=1)AS limiteSuperior1,
+(SELECT porcentajeAplicarExcedente/100 FROM ISRquinceDiAS WHERE idRango=1)AS porcentajeAplicarExcedente1,
+(SELECT cuotaFija FROM ISRquinceDiAS WHERE idRango=1)AS cuotaFija1,
+(SELECT limiteInferior FROM ISRquinceDiAS WHERE idRango=2)AS limiteInferior2,
+(SELECT limiteSuperior FROM ISRquinceDiAS WHERE idRango=2)AS limiteSuperior2,
+(SELECT porcentajeAplicarExcedente/100 FROM ISRquinceDiAS WHERE idRango=2)AS porcentajeAplicarExcedente2,
+(SELECT cuotaFija FROM ISRquinceDiAS WHERE idRango=2)AS cuotaFija2,
+(SELECT limiteInferior FROM ISRquinceDiAS WHERE idRango=3)AS limiteInferior3,
+(SELECT limiteSuperior FROM ISRquinceDiAS WHERE idRango=3)AS limiteSuperior3,
+(SELECT porcentajeAplicarExcedente/100 FROM ISRquinceDiAS WHERE idRango=3)AS porcentajeAplicarExcedente3,
+(SELECT cuotaFija FROM ISRquinceDiAS WHERE idRango=3)AS cuotaFija3,
+(SELECT limiteInferior FROM ISRquinceDiAS WHERE idRango=4)AS limiteInferior4,
+(SELECT limiteSuperior FROM ISRquinceDiAS WHERE idRango=4)AS limiteSuperior4,
+(SELECT porcentajeAplicarExcedente/100 FROM ISRquinceDiAS WHERE idRango=4)AS porcentajeAplicarExcedente4,
+(SELECT cuotaFija FROM ISRquinceDiAS WHERE idRango=4)AS cuotaFija4,
+(SELECT limiteInferior FROM ISRquinceDiAS WHERE idRango=5)AS limiteInferior5,
+(SELECT limiteSuperior FROM ISRquinceDiAS WHERE idRango=5)AS limiteSuperior5,
+(SELECT porcentajeAplicarExcedente/100 FROM ISRquinceDiAS WHERE idRango=5)AS porcentajeAplicarExcedente5,
+(SELECT cuotaFija FROM ISRquinceDiAS WHERE idRango=5)AS cuotaFija5,
+(SELECT limiteInferior FROM ISRquinceDiAS WHERE idRango=6)AS limiteInferior6,
+(SELECT limiteSuperior FROM ISRquinceDiAS WHERE idRango=6)AS limiteSuperior6,
+(SELECT porcentajeAplicarExcedente/100 FROM ISRquinceDiAS WHERE idRango=6)AS porcentajeAplicarExcedente6,
+(SELECT cuotaFija FROM ISRquinceDiAS WHERE idRango=6)AS cuotaFija6,
+(SELECT limiteInferior FROM ISRquinceDiAS WHERE idRango=7)AS limiteInferior7,
+(SELECT limiteSuperior FROM ISRquinceDiAS WHERE idRango=7)AS limiteSuperior7,
+(SELECT porcentajeAplicarExcedente/100 FROM ISRquinceDiAS WHERE idRango=7)AS porcentajeAplicarExcedente7,
+(SELECT cuotaFija FROM ISRquinceDiAS WHERE idRango=7)AS cuotaFija7,
+(SELECT limiteInferior FROM ISRquinceDiAS WHERE idRango=8)AS limiteInferior8,
+(SELECT limiteSuperior FROM ISRquinceDiAS WHERE idRango=8)AS limiteSuperior8,
+(SELECT porcentajeAplicarExcedente/100 FROM ISRquinceDiAS WHERE idRango=8)AS porcentajeAplicarExcedente8,
+(SELECT cuotaFija FROM ISRquinceDiAS WHERE idRango=8)AS cuotaFija8,
+0.00 AS algo,
+	$P{numQuincenaReporteParam} as Quincena,
+	emp.banco,
+	emp.noCuenta,
+	det.comisionSolicitudGerente,
+	det.comisionPolizaGerente,
+	(
+		SELECT IFNULL(
+				(SELECT SUM(importeDescuentoComisionGerente) 
+					FROM DetalleDescuentoComisionSolicitud detdes,Solicitud sol,Agente agt
+					WHERE agt.cveGerente=$P{cveGerenteParam}
+					AND sol.cveAgente=agt.cveAgente
+					AND detdes.folioSolicitud=sol.folioSolicitud
+				),0.00
+			     )
+	)AS importeDescuentoComisionGerente,
+	(
+		SELECT IFNULL(
+				(SELECT SUM(totalPrestamo)
+					FROM PrestamoEmpleado pres
+					WHERE pres.cveEmpleado=$P{cveGerenteParam}
+					AND pres.anioQuincenaAplicacion=$P{anioQuincenaReporteParam}
+					AND pres.numQuincenaAplicacion=$P{numQuincenaReporteParam}
+				),0.00 
+			     )
+	) AS AnticipoComision,
+
+	(
+		SELECT IFNULL(
+				(SELECT SUM(bonemp.importeBonoExtra) 
+					FROM BonoExtraEmpleado bonemp
+					WHERE bonemp.cveEmpleado=$P{cveGerenteParam}
+					AND bonemp.numQuincenaAplicacion=$P{numQuincenaReporteParam}
+					AND bonemp.anioQuincenaAplicacion=$P{anioQuincenaReporteParam}
+				),0.00
+			      )
+	) AS OtrosBonos,
+
+	(
+		SELECT IFNULL(
+				(SELECT SUM(det.comisionSolicitudGerente) 
+					FROM Agente agt
+					INNER JOIN Solicitud sol ON sol.cveAgente=agt.cveAgente
+					INNER JOIN DetalleComisionSolicitud det on sol.folioSolicitud=det.folioSolicitud
+					AND agt.cveGerente=$P{cveGerenteParam}
+					AND sol.fechaCaptura >= $P{fechaInicioPeriodoComisionesParam}
+					AND sol.fechaCaptura <= $P{fechaFinPeriodoComisionesParam}	
+				),0.00
+			     )
+	) AS totalComSol,
+
+	(
+		SELECT IFNULL(
+				(SELECT SUM(det.comisionPolizaGerente) 
+					FROM Agente agt
+					INNER JOIN Solicitud sol ON sol.cveAgente=agt.cveAgente
+					INNER JOIN DetalleComisionSolicitud det on sol.folioSolicitud=det.folioSolicitud
+					AND agt.cveGerente=$P{cveGerenteParam}
+					AND sol.fechaCaptura >= $P{fechaInicioPeriodoComisionesParam}
+					AND sol.fechaCaptura <= $P{fechaFinPeriodoComisionesParam}
+				),0.00
+		)
+	) AS totalComPol,
+	(
+		SELECT IFNULL(
+				(SELECT SUM(detdes.importeDescuentoComisionGerente) 
+					FROM Agente agt
+					INNER JOIN Solicitud sol ON sol.cveAgente=agt.cveAgente
+					INNER JOIN DetalleDescuentoComisionSolicitud detdes on sol.folioSolicitud=detdes.folioSolicitud
+					AND agt.cveGerente=$P{cveGerenteParam}
+					AND sol.fechaCaptura >= $P{fechaInicioPeriodoComisionesParam}
+					AND sol.fechaCaptura <= $P{fechaFinPeriodoComisionesParam}
+				),0.0
+			     )
+	) AS TotalDescCancel,
+
+
+	(SELECT (AnticipoComision+totalComSol+totalComPol)) AS ComisionBruta,
+
+	(
+		SELECT IFNULL(
+				(SELECT SUM(bon.importeBonoGerente) 
+					FROM BonoTrimestralAgente bon 
+					WHERE bon.cveAgente=AgtSol
+				),0.00
+			     )
+	) AS BonoTrimestral,
+
+	(
+		SELECT IFNULL(
+				(SELECT COUNT(*) FROM DescuentosAplicados descAp , PolizaIndividual pol
+					WHERE pol.folioSolicitud = Folio
+					AND descAp.numPoliza = pol.numPoliza
+					AND descAp.numConsignatario = pol.numConsignatario
+					GROUP BY descAp.numPoliza, descAp.numConsignatario
+				),0
+			     )
+	) AS PagosAsgALaFecha
+
+FROM Agente agt
+INNER JOIN Solicitud sol ON sol.cveAgente=agt.cveAgente
+INNER JOIN Solicitante solic on solic.RFCsolicitante=sol.RFCsolicitante
+INNER JOIN TarifaAportMensual tar on tar.cveTarifa=sol.cveTarifa
+INNER JOIN CertificadoIndividual cer on cer.folioSolicitud=sol.folioSolicitud
+INNER JOIN Plaza pla on pla.idPlaza=cer.idPlaza
+INNER JOIN DetalleComisionSolicitud det on sol.folioSolicitud=det.folioSolicitud
+INNER JOIN Empleado emp on agt.cveEmpleado=emp.cveEmpleado
+AND agt.cveGerente=$P{cveGerenteParam}
+AND sol.fechaCaptura >= $P{fechaInicioPeriodoComisionesParam}
+AND sol.fechaCaptura <= $P{fechaFinPeriodoComisionesParam}
+ORDER BY agt.cveAgente, tar.importeTarifa, cer.numCertificado]]></queryString>
+
+	<field name="cveGerente" class="java.lang.Integer"/>
+	<field name="cvePlaza" class="java.lang.String"/>
+	<field name="importeTarifa" class="java.math.BigDecimal"/>
+	<field name="numCertificado" class="java.lang.Long"/>
+	<field name="AgtSol" class="java.lang.Long"/>
+	<field name="apPaternoSolicitante" class="java.lang.String"/>
+	<field name="apMaternoSolicitante" class="java.lang.String"/>
+	<field name="nombre1Solicitante" class="java.lang.String"/>
+	<field name="nombre2Solicitante" class="java.lang.String"/>
+	<field name="PagosAsgALaFecha" class="java.lang.Long"/>
+	<field name="comisionSolicitudGerente" class="java.math.BigDecimal"/>
+	<field name="comisionPolizaGerente" class="java.math.BigDecimal"/>
+	<field name="importeDescuentoComisionGerente" class="java.math.BigDecimal"/>
+	<field name="AnticipoComision" class="java.math.BigDecimal"/>
+	<field name="totalComSol" class="java.math.BigDecimal"/>
+	<field name="totalComPol" class="java.math.BigDecimal"/>
+	<field name="ComisionBruta" class="java.math.BigDecimal"/>
+	<field name="TotalDescCancel" class="java.math.BigDecimal"/>
+	<field name="BonoTrimestral" class="java.math.BigDecimal"/>
+	<field name="OtrosBonos" class="java.math.BigDecimal"/>
+	<field name="ISRretenido" class="java.math.BigDecimal"/>
+	<field name="IVAretenido" class="java.math.BigDecimal"/>
+	<field name="IVAtrasladado" class="java.math.BigDecimal"/>
+	<field name="limiteInferior1" class="java.math.BigDecimal"/>
+	<field name="limiteSuperior1" class="java.math.BigDecimal"/>
+	<field name="porcentajeAplicarExcedente1" class="java.math.BigDecimal"/>
+	<field name="cuotaFija1" class="java.math.BigDecimal"/>
+	<field name="limiteInferior2" class="java.math.BigDecimal"/>
+	<field name="limiteSuperior2" class="java.math.BigDecimal"/>
+	<field name="porcentajeAplicarExcedente2" class="java.math.BigDecimal"/>
+	<field name="cuotaFija2" class="java.math.BigDecimal"/>
+	<field name="limiteInferior3" class="java.math.BigDecimal"/>
+	<field name="limiteSuperior3" class="java.math.BigDecimal"/>
+	<field name="porcentajeAplicarExcedente3" class="java.math.BigDecimal"/>
+	<field name="cuotaFija3" class="java.math.BigDecimal"/>
+	<field name="limiteInferior4" class="java.math.BigDecimal"/>
+	<field name="limiteSuperior4" class="java.math.BigDecimal"/>
+	<field name="porcentajeAplicarExcedente4" class="java.math.BigDecimal"/>
+	<field name="cuotaFija4" class="java.math.BigDecimal"/>
+	<field name="limiteInferior5" class="java.math.BigDecimal"/>
+	<field name="limiteSuperior5" class="java.math.BigDecimal"/>
+	<field name="porcentajeAplicarExcedente5" class="java.math.BigDecimal"/>
+	<field name="cuotaFija5" class="java.math.BigDecimal"/>
+	<field name="limiteInferior6" class="java.math.BigDecimal"/>
+	<field name="limiteSuperior6" class="java.math.BigDecimal"/>
+	<field name="porcentajeAplicarExcedente6" class="java.math.BigDecimal"/>
+	<field name="cuotaFija6" class="java.math.BigDecimal"/>
+	<field name="limiteInferior7" class="java.math.BigDecimal"/>
+	<field name="limiteSuperior7" class="java.math.BigDecimal"/>
+	<field name="porcentajeAplicarExcedente7" class="java.math.BigDecimal"/>
+	<field name="cuotaFija7" class="java.math.BigDecimal"/>
+	<field name="limiteInferior8" class="java.math.BigDecimal"/>
+	<field name="limiteSuperior8" class="java.math.BigDecimal"/>
+	<field name="porcentajeAplicarExcedente8" class="java.math.BigDecimal"/>
+	<field name="cuotaFija8" class="java.math.BigDecimal"/>
+	<field name="algo" class="java.math.BigDecimal"/>
+	<field name="Quincena" class="java.lang.Long"/>
+	<field name="banco" class="java.lang.String"/>
+	<field name="noCuenta" class="java.lang.String"/>
+	<field name="ApellidoPaternoGerente" class="java.lang.String"/>
+	<field name="ApellidoMaternoGerente" class="java.lang.String"/>
+	<field name="PrimerNombreGerente" class="java.lang.String"/>
+	<field name="SegundoNombreGerente" class="java.lang.String"/>
+	<field name="Folio" class="java.lang.Long"/>
+
+	<variable name="totalAnticipo" class="java.math.BigDecimal" resetType="Report" calculation="Nothing">
+	</variable>
+		<background>
+			<band height="0"  isSplitAllowed="true" >
+			</band>
+		</background>
+		<title>
+			<band height="63"  isSplitAllowed="true" >
+				<staticText>
+					<reportElement
+						x="534"
+						y="22"
+						width="71"
+						height="18"
+						forecolor="#0066FF"
+						key="staticText-45"/>
+					<box>					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+</box>
+					<textElement>
+						<font fontName="Century Gothic" pdfFontName="Helvetica-Bold" size="12" isBold="true" isUnderline="true"/>
+					</textElement>
+				<text><![CDATA[Quincena:]]></text>
+				</staticText>
+				<staticText>
+					<reportElement
+						x="641"
+						y="22"
+						width="137"
+						height="18"
+						forecolor="#0066FF"
+						key="staticText-46"/>
+					<box>					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+</box>
+					<textElement>
+						<font fontName="Century Gothic" pdfFontName="Helvetica-Bold" size="12" isBold="true" isUnderline="true"/>
+					</textElement>
+				<text><![CDATA[Fecha de Generación:]]></text>
+				</staticText>
+				<image  evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						mode="Transparent"
+						x="1"
+						y="0"
+						width="160"
+						height="63"
+						key="image-1"/>
+					<box>					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+</box>
+					<graphicElement stretchType="NoStretch"/>
+					<imageExpression class="java.lang.String"><![CDATA["/usr/apache-tomcat-5.5.26/webapps/seguros2/img/logoEstrategas.gif"]]></imageExpression>
+				</image>
+				<textField isStretchWithOverflow="false" pattern="dd/MM/yyyy" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="779"
+						y="22"
+						width="76"
+						height="18"
+						key="textField-66"/>
+					<box>					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="Century Gothic" pdfFontName="Helvetica-Bold" isBold="true"/>
+					</textElement>
+				<textFieldExpression   class="java.util.Date"><![CDATA[new Date()]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="605"
+						y="22"
+						width="27"
+						height="18"
+						key="textField-67"/>
+					<box>					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+</box>
+					<textElement textAlignment="Left" verticalAlignment="Middle">
+						<font fontName="Century Gothic" pdfFontName="Helvetica-Bold" isBold="true"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.Long"><![CDATA[$F{Quincena}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement
+						mode="Opaque"
+						x="185"
+						y="16"
+						width="339"
+						height="27"
+						forecolor="#FFFFFF"
+						backcolor="#161869"
+						key="staticText-47"/>
+					<box>					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="Century Gothic" pdfFontName="Helvetica-BoldOblique" size="14" isBold="true" isItalic="true" isUnderline="false" isStrikeThrough="false" />
+					</textElement>
+				<text><![CDATA[Reporte de Pago de Comisiones por Gerente]]></text>
+				</staticText>
+				<rectangle>
+					<reportElement
+						mode="Transparent"
+						x="523"
+						y="16"
+						width="332"
+						height="27"
+						key="rectangle-1"/>
+					<graphicElement stretchType="NoStretch"/>
+				</rectangle>
+			</band>
+		</title>
+		<pageHeader>
+			<band height="40"  isSplitAllowed="true" >
+				<staticText>
+					<reportElement
+						mode="Opaque"
+						x="0"
+						y="9"
+						width="68"
+						height="23"
+						forecolor="#0066FF"
+						key="staticText-48"/>
+					<box>					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+</box>
+					<textElement verticalAlignment="Middle">
+						<font fontName="Century Gothic" pdfFontName="Helvetica-Bold" size="12" isBold="true" isUnderline="true"/>
+					</textElement>
+				<text><![CDATA[Gerente:]]></text>
+				</staticText>
+				<staticText>
+					<reportElement
+						mode="Opaque"
+						x="385"
+						y="9"
+						width="48"
+						height="23"
+						forecolor="#0066FF"
+						key="staticText-49"/>
+					<box>					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+</box>
+					<textElement verticalAlignment="Middle">
+						<font fontName="Century Gothic" pdfFontName="Helvetica-Bold" size="12" isBold="true" isUnderline="true"/>
+					</textElement>
+				<text><![CDATA[Clave:]]></text>
+				</staticText>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="433"
+						y="9"
+						width="30"
+						height="23"
+						key="textField-69"
+						isPrintWhenDetailOverflows="true"/>
+					<box>					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+</box>
+					<textElement verticalAlignment="Middle">
+						<font fontName="Century Gothic" pdfFontName="Helvetica-Bold" isBold="true"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.Integer"><![CDATA[$F{cveGerente}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement
+						mode="Opaque"
+						x="470"
+						y="9"
+						width="108"
+						height="23"
+						forecolor="#0066FF"
+						key="staticText-50"/>
+					<box>					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+</box>
+					<textElement verticalAlignment="Middle">
+						<font fontName="Century Gothic" pdfFontName="Helvetica-Bold" size="12" isBold="true" isUnderline="true"/>
+					</textElement>
+				<text><![CDATA[Banco Depósito:]]></text>
+				</staticText>
+				<staticText>
+					<reportElement
+						mode="Opaque"
+						x="670"
+						y="9"
+						width="99"
+						height="23"
+						forecolor="#0066FF"
+						key="staticText-51"/>
+					<box>					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+</box>
+					<textElement verticalAlignment="Middle">
+						<font fontName="Century Gothic" pdfFontName="Helvetica-Bold" size="12" isBold="true" isUnderline="true"/>
+					</textElement>
+				<text><![CDATA[No. De Cuenta:]]></text>
+				</staticText>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="578"
+						y="9"
+						width="92"
+						height="23"
+						key="textField-70"
+						isPrintWhenDetailOverflows="true"/>
+					<box>					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="Century Gothic" pdfFontName="Helvetica-Bold" isBold="true"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$F{banco}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="769"
+						y="9"
+						width="87"
+						height="23"
+						key="textField-71"
+						isPrintWhenDetailOverflows="true"/>
+					<box>					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="Century Gothic" pdfFontName="Helvetica-Bold" isBold="true"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$F{noCuenta}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="71"
+						y="9"
+						width="314"
+						height="23"
+						key="textField-97"/>
+					<box>					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+</box>
+					<textElement textAlignment="Left" verticalAlignment="Middle">
+						<font fontName="Century Gothic" isBold="true"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$F{ApellidoPaternoGerente} + ' ' + $F{ApellidoMaternoGerente} + ' ' + $F{PrimerNombreGerente} +' ' +  $F{SegundoNombreGerente}]]></textFieldExpression>
+				</textField>
+			</band>
+		</pageHeader>
+		<columnHeader>
+			<band height="92"  isSplitAllowed="true" >
+				<staticText>
+					<reportElement
+						mode="Opaque"
+						x="0"
+						y="2"
+						width="858"
+						height="21"
+						forecolor="#FFFFFF"
+						backcolor="#9C9D9D"
+						key="staticText-52"
+						stretchType="RelativeToBandHeight"/>
+					<box>					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="Century Gothic" pdfFontName="Helvetica-Bold" size="14" isBold="true" isPdfEmbedded ="false"/>
+					</textElement>
+				<text><![CDATA[DETALLE]]></text>
+				</staticText>
+				<staticText>
+					<reportElement
+						mode="Opaque"
+						x="0"
+						y="27"
+						width="857"
+						height="21"
+						forecolor="#FFFFFF"
+						backcolor="#3399FF"
+						key="staticText-53"/>
+					<box>					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="Century Gothic" pdfFontName="Helvetica-Bold" size="12" isBold="true"/>
+					</textElement>
+				<text><![CDATA[Producción]]></text>
+				</staticText>
+				<staticText>
+					<reportElement
+						mode="Transparent"
+						x="0"
+						y="49"
+						width="42"
+						height="30"
+						forecolor="#0000FF"
+						backcolor="#FFFFFF"
+						key="staticText-54"/>
+					<box>					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="Century Gothic" pdfFontName="Helvetica-Oblique" isBold="false" isItalic="true"/>
+					</textElement>
+				<text><![CDATA[Plaza]]></text>
+				</staticText>
+				<staticText>
+					<reportElement
+						mode="Transparent"
+						x="95"
+						y="49"
+						width="47"
+						height="30"
+						forecolor="#0000FF"
+						backcolor="#FFFFFF"
+						key="staticText-55"/>
+					<box>					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="Century Gothic" pdfFontName="Helvetica-Oblique" isBold="false" isItalic="true"/>
+					</textElement>
+				<text><![CDATA[Tárifa]]></text>
+				</staticText>
+				<staticText>
+					<reportElement
+						mode="Transparent"
+						x="42"
+						y="49"
+						width="53"
+						height="30"
+						forecolor="#0000FF"
+						backcolor="#FFFFFF"
+						key="staticText-56"/>
+					<box>					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="Century Gothic" pdfFontName="Helvetica-Oblique" isBold="false" isItalic="true"/>
+					</textElement>
+				<text><![CDATA[No. Cert.]]></text>
+				</staticText>
+				<staticText>
+					<reportElement
+						mode="Transparent"
+						x="142"
+						y="49"
+						width="67"
+						height="30"
+						forecolor="#0000FF"
+						backcolor="#FFFFFF"
+						key="staticText-57"/>
+					<box>					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="Century Gothic" pdfFontName="Helvetica-Oblique" isBold="false" isItalic="true"/>
+					</textElement>
+				<text><![CDATA[Cve. Agente]]></text>
+				</staticText>
+				<staticText>
+					<reportElement
+						mode="Transparent"
+						x="209"
+						y="49"
+						width="263"
+						height="30"
+						forecolor="#0000FF"
+						backcolor="#FFFFFF"
+						key="staticText-58"/>
+					<box>					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="Century Gothic" pdfFontName="Helvetica-Oblique" isBold="false" isItalic="true"/>
+					</textElement>
+				<text><![CDATA[Asegurado]]></text>
+				</staticText>
+				<staticText>
+					<reportElement
+						mode="Transparent"
+						x="472"
+						y="49"
+						width="91"
+						height="30"
+						forecolor="#0000FF"
+						backcolor="#FFFFFF"
+						key="staticText-59"/>
+					<box>					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="Century Gothic" pdfFontName="Helvetica-Oblique" size="10" isBold="false" isItalic="true"/>
+					</textElement>
+				<text><![CDATA[Pagos del Aseg. a la fecha]]></text>
+				</staticText>
+				<staticText>
+					<reportElement
+						mode="Transparent"
+						x="563"
+						y="49"
+						width="294"
+						height="15"
+						forecolor="#0000FF"
+						backcolor="#FFFFFF"
+						key="staticText-60"/>
+					<box>					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="Century Gothic" pdfFontName="Helvetica-Oblique" isBold="false" isItalic="true"/>
+					</textElement>
+				<text><![CDATA[COMISIONES]]></text>
+				</staticText>
+				<staticText>
+					<reportElement
+						mode="Transparent"
+						x="563"
+						y="64"
+						width="104"
+						height="15"
+						forecolor="#0000FF"
+						backcolor="#FFFFFF"
+						key="staticText-61"/>
+					<box>					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="Century Gothic" pdfFontName="Helvetica-Oblique" isBold="false" isItalic="true"/>
+					</textElement>
+				<text><![CDATA[x Solicitud]]></text>
+				</staticText>
+				<staticText>
+					<reportElement
+						mode="Transparent"
+						x="667"
+						y="64"
+						width="87"
+						height="15"
+						forecolor="#0000FF"
+						backcolor="#FFFFFF"
+						key="staticText-62"/>
+					<box>					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="Century Gothic" pdfFontName="Helvetica-Oblique" isBold="false" isItalic="true"/>
+					</textElement>
+				<text><![CDATA[x Póliza]]></text>
+				</staticText>
+				<staticText>
+					<reportElement
+						mode="Transparent"
+						x="754"
+						y="64"
+						width="103"
+						height="15"
+						forecolor="#0000FF"
+						backcolor="#FFFFFF"
+						key="staticText-63"/>
+					<box>					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="Century Gothic" pdfFontName="Helvetica-Oblique" isBold="false" isItalic="true"/>
+					</textElement>
+				<text><![CDATA[Dto. x Cancel.]]></text>
+				</staticText>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="3"
+						y="4"
+						width="100"
+						height="18"
+						forecolor="#FFFFFF"
+						key="textField-72"/>
+					<box>					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+</box>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font fontName="Century Gothic"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA["Página " + $V{PAGE_NUMBER} + " de "]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Report" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="105"
+						y="4"
+						width="100"
+						height="18"
+						forecolor="#FFFFFF"
+						key="textField-73"/>
+					<box>					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+</box>
+					<textElement verticalAlignment="Middle">
+						<font fontName="Century Gothic"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA["" + $V{PAGE_NUMBER} + ""]]></textFieldExpression>
+				</textField>
+			</band>
+		</columnHeader>
+		<detail>
+			<band height="21"  isSplitAllowed="true" >
+				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="0"
+						y="0"
+						width="42"
+						height="17"
+						key="textField-74"/>
+					<box>					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="Century Gothic"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$F{cvePlaza}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="95"
+						y="0"
+						width="47"
+						height="17"
+						key="textField-75"/>
+					<box>					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="Century Gothic"/>
+					</textElement>
+				<textFieldExpression   class="java.math.BigDecimal"><![CDATA[$F{importeTarifa}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="42"
+						y="0"
+						width="53"
+						height="17"
+						key="textField-76"/>
+					<box>					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="Century Gothic"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.Long"><![CDATA[$F{numCertificado}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="142"
+						y="0"
+						width="67"
+						height="17"
+						key="textField-77"/>
+					<box>					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="Century Gothic"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.Long"><![CDATA[$F{AgtSol}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="209"
+						y="0"
+						width="263"
+						height="17"
+						key="textField-78"/>
+					<box>					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+</box>
+					<textElement textAlignment="Left" verticalAlignment="Middle">
+						<font fontName="Century Gothic"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$F{apPaternoSolicitante} + ' ' + $F{apMaternoSolicitante} + ' ' + $F{nombre1Solicitante} +' ' +  $F{nombre2Solicitante}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="472"
+						y="0"
+						width="91"
+						height="17"
+						key="textField-79"/>
+					<box>					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="Century Gothic"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.Long"><![CDATA[$F{PagosAsgALaFecha}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="563"
+						y="0"
+						width="104"
+						height="17"
+						key="textField-80"/>
+					<box>					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="Century Gothic"/>
+					</textElement>
+				<textFieldExpression   class="java.math.BigDecimal"><![CDATA[$F{comisionSolicitudGerente}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="667"
+						y="0"
+						width="87"
+						height="17"
+						key="textField-81"/>
+					<box>					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="Century Gothic"/>
+					</textElement>
+				<textFieldExpression   class="java.math.BigDecimal"><![CDATA[$F{comisionPolizaGerente}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="754"
+						y="0"
+						width="103"
+						height="17"
+						key="textField-82"/>
+					<box>					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="Century Gothic"/>
+					</textElement>
+				<textFieldExpression   class="java.math.BigDecimal"><![CDATA[$F{importeDescuentoComisionGerente}]]></textFieldExpression>
+				</textField>
+			</band>
+		</detail>
+		<columnFooter>
+			<band height="0"  isSplitAllowed="true" >
+			</band>
+		</columnFooter>
+		<pageFooter>
+			<band height="0"  isSplitAllowed="true" >
+			</band>
+		</pageFooter>
+		<lastPageFooter>
+			<band height="380"  isSplitAllowed="true" >
+				<staticText>
+					<reportElement
+						mode="Opaque"
+						x="0"
+						y="4"
+						width="856"
+						height="21"
+						forecolor="#FFFFFF"
+						backcolor="#9C9D9D"
+						key="staticText-64"
+						stretchType="RelativeToBandHeight"/>
+					<box>					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="Century Gothic" pdfFontName="Helvetica-Bold" size="14" isBold="true" isPdfEmbedded ="false"/>
+					</textElement>
+				<text><![CDATA[RESUMEN]]></text>
+				</staticText>
+				<staticText>
+					<reportElement
+						x="174"
+						y="46"
+						width="197"
+						height="18"
+						key="staticText-65"/>
+					<box>					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+</box>
+					<textElement verticalAlignment="Middle">
+						<font/>
+					</textElement>
+				<text><![CDATA[Anticipo Solicitado p/Quincena Actual]]></text>
+				</staticText>
+				<staticText>
+					<reportElement
+						x="174"
+						y="67"
+						width="178"
+						height="18"
+						key="staticText-66"/>
+					<box>					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+</box>
+					<textElement verticalAlignment="Middle">
+						<font/>
+					</textElement>
+				<text><![CDATA[+ Total Comisiones x Solicitud:]]></text>
+				</staticText>
+				<staticText>
+					<reportElement
+						x="174"
+						y="89"
+						width="178"
+						height="18"
+						key="staticText-67"/>
+					<box>					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+</box>
+					<textElement verticalAlignment="Middle">
+						<font/>
+					</textElement>
+				<text><![CDATA[+ Total Comisiones x Póliza:]]></text>
+				</staticText>
+				<line direction="TopDown">
+					<reportElement
+						x="174"
+						y="110"
+						width="159"
+						height="0"
+						key="line-1"/>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
+				<staticText>
+					<reportElement
+						x="174"
+						y="115"
+						width="178"
+						height="18"
+						key="staticText-68"/>
+					<box>					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+</box>
+					<textElement verticalAlignment="Middle">
+						<font isBold="true" isUnderline="true"/>
+					</textElement>
+				<text><![CDATA[Comisión Bruta:]]></text>
+				</staticText>
+				<staticText>
+					<reportElement
+						x="174"
+						y="136"
+						width="264"
+						height="18"
+						key="staticText-69"/>
+					<box>					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+</box>
+					<textElement verticalAlignment="Middle">
+						<font/>
+					</textElement>
+				<text><![CDATA[- Cargos por Anticipos (Comisión y/o Extraordinario)]]></text>
+				</staticText>
+				<staticText>
+					<reportElement
+						x="174"
+						y="155"
+						width="178"
+						height="18"
+						key="staticText-70"/>
+					<box>					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+</box>
+					<textElement verticalAlignment="Middle">
+						<font/>
+					</textElement>
+				<text><![CDATA[- Total Descuentos x cancelación:]]></text>
+				</staticText>
+				<staticText>
+					<reportElement
+						x="174"
+						y="176"
+						width="178"
+						height="18"
+						key="staticText-71"/>
+					<box>					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+</box>
+					<textElement verticalAlignment="Middle">
+						<font/>
+					</textElement>
+				<text><![CDATA[+ Bono Trimestral:]]></text>
+				</staticText>
+				<staticText>
+					<reportElement
+						x="174"
+						y="196"
+						width="178"
+						height="18"
+						key="staticText-72"/>
+					<box>					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+</box>
+					<textElement verticalAlignment="Middle">
+						<font/>
+					</textElement>
+				<text><![CDATA[+ Otros Bonos:]]></text>
+				</staticText>
+				<staticText>
+					<reportElement
+						x="174"
+						y="221"
+						width="178"
+						height="18"
+						key="staticText-73"/>
+					<box>					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+</box>
+					<textElement verticalAlignment="Middle">
+						<font isBold="true" isUnderline="true"/>
+					</textElement>
+				<text><![CDATA[Comisión antes de impuestos:]]></text>
+				</staticText>
+				<staticText>
+					<reportElement
+						x="174"
+						y="244"
+						width="178"
+						height="18"
+						key="staticText-74"/>
+					<box>					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+</box>
+					<textElement verticalAlignment="Middle">
+						<font/>
+					</textElement>
+				<text><![CDATA[- ISR retenido:]]></text>
+				</staticText>
+				<line direction="TopDown">
+					<reportElement
+						x="174"
+						y="266"
+						width="159"
+						height="0"
+						key="line-2"/>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
+				<staticText>
+					<reportElement
+						x="174"
+						y="270"
+						width="178"
+						height="18"
+						key="staticText-75"/>
+					<box>					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+</box>
+					<textElement verticalAlignment="Middle">
+						<font isBold="true" isUnderline="true"/>
+					</textElement>
+				<text><![CDATA[Comisión por Pagar:]]></text>
+				</staticText>
+				<line direction="TopDown">
+					<reportElement
+						x="175"
+						y="215"
+						width="159"
+						height="0"
+						key="line-3"/>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
+				<line direction="TopDown">
+					<reportElement
+						x="471"
+						y="110"
+						width="156"
+						height="0"
+						key="line-4"/>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
+				<line direction="TopDown">
+					<reportElement
+						x="476"
+						y="215"
+						width="151"
+						height="0"
+						key="line-5"/>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
+				<line direction="TopDown">
+					<reportElement
+						x="474"
+						y="266"
+						width="151"
+						height="0"
+						key="line-6"/>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="498"
+						y="45"
+						width="127"
+						height="17"
+						key="textField-98"/>
+					<box>					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+</box>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font/>
+					</textElement>
+				<textFieldExpression   class="java.math.BigDecimal"><![CDATA[$F{AnticipoComision}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="474"
+						y="64"
+						width="151"
+						height="18"
+						key="textField-99"/>
+					<box>					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+</box>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font/>
+					</textElement>
+				<textFieldExpression   class="java.math.BigDecimal"><![CDATA[$F{totalComSol}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="474"
+						y="85"
+						width="151"
+						height="18"
+						key="textField-100"/>
+					<box>					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+</box>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font/>
+					</textElement>
+				<textFieldExpression   class="java.math.BigDecimal"><![CDATA[$F{totalComPol}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" pattern="$ #,##0.00" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						mode="Opaque"
+						x="474"
+						y="115"
+						width="151"
+						height="18"
+						backcolor="#DBE691"
+						key="textField-101"/>
+					<box>					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+</box>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font/>
+					</textElement>
+				<textFieldExpression   class="java.math.BigDecimal"><![CDATA[$F{ComisionBruta}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="474"
+						y="136"
+						width="151"
+						height="18"
+						key="textField-102"/>
+					<box>					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+</box>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font/>
+					</textElement>
+				<textFieldExpression   class="java.math.BigDecimal"><![CDATA[$V{totalAnticipo}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="474"
+						y="155"
+						width="151"
+						height="18"
+						key="textField-103"/>
+					<box>					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+</box>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font/>
+					</textElement>
+				<textFieldExpression   class="java.math.BigDecimal"><![CDATA[$F{TotalDescCancel}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="474"
+						y="176"
+						width="151"
+						height="18"
+						key="textField-104"/>
+					<box>					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+</box>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font/>
+					</textElement>
+				<textFieldExpression   class="java.math.BigDecimal"><![CDATA[$F{BonoTrimestral}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="474"
+						y="196"
+						width="151"
+						height="18"
+						key="textField-105"/>
+					<box>					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+</box>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font/>
+					</textElement>
+				<textFieldExpression   class="java.math.BigDecimal"><![CDATA[$F{OtrosBonos}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" pattern="$ #,##0.00" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						mode="Opaque"
+						x="474"
+						y="221"
+						width="151"
+						height="18"
+						backcolor="#DBE691"
+						key="textField-106"/>
+					<box>					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+</box>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font/>
+					</textElement>
+				<textFieldExpression   class="java.math.BigDecimal"><![CDATA[$F{ComisionBruta}.subtract( $V{totalAnticipo} ).subtract( $F{TotalDescCancel} ).add( $F{BonoTrimestral} ).add( $F{OtrosBonos} )]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="363"
+						y="245"
+						width="0"
+						height="0"
+						key="textField-107"/>
+					<box>					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+</box>
+					<textElement>
+						<font/>
+					</textElement>
+				<textFieldExpression   class="java.math.BigDecimal"><![CDATA[$F{ISRretenido}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="363"
+						y="230"
+						width="0"
+						height="0"
+						key="textField-108"/>
+					<box>					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+</box>
+					<textElement>
+						<font/>
+					</textElement>
+				<textFieldExpression   class="java.math.BigDecimal"><![CDATA[$F{IVAretenido}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="363"
+						y="250"
+						width="0"
+						height="0"
+						key="textField-109"/>
+					<box>					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+</box>
+					<textElement>
+						<font/>
+					</textElement>
+				<textFieldExpression   class="java.math.BigDecimal"><![CDATA[$F{IVAtrasladado}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" pattern=" $ ##0.00" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						mode="Opaque"
+						x="474"
+						y="270"
+						width="151"
+						height="18"
+						backcolor="#DBE691"
+						key="textField-110"/>
+					<box>					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+</box>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font/>
+					</textElement>
+				<textFieldExpression   class="java.math.BigDecimal"><![CDATA[$F{ComisionBruta}.subtract( $V{totalAnticipo} ).subtract( $F{TotalDescCancel} ).add( $F{BonoTrimestral} ).add( $F{OtrosBonos} ).subtract( ($F{ComisionBruta}.subtract( $V{totalAnticipo}).subtract( $F{TotalDescCancel}).add( $F{BonoTrimestral} ).add($F{OtrosBonos}).compareTo($F{limiteInferior1})>=0 && $F{ComisionBruta}.subtract( $V{totalAnticipo}).subtract( $F{TotalDescCancel}).add( $F{BonoTrimestral} ).add($F{OtrosBonos}).compareTo($F{limiteSuperior1})<=0)? 
+	$F{ComisionBruta}.subtract( $V{totalAnticipo}).subtract( $F{TotalDescCancel}).add( $F{BonoTrimestral} ).add($F{OtrosBonos}).subtract($F{limiteInferior1}).multiply($F{porcentajeAplicarExcedente1}).add($F{cuotaFija1})
+	:($F{ComisionBruta}.subtract( $V{totalAnticipo}).subtract( $F{TotalDescCancel}).add( $F{BonoTrimestral} ).add($F{OtrosBonos}).compareTo($F{limiteInferior2})>=0 && $F{ComisionBruta}.subtract( $V{totalAnticipo}).subtract( $F{TotalDescCancel}).add( $F{BonoTrimestral} ).add($F{OtrosBonos}).compareTo($F{limiteSuperior2})<=0)?
+		$F{ComisionBruta}.subtract( $V{totalAnticipo}).subtract( $F{TotalDescCancel}).add( $F{BonoTrimestral} ).add($F{OtrosBonos}).subtract($F{limiteInferior2}).multiply($F{porcentajeAplicarExcedente2}).add( $F{cuotaFija2})
+		:($F{ComisionBruta}.subtract( $V{totalAnticipo}).subtract( $F{TotalDescCancel}).add( $F{BonoTrimestral} ).add($F{OtrosBonos}).compareTo($F{limiteInferior3})>=0 && $F{ComisionBruta}.subtract( $V{totalAnticipo}).subtract( $F{TotalDescCancel}).add( $F{BonoTrimestral} ).add($F{OtrosBonos}).compareTo($F{limiteSuperior3})<=0)? 
+			 $F{ComisionBruta}.subtract( $V{totalAnticipo}).subtract( $F{TotalDescCancel}).add( $F{BonoTrimestral} ).add($F{OtrosBonos}).subtract($F{limiteInferior3}).multiply($F{porcentajeAplicarExcedente3}).add( $F{cuotaFija3} )
+				 :($F{ComisionBruta}.subtract( $V{totalAnticipo}).subtract( $F{TotalDescCancel}).add( $F{BonoTrimestral} ).add($F{OtrosBonos}).compareTo($F{limiteInferior4})>=0 && $F{ComisionBruta}.subtract( $V{totalAnticipo}).subtract( $F{TotalDescCancel}).add( $F{BonoTrimestral} ).add($F{OtrosBonos}).compareTo($F{limiteSuperior4})<=0)? 
+					 $F{ComisionBruta}.subtract( $V{totalAnticipo}).subtract( $F{TotalDescCancel}).add( $F{BonoTrimestral} ).add($F{OtrosBonos}).subtract($F{limiteInferior4}).multiply($F{porcentajeAplicarExcedente4}).add( $F{cuotaFija4} )
+						 :($F{ComisionBruta}.subtract( $V{totalAnticipo}).subtract( $F{TotalDescCancel}).add( $F{BonoTrimestral} ).add($F{OtrosBonos}).compareTo($F{limiteInferior5})>=0 && $F{ComisionBruta}.subtract( $V{totalAnticipo}).subtract( $F{TotalDescCancel}).add( $F{BonoTrimestral} ).add($F{OtrosBonos}).compareTo($F{limiteSuperior5})<=0)? 
+							  $F{ComisionBruta}.subtract( $V{totalAnticipo}).subtract( $F{TotalDescCancel}).add( $F{BonoTrimestral} ).add($F{OtrosBonos}).subtract($F{limiteInferior5}).multiply($F{porcentajeAplicarExcedente5}).add( $F{cuotaFija5} )
+         	    						:($F{ComisionBruta}.subtract( $V{totalAnticipo}).subtract( $F{TotalDescCancel}).add( $F{BonoTrimestral} ).add($F{OtrosBonos}).compareTo($F{limiteInferior6})>=0 && $F{ComisionBruta}.subtract( $V{totalAnticipo}).subtract( $F{TotalDescCancel}).add( $F{BonoTrimestral} ).add($F{OtrosBonos}).compareTo($F{limiteSuperior6})<=0)? 
+									 $F{ComisionBruta}.subtract( $V{totalAnticipo}).subtract( $F{TotalDescCancel}).add( $F{BonoTrimestral} ).add($F{OtrosBonos}).subtract($F{limiteInferior6}).multiply($F{porcentajeAplicarExcedente6}).add( $F{cuotaFija6} )
+                      								:($F{ComisionBruta}.subtract( $V{totalAnticipo}).subtract( $F{TotalDescCancel}).add( $F{BonoTrimestral} ).add($F{OtrosBonos}).compareTo($F{limiteInferior7})>=0 && $F{ComisionBruta}.subtract( $V{totalAnticipo}).subtract( $F{TotalDescCancel}).add( $F{BonoTrimestral} ).add($F{OtrosBonos}).compareTo($F{limiteSuperior7})<=0)? 
+											$F{ComisionBruta}.subtract( $V{totalAnticipo}).subtract( $F{TotalDescCancel}).add( $F{BonoTrimestral} ).add($F{OtrosBonos}).subtract($F{limiteInferior7}).multiply($F{porcentajeAplicarExcedente7}).add( $F{cuotaFija7} )	
+                        									:($F{ComisionBruta}.subtract( $V{totalAnticipo}).subtract( $F{TotalDescCancel}).add( $F{BonoTrimestral} ).add($F{OtrosBonos}).compareTo($F{limiteInferior8})>=0 && $F{ComisionBruta}.subtract( $V{totalAnticipo}).subtract( $F{TotalDescCancel}).add( $F{BonoTrimestral} ).add($F{OtrosBonos}).compareTo($F{limiteSuperior8})<=0)? 
+													 $F{ComisionBruta}.subtract( $V{totalAnticipo}).subtract( $F{TotalDescCancel}).add( $F{BonoTrimestral} ).add($F{OtrosBonos}).subtract($F{limiteInferior8}).multiply($F{porcentajeAplicarExcedente8}).add( $F{cuotaFija8} )	
+														:$F{algo} )]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="10"
+						y="33"
+						width="76"
+						height="12"
+						forecolor="#FFFFFF"
+						key="textField-111"/>
+					<box>					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+</box>
+					<textElement verticalAlignment="Middle">
+						<font size="8"/>
+					</textElement>
+				<textFieldExpression   class="java.math.BigDecimal"><![CDATA[$F{limiteInferior1}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="94"
+						y="33"
+						width="76"
+						height="12"
+						forecolor="#FFFFFF"
+						key="textField-112"/>
+					<box>					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+</box>
+					<textElement verticalAlignment="Middle">
+						<font size="8"/>
+					</textElement>
+				<textFieldExpression   class="java.math.BigDecimal"><![CDATA[$F{porcentajeAplicarExcedente1}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="178"
+						y="33"
+						width="76"
+						height="12"
+						forecolor="#FFFFFF"
+						key="textField-113"/>
+					<box>					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+</box>
+					<textElement verticalAlignment="Middle">
+						<font size="8"/>
+					</textElement>
+				<textFieldExpression   class="java.math.BigDecimal"><![CDATA[$F{cuotaFija1}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="10"
+						y="55"
+						width="76"
+						height="12"
+						forecolor="#FFFFFF"
+						key="textField-114"/>
+					<box>					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+</box>
+					<textElement verticalAlignment="Middle">
+						<font size="8"/>
+					</textElement>
+				<textFieldExpression   class="java.math.BigDecimal"><![CDATA[$F{limiteInferior2}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="10"
+						y="73"
+						width="76"
+						height="12"
+						forecolor="#FFFFFF"
+						key="textField-115"/>
+					<box>					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+</box>
+					<textElement verticalAlignment="Middle">
+						<font size="8"/>
+					</textElement>
+				<textFieldExpression   class="java.math.BigDecimal"><![CDATA[$F{limiteInferior3}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="10"
+						y="91"
+						width="76"
+						height="12"
+						forecolor="#FFFFFF"
+						key="textField-116"/>
+					<box>					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+</box>
+					<textElement verticalAlignment="Middle">
+						<font size="8"/>
+					</textElement>
+				<textFieldExpression   class="java.math.BigDecimal"><![CDATA[$F{limiteInferior4}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="10"
+						y="109"
+						width="76"
+						height="12"
+						forecolor="#FFFFFF"
+						key="textField-117"/>
+					<box>					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+</box>
+					<textElement verticalAlignment="Middle">
+						<font size="8"/>
+					</textElement>
+				<textFieldExpression   class="java.math.BigDecimal"><![CDATA[$F{limiteInferior5}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="10"
+						y="127"
+						width="76"
+						height="12"
+						forecolor="#FFFFFF"
+						key="textField-118"/>
+					<box>					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+</box>
+					<textElement verticalAlignment="Middle">
+						<font size="8"/>
+					</textElement>
+				<textFieldExpression   class="java.math.BigDecimal"><![CDATA[$F{limiteInferior6}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="10"
+						y="142"
+						width="76"
+						height="12"
+						forecolor="#FFFFFF"
+						key="textField-119"/>
+					<box>					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+</box>
+					<textElement verticalAlignment="Middle">
+						<font size="8"/>
+					</textElement>
+				<textFieldExpression   class="java.math.BigDecimal"><![CDATA[$F{limiteInferior7}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="10"
+						y="160"
+						width="76"
+						height="12"
+						forecolor="#FFFFFF"
+						key="textField-120"/>
+					<box>					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+</box>
+					<textElement verticalAlignment="Middle">
+						<font size="8"/>
+					</textElement>
+				<textFieldExpression   class="java.math.BigDecimal"><![CDATA[$F{limiteInferior8}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="94"
+						y="55"
+						width="76"
+						height="12"
+						forecolor="#FFFFFF"
+						key="textField-121"/>
+					<box>					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+</box>
+					<textElement verticalAlignment="Middle">
+						<font size="8"/>
+					</textElement>
+				<textFieldExpression   class="java.math.BigDecimal"><![CDATA[$F{porcentajeAplicarExcedente2}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="94"
+						y="73"
+						width="76"
+						height="12"
+						forecolor="#FFFFFF"
+						key="textField-122"/>
+					<box>					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+</box>
+					<textElement verticalAlignment="Middle">
+						<font size="8"/>
+					</textElement>
+				<textFieldExpression   class="java.math.BigDecimal"><![CDATA[$F{porcentajeAplicarExcedente3}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="94"
+						y="91"
+						width="76"
+						height="12"
+						forecolor="#FFFFFF"
+						key="textField-123"/>
+					<box>					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+</box>
+					<textElement verticalAlignment="Middle">
+						<font size="8"/>
+					</textElement>
+				<textFieldExpression   class="java.math.BigDecimal"><![CDATA[$F{porcentajeAplicarExcedente4}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="94"
+						y="109"
+						width="76"
+						height="12"
+						forecolor="#FFFFFF"
+						key="textField-124"/>
+					<box>					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+</box>
+					<textElement verticalAlignment="Middle">
+						<font size="8"/>
+					</textElement>
+				<textFieldExpression   class="java.math.BigDecimal"><![CDATA[$F{porcentajeAplicarExcedente5}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="94"
+						y="127"
+						width="76"
+						height="12"
+						forecolor="#FFFFFF"
+						key="textField-125"/>
+					<box>					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+</box>
+					<textElement verticalAlignment="Middle">
+						<font size="8"/>
+					</textElement>
+				<textFieldExpression   class="java.math.BigDecimal"><![CDATA[$F{porcentajeAplicarExcedente6}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="94"
+						y="142"
+						width="76"
+						height="12"
+						forecolor="#FFFFFF"
+						key="textField-126"/>
+					<box>					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+</box>
+					<textElement verticalAlignment="Middle">
+						<font size="8"/>
+					</textElement>
+				<textFieldExpression   class="java.math.BigDecimal"><![CDATA[$F{porcentajeAplicarExcedente7}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="94"
+						y="160"
+						width="76"
+						height="12"
+						forecolor="#FFFFFF"
+						key="textField-127"/>
+					<box>					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+</box>
+					<textElement verticalAlignment="Middle">
+						<font size="8"/>
+					</textElement>
+				<textFieldExpression   class="java.math.BigDecimal"><![CDATA[$F{porcentajeAplicarExcedente8}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="178"
+						y="55"
+						width="76"
+						height="12"
+						forecolor="#FFFFFF"
+						key="textField-128"/>
+					<box>					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+</box>
+					<textElement verticalAlignment="Middle">
+						<font size="8"/>
+					</textElement>
+				<textFieldExpression   class="java.math.BigDecimal"><![CDATA[$F{cuotaFija2}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="178"
+						y="73"
+						width="76"
+						height="12"
+						forecolor="#FFFFFF"
+						key="textField-129"/>
+					<box>					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+</box>
+					<textElement verticalAlignment="Middle">
+						<font size="8"/>
+					</textElement>
+				<textFieldExpression   class="java.math.BigDecimal"><![CDATA[$F{cuotaFija3}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="178"
+						y="91"
+						width="76"
+						height="12"
+						forecolor="#FFFFFF"
+						key="textField-130"/>
+					<box>					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+</box>
+					<textElement verticalAlignment="Middle">
+						<font size="8"/>
+					</textElement>
+				<textFieldExpression   class="java.math.BigDecimal"><![CDATA[$F{cuotaFija4}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="178"
+						y="109"
+						width="76"
+						height="12"
+						forecolor="#FFFFFF"
+						key="textField-131"/>
+					<box>					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+</box>
+					<textElement verticalAlignment="Middle">
+						<font size="8"/>
+					</textElement>
+				<textFieldExpression   class="java.math.BigDecimal"><![CDATA[$F{cuotaFija5}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="178"
+						y="127"
+						width="76"
+						height="12"
+						forecolor="#FFFFFF"
+						key="textField-132"/>
+					<box>					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+</box>
+					<textElement verticalAlignment="Middle">
+						<font size="8"/>
+					</textElement>
+				<textFieldExpression   class="java.math.BigDecimal"><![CDATA[$F{cuotaFija6}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="178"
+						y="142"
+						width="76"
+						height="12"
+						forecolor="#FFFFFF"
+						key="textField-133"/>
+					<box>					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+</box>
+					<textElement verticalAlignment="Middle">
+						<font size="8"/>
+					</textElement>
+				<textFieldExpression   class="java.math.BigDecimal"><![CDATA[$F{cuotaFija7}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="178"
+						y="160"
+						width="76"
+						height="12"
+						forecolor="#FFFFFF"
+						key="textField-134"/>
+					<box>					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+</box>
+					<textElement verticalAlignment="Middle">
+						<font size="8"/>
+					</textElement>
+				<textFieldExpression   class="java.math.BigDecimal"><![CDATA[$F{cuotaFija8}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="267"
+						y="33"
+						width="82"
+						height="13"
+						forecolor="#FFFFFF"
+						key="textField-135"/>
+					<box>					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+</box>
+					<textElement verticalAlignment="Middle">
+						<font size="8"/>
+					</textElement>
+				<textFieldExpression   class="java.math.BigDecimal"><![CDATA[$F{limiteSuperior1}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="267"
+						y="55"
+						width="76"
+						height="12"
+						forecolor="#FFFFFF"
+						key="textField-136"/>
+					<box>					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+</box>
+					<textElement verticalAlignment="Middle">
+						<font size="8"/>
+					</textElement>
+				<textFieldExpression   class="java.math.BigDecimal"><![CDATA[$F{limiteSuperior2}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="267"
+						y="73"
+						width="76"
+						height="12"
+						forecolor="#FFFFFF"
+						key="textField-137"/>
+					<box>					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+</box>
+					<textElement verticalAlignment="Middle">
+						<font size="8"/>
+					</textElement>
+				<textFieldExpression   class="java.math.BigDecimal"><![CDATA[$F{limiteSuperior3}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="267"
+						y="91"
+						width="76"
+						height="12"
+						forecolor="#FFFFFF"
+						key="textField-138"/>
+					<box>					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+</box>
+					<textElement verticalAlignment="Middle">
+						<font size="8"/>
+					</textElement>
+				<textFieldExpression   class="java.math.BigDecimal"><![CDATA[$F{limiteSuperior4}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="267"
+						y="109"
+						width="76"
+						height="12"
+						forecolor="#FFFFFF"
+						key="textField-139"/>
+					<box>					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+</box>
+					<textElement verticalAlignment="Middle">
+						<font size="8"/>
+					</textElement>
+				<textFieldExpression   class="java.math.BigDecimal"><![CDATA[$F{limiteSuperior5}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="267"
+						y="127"
+						width="76"
+						height="12"
+						forecolor="#FFFFFF"
+						key="textField-140"/>
+					<box>					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+</box>
+					<textElement verticalAlignment="Middle">
+						<font size="8"/>
+					</textElement>
+				<textFieldExpression   class="java.math.BigDecimal"><![CDATA[$F{limiteSuperior6}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="267"
+						y="142"
+						width="76"
+						height="12"
+						forecolor="#FFFFFF"
+						key="textField-141"/>
+					<box>					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+</box>
+					<textElement verticalAlignment="Middle">
+						<font size="8"/>
+					</textElement>
+				<textFieldExpression   class="java.math.BigDecimal"><![CDATA[$F{limiteSuperior7}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="267"
+						y="160"
+						width="76"
+						height="12"
+						forecolor="#FFFFFF"
+						key="textField-142"/>
+					<box>					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+</box>
+					<textElement verticalAlignment="Middle">
+						<font size="8"/>
+					</textElement>
+				<textFieldExpression   class="java.math.BigDecimal"><![CDATA[$F{limiteSuperior8}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="44"
+						y="185"
+						width="72"
+						height="13"
+						forecolor="#FFFFFF"
+						key="textField-143"/>
+					<box>					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+</box>
+					<textElement verticalAlignment="Middle">
+						<font size="8"/>
+					</textElement>
+				<textFieldExpression   class="java.math.BigDecimal"><![CDATA[$F{algo}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" pattern="###0.00" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="474"
+						y="246"
+						width="151"
+						height="17"
+						key="textField-144"/>
+					<box>					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+</box>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font/>
+					</textElement>
+				<textFieldExpression   class="java.math.BigDecimal"><![CDATA[($F{ComisionBruta}.subtract( $V{totalAnticipo}).subtract( $F{TotalDescCancel}).add( $F{BonoTrimestral} ).add($F{OtrosBonos}).compareTo($F{limiteInferior1})>=0 && $F{ComisionBruta}.subtract( $V{totalAnticipo}).subtract( $F{TotalDescCancel}).add( $F{BonoTrimestral} ).add($F{OtrosBonos}).compareTo($F{limiteSuperior1})<=0)? 
+	$F{ComisionBruta}.subtract( $V{totalAnticipo}).subtract( $F{TotalDescCancel}).add( $F{BonoTrimestral} ).add($F{OtrosBonos}).subtract($F{limiteInferior1}).multiply($F{porcentajeAplicarExcedente1}).add($F{cuotaFija1})
+	:($F{ComisionBruta}.subtract( $V{totalAnticipo}).subtract( $F{TotalDescCancel}).add( $F{BonoTrimestral} ).add($F{OtrosBonos}).compareTo($F{limiteInferior2})>=0 && $F{ComisionBruta}.subtract( $V{totalAnticipo}).subtract( $F{TotalDescCancel}).add( $F{BonoTrimestral} ).add($F{OtrosBonos}).compareTo($F{limiteSuperior2})<=0)?
+		$F{ComisionBruta}.subtract( $V{totalAnticipo}).subtract( $F{TotalDescCancel}).add( $F{BonoTrimestral} ).add($F{OtrosBonos}).subtract($F{limiteInferior2}).multiply($F{porcentajeAplicarExcedente2}).add( $F{cuotaFija2})
+		:($F{ComisionBruta}.subtract( $V{totalAnticipo}).subtract( $F{TotalDescCancel}).add( $F{BonoTrimestral} ).add($F{OtrosBonos}).compareTo($F{limiteInferior3})>=0 && $F{ComisionBruta}.subtract( $V{totalAnticipo}).subtract( $F{TotalDescCancel}).add( $F{BonoTrimestral} ).add($F{OtrosBonos}).compareTo($F{limiteSuperior3})<=0)? 
+			 $F{ComisionBruta}.subtract( $V{totalAnticipo}).subtract( $F{TotalDescCancel}).add( $F{BonoTrimestral} ).add($F{OtrosBonos}).subtract($F{limiteInferior3}).multiply($F{porcentajeAplicarExcedente3}).add( $F{cuotaFija3} )
+				 :($F{ComisionBruta}.subtract( $V{totalAnticipo}).subtract( $F{TotalDescCancel}).add( $F{BonoTrimestral} ).add($F{OtrosBonos}).compareTo($F{limiteInferior4})>=0 && $F{ComisionBruta}.subtract( $V{totalAnticipo}).subtract( $F{TotalDescCancel}).add( $F{BonoTrimestral} ).add($F{OtrosBonos}).compareTo($F{limiteSuperior4})<=0)? 
+					 $F{ComisionBruta}.subtract( $V{totalAnticipo}).subtract( $F{TotalDescCancel}).add( $F{BonoTrimestral} ).add($F{OtrosBonos}).subtract($F{limiteInferior4}).multiply($F{porcentajeAplicarExcedente4}).add( $F{cuotaFija4} )
+						 :($F{ComisionBruta}.subtract( $V{totalAnticipo}).subtract( $F{TotalDescCancel}).add( $F{BonoTrimestral} ).add($F{OtrosBonos}).compareTo($F{limiteInferior5})>=0 && $F{ComisionBruta}.subtract( $V{totalAnticipo}).subtract( $F{TotalDescCancel}).add( $F{BonoTrimestral} ).add($F{OtrosBonos}).compareTo($F{limiteSuperior5})<=0)? 
+							  $F{ComisionBruta}.subtract( $V{totalAnticipo}).subtract( $F{TotalDescCancel}).add( $F{BonoTrimestral} ).add($F{OtrosBonos}).subtract($F{limiteInferior5}).multiply($F{porcentajeAplicarExcedente5}).add( $F{cuotaFija5} )
+         	    						:($F{ComisionBruta}.subtract( $V{totalAnticipo}).subtract( $F{TotalDescCancel}).add( $F{BonoTrimestral} ).add($F{OtrosBonos}).compareTo($F{limiteInferior6})>=0 && $F{ComisionBruta}.subtract( $V{totalAnticipo}).subtract( $F{TotalDescCancel}).add( $F{BonoTrimestral} ).add($F{OtrosBonos}).compareTo($F{limiteSuperior6})<=0)? 
+									 $F{ComisionBruta}.subtract( $V{totalAnticipo}).subtract( $F{TotalDescCancel}).add( $F{BonoTrimestral} ).add($F{OtrosBonos}).subtract($F{limiteInferior6}).multiply($F{porcentajeAplicarExcedente6}).add( $F{cuotaFija6} )
+                      								:($F{ComisionBruta}.subtract( $V{totalAnticipo}).subtract( $F{TotalDescCancel}).add( $F{BonoTrimestral} ).add($F{OtrosBonos}).compareTo($F{limiteInferior7})>=0 && $F{ComisionBruta}.subtract( $V{totalAnticipo}).subtract( $F{TotalDescCancel}).add( $F{BonoTrimestral} ).add($F{OtrosBonos}).compareTo($F{limiteSuperior7})<=0)? 
+											$F{ComisionBruta}.subtract( $V{totalAnticipo}).subtract( $F{TotalDescCancel}).add( $F{BonoTrimestral} ).add($F{OtrosBonos}).subtract($F{limiteInferior7}).multiply($F{porcentajeAplicarExcedente7}).add( $F{cuotaFija7} )	
+                        									:($F{ComisionBruta}.subtract( $V{totalAnticipo}).subtract( $F{TotalDescCancel}).add( $F{BonoTrimestral} ).add($F{OtrosBonos}).compareTo($F{limiteInferior8})>=0 && $F{ComisionBruta}.subtract( $V{totalAnticipo}).subtract( $F{TotalDescCancel}).add( $F{BonoTrimestral} ).add($F{OtrosBonos}).compareTo($F{limiteSuperior8})<=0)? 
+													 $F{ComisionBruta}.subtract( $V{totalAnticipo}).subtract( $F{TotalDescCancel}).add( $F{BonoTrimestral} ).add($F{OtrosBonos}).subtract($F{limiteInferior8}).multiply($F{porcentajeAplicarExcedente8}).add( $F{cuotaFija8} )	
+														:$F{algo}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement
+						x="476"
+						y="46"
+						width="19"
+						height="18"
+						key="staticText-76"/>
+					<box>					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font/>
+					</textElement>
+				<text><![CDATA[$]]></text>
+				</staticText>
+			</band>
+		</lastPageFooter>
+		<summary>
+			<band height="77"  isSplitAllowed="true" >
+				<subreport  isUsingCache="true">
+					<reportElement
+						x="3"
+						y="30"
+						width="297"
+						height="33"
+						key="subreport-3"/>
+					<subreportParameter  name="cveGerenteParam">
+						<subreportParameterExpression><![CDATA[$P{cveGerenteParam}]]></subreportParameterExpression>
+					</subreportParameter>
+					<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+					<subreportExpression  class="java.lang.String"><![CDATA["/usr/apache-tomcat-5.5.26/webapps/seguros2/WEB-INF/jasper/AnticipoGerente.jasper"]]></subreportExpression>
+				</subreport>
+				<subreport  isUsingCache="true">
+					<reportElement
+						x="444"
+						y="30"
+						width="297"
+						height="33"
+						key="subreport-4"/>
+					<subreportParameter  name="cveGerenteParam">
+						<subreportParameterExpression><![CDATA[$P{cveGerenteParam}]]></subreportParameterExpression>
+					</subreportParameter>
+					<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+					<subreportExpression  class="java.lang.String"><![CDATA["/usr/apache-tomcat-5.5.26/webapps/seguros2/WEB-INF/jasper/montoPagadoGer.jasper"]]></subreportExpression>
+				</subreport>
+			</band>
+		</summary>
+</jasperReport>

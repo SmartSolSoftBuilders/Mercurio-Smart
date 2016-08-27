@@ -1,0 +1,314 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+   "http://www.w3.org/TR/html4/loose.dtd">
+
+
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=windows-1252">
+        <title>Listado de Trámites de Retiro de la Póliza</title>
+        
+        <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+        <link href="css/stilosForms.css" rel="stylesheet" type="text/css"/>
+        <link href="css/stilosCal.css" rel="stylesheet" type="text/css"/>
+        <link href="css/stilosTablas.css" rel="stylesheet" type="text/css"/>
+        <script type="text/javascript" src="js/jquery-1.5.1.js"></script>
+        <script language="JavaScript" type="text/javascript"
+                src="js/calendario.js">
+        </script>
+        
+        <script language="JavaScript" type="text/javascript"
+                src="js/AnchorPosition.js">
+        </script>
+        <script language="JavaScript" type="text/javascript"
+                src="js/date.js">
+        </script>
+        <script language="JavaScript" type="text/javascript"
+                src="js/PopupWindow.js">
+        </script>
+        <script type="text/javascript">
+        	function regresar(){
+        		 urlBase     = 'app/consultaDetalleSolicitudController';
+                 params = 'numPoliza=93034951&emisor=10215&folioSolicitud=270826&formatoSolicitud=F-2111-1';
+                 url    = urlBase + '?' + params;
+                 window.location = url;
+        	}
+        	function validarForma(){
+        		forma = document.forms[0];
+        		if(forma.fechaTramite.value == ""){
+        			alert("La fecha del trámite es un dato requerido");
+        			return false;
+        		}
+        		if(confirm("Al registrar un trámite no se puede modificar o eliminar ¿Los datos de registro de trámite son correctos?")){
+        			forma.submit();
+        		}
+        		
+        	}
+        </script>
+        
+    </head>
+    
+    <body>
+    
+     <form id="w01" action="app/listadoTramitesPolizaController?numPoliza=93034951&amp;numConsignatario=10215" method="post">
+     
+     	
+        <table cellpadding="2" cellspacing="2" width="750">
+                		<tr align="left" valign="middle" height="20">
+                            <td colspan="6" class="TopTabla" align="center"><strong>P&oacute;liza</strong></td>
+                        </tr>
+                		<tr>
+                			<td class="labelRow" nowrap width="15%">
+                				P&oacute;liza:&nbsp;&nbsp;
+                			</td>
+                			<td class="fieldRow" nowrap width="25%">
+                				<strong>93034951</strong>
+                			</td>
+                			<td class="labelRow" nowrap width="15%">
+                				Emisor:&nbsp;&nbsp;
+                			</td>
+                			<td class="fieldRow" nowrap width="25%">
+                				<strong>10215</strong>
+                			</td>
+                		</tr>
+                		<tr>
+                			<td class="labelRow" nowrap >
+                				Solicitud:&nbsp;&nbsp;
+                			</td>
+                			<td class="fieldRow" nowrap >
+                				<strong>270826</strong>
+                			</td>
+                			<td class="labelRow" nowrap>
+                				Formato:&nbsp;&nbsp;
+                			</td>
+                			<td class="fieldRow" nowrap>
+                				<strong>F-2111-1</strong>
+                			</td>
+                		</tr>
+                		<tr>
+                			<td class="labelRow" nowrap >
+                				Ap. Paterno:&nbsp;&nbsp;
+                			</td>
+                			<td class="fieldRow" nowrap >
+                				<strong>NAVA
+                			</td>
+                			<td class="labelRow" nowrap >
+                				Ap. Materno:&nbsp;&nbsp;
+                			</td>
+                			<td class="fieldRow" nowrap width="25%">
+                				<strong>HERNANDEZ</strong>
+                			</td>
+                		</tr>
+                		<tr>
+                			<td class="labelRow" nowrap colspan="2">
+                				Nombre:&nbsp;&nbsp;
+                			</td>
+                			<td class="fieldRow" nowrap  colspan="2">
+                				<strong>YAZMIN
+                				</strong>
+                			</td>
+                			
+                		</tr>
+                		<tr>
+                			<td class="labelRow" nowrap colspan="2">
+                				Num. Nomina Cliente:&nbsp;&nbsp;
+                			</td>
+                			<td class="fieldRow" nowrap  colspan="2">
+                				<strong>HERE821227Q12
+                				</strong>
+                			</td>
+                			
+                		</tr>
+                		<tr align="left" valign="middle" height="20">
+                            <td colspan="6" class="TopTabla" align="center"><strong>Tr&aacute;mites de Retiro de P&oacute;liza Confirmados por Inbursa</strong></td>
+                        </tr>
+                        
+                        
+	                        <tr>
+	                        	<td  colspan="4" >
+									<table width="100%" cellpadding="4" cellspacing="2">
+										<tr>
+											<td class="ContenTablaColor">
+												Fecha del Tr&aacute;mite
+											</td>
+											<td class="ContenTablaColor">
+												Fecha de Aplicación
+											</td>
+											<td class="ContenTablaColor">
+												Usuario
+											</td>
+											<td class="ContenTablaColor">
+												Saldo Disponible Antes del Retiro
+											</td>
+											<td class="ContenTablaColor">
+												Importe del Retiro
+											</td>
+											<td class="ContenTablaColor">
+												Saldo Disponible Después del Retiro
+											</td>
+											<td class="ContenTablaColor">
+												Operador
+											</td>
+											<td class="ContenTablaColor">
+												Sucursal
+											</td>
+										<tr/>
+										
+								
+										<tr>
+											<td class="ContenTabla">
+												04/09/2013
+											</td>
+											<td class="ContenTabla">
+												10/09/2013
+											</td>
+											<td class="ContenTabla">
+												mPineda
+											</td>
+											<td class="ContenTabla" align="right">
+												$ 4,500
+											</td>
+											<td class="ContenTabla" align="right">
+												$ 3,000
+											</td>
+											<td class="ContenTabla" align="right">
+												$ 1,500
+											</td>
+											<td class="ContenTabla">
+												MARIA ANGELES PINEDA OBLANDO
+											</td>
+											<td class="ContenTabla">
+												PARQUE TEZONTLE
+											</td>
+										</tr>
+										<tr>
+											<td class="ContenTabla">
+												04/09/2013
+											</td>
+											<td class="ContenTabla">
+												10/09/2013
+											</td>
+											<td class="ContenTabla">
+												mPineda
+											</td>
+											<td class="ContenTabla" align="right">
+												$ 1,500
+											</td>
+											<td class="ContenTabla" align="right">
+												$ 3,000
+											</td>
+											<td class="ContenTabla" align="right">
+												$ 0
+											</td>
+											<td class="ContenTabla">
+												MARIA ANGELES PINEDA OBLANDO
+											</td>
+											<td class="ContenTabla">
+												PARQUE TEZONTLE
+											</td>
+										</tr>
+										<tr>
+											<td class="ContenTabla">
+											Comentario:
+											</td>
+											<td class="ContenTabla" colspan="7">
+											Aplicación fuera de tiempo, el cliente no tiene saldo suficiente para el retiro, se aplica solo el saldo de $ 1,500
+											</td>
+										</tr>
+										
+										
+									</table>
+	                        	</td>
+	                        </tr>
+                        
+                       <tr  valign="middle" height="20">
+                            <td colspan="6" class="TopTabla" align="center"><strong>Registrar Un Nuevo Retiro</strong></td>
+                        </tr>
+                        
+                        <tr>
+                        	<td class="labelRow" nowrap >
+                				Fecha del Trámite:&nbsp;&nbsp;
+                			</td>
+                			<td class="fieldRow" nowrap  colspan="3">
+                			 <div ID="divFecha"
+	                               STYLE="position:absolute;visibility:hidden;background-color:white;">
+	                            </div>
+                			 <script language="JavaScript" type="text/javascript">
+	                                var cal18 = new CalendarPopup("divFecha");
+	                                cal18.setCssPrefix("TEST");
+	                            </script>
+                				 <input id="fechaTramite" name="fechaTramite" class="input" readonly="readonly" type="text" value="" size="11"/>
+                				 <A HREF="#" onClick="cal18.select(document.getElementById('fechaTramite'),'anchorfechaSolicitud','dd/MM/yyyy'); return false;" 
+		                             NAME="anchorfechaSolicitud" ID="anchorfechaSolicitud" >
+		                                <img src="img/calendario3.png" alt="Calendario"/>
+		                         </A> 
+                			</td>
+                		</tr>
+                		<tr>
+                			<td class="labelRow" nowrap >
+                				Fecha de Aplicación:&nbsp;&nbsp;
+                			</td>
+                			<td class="fieldRow" nowrap  colspan="3">
+                			 <div ID="divFecha"
+	                               STYLE="position:absolute;visibility:hidden;background-color:white;">
+	                            </div>
+                			 <script language="JavaScript" type="text/javascript">
+	                                var cal18 = new CalendarPopup("divFecha");
+	                                cal18.setCssPrefix("TEST");
+	                            </script>
+                				 <input id="fechaTramite" name="fechaTramite" class="input" readonly="readonly" type="text" value="" size="11"/>
+                				 <A HREF="#" onClick="cal18.select(document.getElementById('fechaTramite'),'anchorfechaSolicitud','dd/MM/yyyy'); return false;" 
+		                             NAME="anchorfechaSolicitud" ID="anchorfechaSolicitud" >
+		                                <img src="img/calendario3.png" alt="Calendario"/>
+		                         </A> 
+                			</td>
+                        </tr>
+                         <tr>
+                        	<td class="labelRow" nowrap>
+                				Importe del Retiro:&nbsp;&nbsp;
+                			</td>
+                			<td class="fieldRow" nowrap colspan="3">
+                				<input id="telefono" name="telefono" class="input" type="text" value="" size="15"/> ( Saldo disponible $ 0.00 ) 
+                			</td>
+                			
+                        </tr>
+                        <tr>
+                        	<td class="labelRow" nowrap>
+                				Operador:&nbsp;&nbsp;
+                			</td>
+                			<td class="fieldRow" nowrap colspan="3">
+                				<input id="telefono" name="telefono" class="input" type="text" value="" size="15"/>
+                			</td>
+                			
+                        </tr>
+                        <tr>
+                        	<td class="labelRow" nowrap>
+                				Sucursal:&nbsp;&nbsp;
+                			</td>
+                			<td class="fieldRow" nowrap colspan="3">
+                				<input id="telefono" name="telefono" class="input" type="text" value="" size="15"/>
+                			</td>
+                			
+                        </tr>
+                        <tr>
+                        	<td class="labelRow" nowrap>
+                				Comentarios:&nbsp;&nbsp;
+                			</td>
+                			<td class="fieldRow" nowrap colspan="3">
+                				<textarea id="comentariosAsegurado" name="comentariosAsegurado" rows="3" cols="60"></textarea>
+                			</td>
+                        </tr>
+                        
+                        
+                        <tr>
+                        	<td class="fieldRow" style="text-align: center" colspan="4">
+                        		<input type="button" value="Guardar Retiro" class="input" onclick="validarForma();"/>
+                        		&nbsp;&nbsp;
+                        		<input type="button" value="Regresar" class="input" onclick="regresar();"/>
+                        	</td>
+                        </tr>
+        	</table>
+        </form>
+        	
+        
+    </body>
+</html>

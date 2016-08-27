@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="descuentoCancelacion" pageWidth="263" pageHeight="100" orientation="Landscape" whenNoDataType="AllSectionsNoDetail" columnWidth="203" leftMargin="30" rightMargin="30" topMargin="0" bottomMargin="0">
+	<property name="ireport.scriptlethandling" value="0"/>
+	<property name="ireport.encoding" value="UTF-8"/>
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<import value="net.sf.jasperreports.engine.*"/>
+	<import value="java.util.*"/>
+	<import value="net.sf.jasperreports.engine.data.*"/>
+	<parameter name="cveAgenteParam" class="java.lang.Integer" isForPrompting="false"/>
+	<queryString>
+		<![CDATA[SELECT IF (
+		(
+			SELECT IF(
+					(
+						SELECT COUNT(importeDescuentoComisionAgente)
+						FROM DetalleDescuentoComisionSolicitud
+					)=0,
+					0.00,
+					"a"
+				)
+		)="a",
+		(
+			SELECT IF(
+					(
+						SELECT COUNT(det.importeDescuentoComisionAgente)
+						FROM DetalleDescuentoComisionSolicitud det,Solicitud sol,Agente agt
+						WHERE sol.folioSolicitud=det.folioSolicitud
+						AND sol.cveAgente=agt.cveAgente
+						AND agt.cveAgente=$P{cveAgenteParam}
+					)=0,
+					0.00,
+					(SELECT SUM(det.importeDescuentoComisionAgente)
+						FROM DetalleDescuentoComisionSolicitud det,Solicitud sol,Agente agt
+						WHERE sol.folioSolicitud=det.folioSolicitud
+						AND sol.cveAgente=agt.cveAgente
+						AND agt.cveAgente=$P{cveAgenteParam})
+				)AS importeDescuentoComisionAgente
+
+		)
+		,0.00
+	)AS importeDescuentoComisionAgente]]>
+	</queryString>
+	<field name="importeDescuentoComisionAgente" class="java.math.BigDecimal"/>
+	<variable name="importeDescuentoComisionAgente_Summary" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{importeDescuentoComisionAgente}.setScale( 2)]]></variableExpression>
+	</variable>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band splitType="Stretch"/>
+	</title>
+	<pageHeader>
+		<band splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band height="52" splitType="Stretch">
+			<staticText>
+				<reportElement key="staticText-1" x="0" y="21" width="201" height="31" forecolor="#0033FF" backcolor="#99CCFF"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="SansSerif" isBold="false" isItalic="true" isUnderline="false" pdfFontName="Helvetica-Oblique"/>
+				</textElement>
+				<text><![CDATA[Descuento a Comisión]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-2" mode="Opaque" x="0" y="0" width="201" height="21" forecolor="#FFFFFF" backcolor="#3399FF"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="SansSerif" size="14" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="17" splitType="Stretch">
+			<textField isBlankWhenNull="true">
+				<reportElement key="textField-1" x="0" y="0" width="201" height="17"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="SansSerif"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{importeDescuentoComisionAgente}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band height="17" splitType="Stretch">
+			<textField isBlankWhenNull="true">
+				<reportElement key="textField-2" x="0" y="0" width="202" height="16"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="SansSerif"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{importeDescuentoComisionAgente_Summary}]]></textFieldExpression>
+			</textField>
+		</band>
+	</summary>
+</jasperReport>

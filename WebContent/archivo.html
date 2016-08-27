@@ -1,0 +1,279 @@
+
+
+  
+
+ 
+
+
+<html>
+    <head>
+        <title>Cargar archivo para cambio de estatus de pólizas</title>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+        <link href="css/stilosForms.css" rel="stylesheet" type="text/css">
+        <link href="css/stilosCal.css" rel="stylesheet" type="text/css">
+       
+        <script type="text/javascript">
+            function valida(){
+                var archivo=document.forms[0].file.value;
+                if(archivo==""){
+                    alert("No selecciono un archivo");
+                    return false;
+                }
+                else if(archivo.lastIndexOf(".xls")<0){
+                    alert("El archivo que selecciono no tiene extensión .xls");
+                    return false;
+                }
+                
+                document.forms[0].submit();
+                procesando();
+            }
+        </script>
+        <script language="JavaScript" type="text/javascript"> 
+            function procesando(){ 
+                document.getElementById('img').style.visibility = "visible"; 
+                document.getElementById('enviar').disabled = true;
+            } 
+            function verDetalle(id){
+            	document.location.href = 
+            		'/seguros2/app/consultarArchivoCambioEstatusController?idArchivosCambioEstatus='+id;
+            }
+            
+            
+        </script>
+    </head>
+    <body >
+     
+
+
+ 
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+   "http://www.w3.org/TR/html4/loose.dtd">
+
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        
+        <link rel="stylesheet" type="text/css" href="css/superfish.css" media="screen"/>
+        <link rel="stylesheet" type="text/css" href="css/superfish-navbar.css" media="screen"/>
+        <link rel="stylesheet" type="text/css" href="css/superfish-vertical.css" media="screen"/>
+		<script type="text/javascript" src="js/jquery-1.5.1.js"/>
+		<script type="text/javascript" src="js/hoverIntent.js"/>
+		<script type="text/javascript" src="js/superfish.js"/>
+		<script type="text/javascript">
+
+		// initialise plugins
+		jQuery(function(){
+			jQuery('ul.sf-menu').superfish();
+		});
+
+		</script>
+    </head>
+    <body>
+    <!-- style="background-color: #BDD2FF;width: 100%; height: 45px; vertical-align: center;font-size: small;" -->
+    <div  style="background-color: #BDD2FF;font-size: x-small;" >
+    	<ul class='sf-menu'>
+<li>
+<a href='#'>EMITIR</a>
+<ul>
+<li>
+<a href='app/capturaSolicitudController'>Solicitud</a>
+</li>
+<li>
+<a href='/seguros2/app/registroPolizaController'>Póliza</a>
+</li>
+<li>
+<a href='/seguros2/app/consultarRegistrosPendientesArchivoPolizasController'>Pólizas desde archivo</a>
+</li>
+</ul>
+</li>
+<li>
+<a href='#'>CONSULTAR</a>
+<ul>
+<li>
+<a href='/seguros2/app/consultaPolizaController'>Póliza</a>
+</li>
+<li>
+<a href='/seguros2/app/consultaGeneralSolicitudesController'>Clientes</a>
+</li>
+<li>
+<a href='/seguros2/app/consultarTicketsCorreccion'>Correcciones</a>
+</li>
+<li>
+<a href='/seguros2/app/consultarBonoPolizaAgenteController'>Cálculo de Bono de Pólizas para Agentes</a>
+</li>
+<li>
+<a href='/seguros2/app/consultarCatalogoEscuelasController'>Catálogo de Escuelas</a>
+</li>
+</ul>
+</li>
+<li>
+<a href='#'>REGISTRAR</a>
+<ul>
+<li>
+<a href='/seguros2/app/obtenerEstatusPoliza'>Pólizas entregadas al asesor</a>
+</li>
+<li>
+<a href='/seguros2/app/generarEntregaPolizaOp1Controller'>Pólizas entregadas al cliente</a>
+</li>
+<li>
+<a href='/seguros2/app/registrarPrestamoEmpleadoController'>Préstamos a empleados</a>
+</li>
+<li>
+<a href='/seguros2/app/registrarBonoEmpleadoController'>Bonos a empleados</a>
+</li>
+<li>
+<a href='/seguros2/app/consultarArchivosPolizasCargadosController'>Pólizas capturadas en SII</a>
+</li>
+<li>
+<a href='/seguros2/app/calcularBonoPolizaAgenteController'>Cálculo de Bono de Pólizas para Agentes</a>
+</li>
+<li>
+<a href='/seguros2/app/cargaArchivoCambioEstatusPolizaController'>Carga de Archivos de Cambio de Estatus</a>
+</li>
+</ul>
+</li>
+<li>
+<a href='#'>COBRANZA</a>
+<ul>
+<li>
+<a href='/seguros2/app/cargaArchivoAplicacionController'>Registro de Aplicación de Pagos</a>
+</li>
+</ul>
+</li>
+<li>
+<a href='#'>REPORTES</a>
+<ul>
+<li>
+<a href='/seguros2/app/generarReporteGenericoController'>Complementos de póliza</a>
+</li>
+</ul>
+</li>
+<li>
+<a href='/seguros2/app/logoutcontroller'>SALIR</a>
+</li>
+</ul>
+
+    </div>
+    
+    	
+    </body>
+</html>
+    				<br/><br/> 
+        <form action="cargaArchivoCambioEstatusPolizaController" method="POST"  enctype="multipart/form-data" id="formulario" onsubmit="return valida()">
+            
+                        
+           
+             
+           
+          
+	        <div id="titleg664x16">Cargar Archivo Para el Registro de Trámites de Retiros</div>
+	               
+	             
+	                
+	                
+	                
+	                    <div align="center" class="submit664">
+	                    	<input type="file" name="file" class="input" size="70">
+	                    </div>
+                
+                    <div align="center" class="submit664">
+                        <input type="button" name="enviar" id="enviar" value="Enviar" class="input" onclick="valida();"/>
+                        <a href="/seguros2/">
+                            <input type="button" value="Salir" class="input"/>
+                        </a>
+                    </div>
+                  
+            <div id="img" style="visibility:hidden">
+                <img alt="Procesando"  src="img/procesando.gif">
+            </div> 
+            <div align="center" >
+            	 
+           	 	
+                    <table width="600" border="0" cellpadding="5" cellspacing="1">
+                          <tr>
+                            <td colspan="80" align="left" style="font-size:x-small;font-weight: bold;">
+                                Total de registros: 2
+                            </td>
+
+                        </tr>
+                        <tr align="left" valign="middle" height="20">
+                            <td colspan="80" class="TopTabla" align="center"><strong>Resultado de la consulta</strong></td>
+                        </tr>
+                       
+                        <tr>
+                            <td class="ContenTablaColor">&nbsp;</td>
+                           <td align="center" class="ContenTablaColor"><strong>Fecha de Carga</strong></td>
+                           <td align="center" class="ContenTablaColor"><strong>Usuario</strong></td>
+                           <td align="center" class="ContenTablaColor"><strong>Archivo</strong></td>
+                           <td align="center" class="ContenTablaColor"><strong>Total Registros</strong></td>
+                           <td align="center" class="ContenTablaColor"><strong>Fecha Inicio Carga</strong></td>
+                           <td align="center" class="ContenTablaColor"><strong>Fecha Fin Carga</strong></td>
+                           <td align="center" class="ContenTablaColor"><strong>Bit&aacute;cora</strong></td>
+                            
+                        </tr>
+                        
+                        	<tr align="left" valign="middle">
+                                        <td align="center" width="4%" class="ContenTabla">
+	                                        <a href="javascript:verDetalle('10')" title="Detalle">
+	                                        <img border="0" src="img/skin/onebit_02.png" width="24" height="24"/>
+	                                        </a>
+										</td>
+                                        <td class="ContenTabla">29/08/2013</td>
+                                        <td class="ContenTabla">masterDir</td>
+                                        <td class="ContenTabla">ArchivoTramiteDF201308.xls</td>
+                                        <td class="ContenTabla">150</td>
+                                        <td class="ContenTabla">29/08/2013 19:16:13</td>
+                                        <td class="ContenTabla">29/08/2013 19:16:13</td>
+                                        <td class="ContenTabla">
+											<textarea rows="4" cols="80">Registro 1: Póliza (122324 - 11102) No localizada
+Registro 30 - Póliza (2475949-11102) Cliente HERE821227Q12 - Retiro de $ 700.00 no pudo ser aplicado totalmente, saldo disponible $ 500.00 , se aplicaron solo $ 500.00
+Proceso Finalizado --
+
+Número de Retiros Aplicados: 250
+</textarea>
+										</td>
+                                
+                            </tr>
+                        
+                        
+                        	<tr align="left" valign="middle">
+                                        <td align="center" width="4%" class="ContenTabla">
+	                                        <a href="javascript:verDetalle('9')" title="Detalle">
+	                                        <img border="0" src="img/skin/onebit_02.png" width="24" height="24"/>
+	                                        </a>
+										</td>
+                                        <td class="ContenTabla">28/08/2013</td>
+                                        <td class="ContenTabla">masterDir</td>
+                                        <td class="ContenTabla">RetiroTramitesTP201205.xls</td>
+                                        <td class="ContenTabla">10</td>
+                                        <td class="ContenTabla">28/08/2013 11:50:58</td>
+                                        <td class="ContenTabla">28/08/2013 11:50:58</td>
+                                        <td class="ContenTabla">
+											<textarea rows="4" cols="80">Proceso Finalizado --
+
+Número de Retiros Aplicados: 10
+</textarea>
+										</td>
+                                
+                            
+                        
+                        
+                        	
+                        
+                        
+                                                                  
+
+                      
+                        
+                    
+                       
+                        </table>
+					
+
+
+                </div>
+        </form>
+    </body>
+</html>

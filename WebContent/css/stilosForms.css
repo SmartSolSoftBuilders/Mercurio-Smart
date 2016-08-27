@@ -1,0 +1,398 @@
+#capaScroll{
+	position:absolute;
+	left:364px;
+	top:58px;
+	width:368px;
+	height:407px;
+	overflow: scroll;
+	background-color:#DBE8F9;
+	letter-spacing: normal;
+	text-align: center;
+	vertical-align: baseline;
+	word-spacing: normal;
+	white-space: normal;
+	display: list-item;
+	float: right;
+	clear: right;
+	border-top-style: solid;
+	border-right-style: solid;
+	border-bottom-style: solid;
+	border-left-style: solid;
+}
+
+
+body {
+	/*Se cambia el color de la versión de pruebas*/
+	/*background-color: #f4f6ec;*/
+	background-color: #E9F3FA ;
+	font: 11px/24px "Lucida Grande", "Trebuchet MS", Arial, Helvetica, sans-serif;
+	color: #5A698B;
+}
+
+/*Estilos para los tï¿½tulos de los formularios*/
+
+#title {
+	width: 330px;
+	height: 26px;
+	color: #5A698B;
+	font: bold 11px/18px "Lucida Grande", "Trebuchet MS", Arial, Helvetica, sans-serif;
+	padding-top: 5px;
+	background: transparent url("../img/bg_legend.gif") no-repeat;
+	text-transform: uppercase;
+	letter-spacing: 2px;
+	text-align: center;
+}
+
+#title330x16 {
+	width: 330px;
+	height: 16px;
+	color: #5A698B;
+	font: bold 11px/18px "Lucida Grande", "Trebuchet MS", Arial, Helvetica, sans-serif;
+	margin-bottom: 3px;
+	background: transparent url("..img/bg_legendg.gif") no-repeat;
+	text-transform: uppercase;
+	letter-spacing: 2px;
+	text-align: center;
+}
+
+#title430x16 {
+	width: 430px;
+	height: 16px;
+	color: #5A698B;
+	font: bold 11px/18px "Lucida Grande", "Trebuchet MS", Arial, Helvetica, sans-serif;
+	margin-bottom: 3px;
+	background: transparent url("..img/bg_legendg2.gif") no-repeat;
+	text-transform: uppercase;
+	letter-spacing: 2px;
+	text-align: center;
+}
+
+
+#titleaux {
+	width: 290px;
+	height: 23px;
+	color: #5A698B;
+	font: 11px/16px "Lucida Grande", "Trebuchet MS", Arial, Helvetica, sans-serif;
+	margin-bottom: 2px;
+	background: transparent url("../img/bg_titleaux2.png") no-repeat;
+	/*text-transform: uppercase;*/
+	letter-spacing: 2px;
+	text-align: left;
+}
+
+#title589x16 {
+	width: 589px;
+	height: 16px;
+	color: #5A698B;
+	font: bold 11px/18px "Lucida Grande", "Trebuchet MS", Arial, Helvetica, sans-serif;
+	margin-bottom: 3px;
+	background: transparent url("../img/bg_legendlg.gif") no-repeat;
+	text-transform: uppercase;
+	letter-spacing: 2px;
+	text-align: center;
+}
+
+#titleg664x16 {
+	width: 664px;
+	height: 16px;
+	color: #5A698B;
+	font: bold 11px/18px "Lucida Grande", "Trebuchet MS", Arial, Helvetica, sans-serif;
+	margin-bottom: 3px;
+	background: transparent url("../img/bg_legend660.gif") no-repeat;
+	text-transform: uppercase;
+	letter-spacing: 2px;
+	text-align: center;
+}
+
+/*Fin de Estilos para los tï¿½tulos de secciones de formularios*/
+
+form {
+	width: 330px;
+}
+
+/*Estilos de etiquetas para campos.*/
+
+.label135 {
+	text-align: right;
+	width: 135px;
+	height: 31px;
+	margin: 0;
+	float: left;
+	margin-right: 2px;
+	background: url(../img/bg_label.gif) no-repeat;
+}
+.label80 {
+	text-align: right;
+	width: 80px;
+	height: 31px;
+	margin: 0;
+	float: left;
+	margin-right: 2px;
+	background: url(../img/bg_label.gif) no-repeat;
+}
+
+.label195x21 {
+	text-align: right;
+	width: 195px;
+	height: 21px;
+	margin: 0;
+	float: left;
+	margin-right: 2px;
+	background: url(../img/bg_labelt.gif) no-repeat;
+}
+
+.label97x31 {
+	text-align: right;
+	width: 97px;
+	height: 31px;
+	margin: 0;
+	float: left;
+	margin-right: 2px;
+	background: url(../img/bg_labels.gif) no-repeat;
+}
+
+.label135x60 {
+	text-align: right;
+	width: 135px;
+	height: 60px;
+	margin: 0;
+	float: left;
+	margin-right: 2px;
+	background: url(../img/bg_label2alto.gif) no-repeat;
+}
+
+.label330 {
+	text-align: right;
+	width: 330px;
+	height: 31px;
+	margin: 0;
+	float: left;
+	margin-right: 4px;
+	background: url(../img/bg_label330.gif) no-repeat;
+}
+
+/*Fin de Estilos de etiquetas para campos.*/
+
+.field296 {
+	width: 296px;
+	height: 31px;
+	display: block;
+	float: left;
+	margin: 0;
+	margin-right: 2px;
+	background: url(../img/bg_field296.gif) no-repeat;
+}
+
+/*Estilos para espacios de campos de formularios.*/
+
+.field330 {
+	width: 330px;
+	height: 31px;
+	display: block;
+	float: left;
+	margin: 0;
+	margin-right: 4px;
+	background: url(../img/bg_field330.gif) no-repeat;
+}
+
+.field195 {
+	width: 195px; 
+	height: 31px;
+	display: block;
+	float: left;
+	margin: 0;
+	margin-right: 2px;
+	background: url(../img/bg_textfield.gif) no-repeat; 
+
+}
+
+.field195x60 {
+	width: 195px;
+	height: 60px;
+	display: block;
+	float: left;
+	margin: 0;
+	margin-right: 2px;
+	background: url(../img/bg_field2alto.gif) no-repeat;
+}
+
+.field295x60 {
+	width: 295px;
+	height: 60px;
+	display: block;
+	float: left;
+	margin: 0;
+	margin-right: 2px;
+	background: url(../img/bg_field2alto2.gif) no-repeat;
+}
+
+.field290 {
+	width: 290px;
+	height: 31px;
+	display: block;
+	float: left;
+	margin: 0;
+	margin-right: 2px;
+	background: url(../img/bg_field2alto2.gif) no-repeat;
+}
+
+
+.field588 {
+	width: 588px;
+	height: 31px;
+	display: block;
+	float: left;
+	margin: 0;
+	margin-right: 2px;
+	background: url(../img/bg_textfieldspan3.gif) no-repeat;
+}
+
+/*Fin de Estilos para espacios de campos de formularios.*/
+
+.col2comment {
+	width: 195px;
+	height: 98px;
+	margin: 0;
+	display: block;
+	float: left;
+	background: url(../img/bg_textarea.gif) no-repeat;
+}
+
+.col1comment {
+	text-align: right;
+	width: 135px;
+	height: 98px;
+	float: left;
+	display: block;
+	margin-right: 2px;
+	background: url(../img/bg_label_comment.gif) no-repeat;
+}
+
+/*Estilos para filas de disintos tamaï¿½os*/
+
+div.row {
+	clear: both;
+	width: 570px;
+}
+
+div.row660 {
+	clear: both;
+	width: 670px;
+}
+
+div.row592 {
+	clear: both;
+	width: 592px;
+}
+
+div.row335 {
+	clear: both;
+	width: 335px;
+}
+
+/*Fin de Estilos para filas de disintos tamaï¿½os*/
+
+/*Estilos para campos de formularios*/
+
+.submit {
+	height: 29px;
+	width: 430px;
+	background: url(../img/bg_submit2.gif) no-repeat;
+	padding-top: 5px;
+	clear: both;
+} 
+
+.submitspan3 {
+	height: 29px;
+	width: 589px;
+	background: url(../img/bg_submitspan3.gif) no-repeat;
+	padding-top: 5px;
+	clear: both;
+} 
+
+.submit664 {
+	height: 29px;
+	width: 664px;
+	background: url(../img/bg_submit660.gif) no-repeat;
+	padding-top: 5px;
+	clear: both;
+} 
+
+.select{
+	background-color: #fff;
+	font: 11px/14px "Lucida Grande", "Trebuchet MS", Arial, Helvetica, sans-serif;
+	color: #5A698B;
+	margin: 4px 0 5px 8px;
+	/*padding: 1px;*/
+	border: 1px solid #8595B2;
+}
+
+.textarea {
+	border: 1px solid #8595B2;
+	background-color: #fff;
+	font: 11px/14px "Lucida Grande", "Trebuchet MS", Arial, Helvetica, sans-serif;
+	color: #5A698B;
+	margin: 4px 0 5px 8px;
+}
+
+.input {
+	 font: 11px Verdana, Geneva, Arial, Helvetica, sans-serif;
+	 background-color: #D7E5F2;
+	 color: #102132;
+	 margin: 4px 0 5px 8px;
+}
+
+.checkbox {
+ background-color: #D7E5F2;
+ color: #102132;
+ margin-left: 8px;
+ margin-right: 2px; 
+ margin-top: 3px;
+ /*margin-bottom: 5px;*/
+}
+
+img{
+	border: thin;
+	border-width: 1px;
+	border-color: #9CB0F8;
+	margin-bottom: 3px;
+}
+
+/*Fin de Estilos para campos de formularios*/
+
+.labelRow{
+				text-align: right;
+				width: 135px;
+				min-height: 31px;
+				margin: 0;
+				
+				margin-right: 2px;
+				margin-bottom: 2px;
+				background-color: #C3D5EF;
+				//background-position: left;
+				//background: url(../img/bg_labels.gif) no-repeat;
+			}
+			.fieldRow {
+				width: 262px;
+				min-height: 31px;
+				margin: 0;
+				margin-bottom: 2px;
+				background-color: #C3D5EF;
+				text-align: left;
+				//background-position: right;
+				//background: url(../img/bg_field296.gif) no-repeat;
+			}
+			.inputInfo {
+				 font: 9px Verdana, Geneva, Arial, Helvetica, sans-serif;
+				 background-color: #D7E5F2;
+				 color: grey;
+				 margin: 4px 0 5px 8px;
+				 
+			}
+			.inputAlert {
+				 font: 9px Verdana, Geneva, Arial, Helvetica, sans-serif;
+				 background-color: #96BC5D;
+				 color: black;
+				 margin: 4px 0 5px 8px;
+			}
+

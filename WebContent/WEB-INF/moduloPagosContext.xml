@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:jaxws="http://cxf.apache.org/jaxws"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+		http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://cxf.apache.org/jaxws http://cxf.apache.org/schemas/jaxws.xsd">
+		
+		<bean id="pagosBusiness" class="org.springframework.aop.framework.ProxyFactoryBean">
+		    <property name="target" ref="pagosBusinessImpl" />
+		    <property name="interceptorNames">
+		    <list>
+		    <value>transactionInterceptor</value>
+		    </list>
+		    </property>
+		</bean>
+		
+	<bean name="pagosBusinessImpl" class="mx.com.seguros.business.pagos.impl.PagosBusinessImpl">
+		<property name="contratanteDao" ref="contratanteDao"></property>
+		<property name="solicitudDao" ref="solicitudDao"></property>
+		<property name="cuentaClienteBusiness" ref="cuentaClienteBusiness"></property>
+		<property name="descuentoBusiness" ref="descuentosBusiness"></property>
+		<property name="descuentosAplicadosDao" ref="descuentosDao"></property>
+		<property name="estatusPolizaPagosDao" ref="estatusPolizaPagosDao"></property>
+		<property name="estatusPolizaSeguimientoDao" ref="estatusPolizaSeguimientoDao"></property>
+		<property name="polizaBusiness" ref="polizaBusiness"></property>
+		<property name="polizaDao" ref="polizaDao"></property>
+		<property name="tarifaAportMensualDao" ref="tarifaAportMensualDao"></property>
+		<property name="transaccionCuentaClienteBusiness" ref="transaccionCuentaClienteBusiness"></property>
+		<property name="transactionManager" ref="transactionManager"></property>
+		<property name="archivosAplicacionPagosDao" ref="archivosAplicacionPagosDao"></property>
+		 <property name="solicitudBusiness" ref="solicitudBusiness"/>
+		 <property name="cuentaClienteDao" ref="cuentaClienteDao"/>
+		 
+	</bean>
+	<bean name="cuentaClienteBusiness"
+		class="mx.com.seguros.business.pagos.impl.CuentaClienteBusinessImpl">
+		<property name="cuentaClienteDao" ref="cuentaClienteDao"></property>
+	</bean>
+	<bean name="transaccionCuentaClienteBusiness"
+		class="mx.com.seguros.business.pagos.impl.TransaccionCuentaClienteBusinessImpl">
+		<property name="cuentaClienteBusiness" ref="cuentaClienteBusiness"></property>
+		<property name="transaccionCuentaClienteDao" ref="transaccionCuentaClienteDao"></property>
+	</bean>
+	<bean name="descuentoReporte"
+		class="mx.com.seguros.reporte.descuento.impl.DescuentoReporteImpl">
+		<property name="descuentoBusiness" ref="descuentosBusiness"></property>
+		<property name="polizaBusiness" ref="polizaBusiness"></property>
+		<property name="descuentosAplicadosDao" ref="descuentosDao"></property>
+		<property name="reporteBusiness" ref="reporteBusiness"/>
+	</bean>
+	<!--
+		<bean class="org.springframework.remoting.rmi.RmiServiceExporter">
+		<property name="serviceName" value="DescuentoReporteService" />
+		<property name="service" ref="descuentoReporte" /> <property
+		name="serviceInterface"
+		value="mx.com.seguros.reporte.descuento.DescuentoReporte" /> <
+		defaults to 1099 > <property name="registryPort" value="1199" />
+		</bean
+
+	<import resource="classpath:META-INF/cxf/cxf.xml" />
+	<import resource="classpath:META-INF/cxf/cxf-extension-soap.xml" />
+	<import resource="classpath:META-INF/cxf/cxf-servlet.xml" />
+
+	<jaxws:endpoint id="pagoService" implementor="mx.com.seguros.business.pagos.impl.PagosBusinessImpl"
+		address="/PagoProcess" />
+	-->
+
+</beans>

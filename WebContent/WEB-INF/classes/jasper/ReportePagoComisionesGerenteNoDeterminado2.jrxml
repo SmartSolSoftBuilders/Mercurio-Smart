@@ -1,0 +1,1076 @@
+<?xml version="1.0" encoding="UTF-8"  ?>
+<!-- Created with iReport - A designer for JasperReports -->
+<!DOCTYPE jasperReport PUBLIC "//JasperReports//DTD Report Design//EN" "http://jasperreports.sourceforge.net/dtds/jasperreport.dtd">
+<jasperReport
+		 name="ReportePagoComisionesSupervisor"
+		 columnCount="1"
+		 printOrder="Vertical"
+		 orientation="Portrait"
+		 pageWidth="1200"
+		 pageHeight="1680"
+		 columnWidth="1140"
+		 columnSpacing="0"
+		 leftMargin="30"
+		 rightMargin="30"
+		 topMargin="20"
+		 bottomMargin="20"
+		 whenNoDataType="AllSectionsNoDetail"
+		 isTitleNewPage="false"
+		 isSummaryNewPage="false">
+	<property name="ireport.scriptlethandling" value="0" />
+	<property name="ireport.encoding" value="UTF-8" />
+	<import value="java.util.*" />
+	<import value="net.sf.jasperreports.engine.*" />
+	<import value="net.sf.jasperreports.engine.data.*" />
+
+	<parameter name="SUBREPORT_DIR" isForPrompting="true" class="java.lang.String">
+		<defaultValueExpression ><![CDATA[".\\"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="numQuincenaReporteParam" isForPrompting="false" class="java.lang.Integer"/>
+	<parameter name="fechaInicioPeriodoComisionesParam" isForPrompting="false" class="java.util.Date"/>
+	<parameter name="fechaFinPeriodoComisionesParam" isForPrompting="false" class="java.util.Date"/>
+	<parameter name="cveGerenteParam" isForPrompting="false" class="java.lang.Integer"/>
+	<parameter name="anioQuincenaReporteParam" isForPrompting="false" class="java.lang.Integer"/>
+	<queryString><![CDATA[select
+agt.cveGerente,
+(select emp.apPaternoEmpleado
+From Empleado emp
+where agt.cveGerente=emp.cveEmpleado)as ApellidoPaternoGerente,
+(select emp.apMaternoEmpleado
+From Empleado emp
+where agt.cveGerente=emp.cveEmpleado)as ApellidoMaternoGerente,
+(select emp.nombre1Empleado
+From Empleado emp
+where agt.cveGerente=emp.cveEmpleado)as PrimerNombreGerente,
+(select emp.nombre2Empleado
+From Empleado emp
+where agt.cveGerente=emp.cveEmpleado)as SegundoNombreGerente,
+pla.cvePlaza,
+tar.importeTarifa,
+cer.numCertificado,
+sol.cveAgente as AgtSol,
+solic.apPaternoSolicitante,
+solic.apMaternoSolicitante,
+solic.nombre1Solicitante,
+solic.nombre2Solicitante,
+solic.fechaAltaDependencia,
+solic.fechaBajaDependencia,
+(select  count(numQuincenaArchivo)from DescuentosAplicados des,PolizaIndividual pol where des.numPoliza=pol.numPoliza) as PagosAsgALaFecha,
+det.comisionSolicitudAgente,
+det.comisionPolizaAgente,
+(select ifnull((select sum(importeDescuentoComisionGerente) from DetalleDescuentoComisionSolicitud detdes,Solicitud sol,Agente agt,Empleado emp,DetalleComisionSolicitud des
+where  agt.cveGerente=emp.cveEmpleado
+and detdes.folioSolicitud=sol.folioSolicitud
+and des.folioSolicitud=detdes.folioSolicitud
+and agt.cveGerente=$P{cveGerenteParam}),0.00)) as importeDescuentoComisionGerente,
+(select ifnull((select sum(totalPrestamo)
+from PrestamoEmpleado pres,Agente agt,Empleado emp 
+where agt.cveGerente=emp.cveEmpleado
+and pres.cveEmpleado=agt.cveGerente
+and numQuincenaAplicacion=$P{numQuincenaReporteParam}
+and anioQuincenaAplicacion=$P{anioQuincenaReporteParam}
+and agt.cveGerente=$P{cveGerenteParam}),0.00 ))as AnticipoComision,
+(select ifnull((select sum(comisionSolicitudGerente) from DetalleComisionSolicitud det, Agente agt, Solicitud sol where agt.cveAgente=sol.cveAgente
+and det.folioSolicitud=sol.folioSolicitud
+and sol.fechaSolicitud >=$P{fechaInicioPeriodoComisionesParam} and sol.fechaSolicitud <= $P{fechaFinPeriodoComisionesParam}
+and agt.cveGerente=$P{cveGerenteParam}),0.00)) as totalComSol,
+(select ifnull((select sum(comisionPolizaGerente) from DetalleComisionSolicitud det, Agente agt, Solicitud sol where agt.cveAgente=sol.cveAgente
+and det.folioSolicitud=sol.folioSolicitud
+and sol.fechaSolicitud >=$P{fechaInicioPeriodoComisionesParam} and sol.fechaSolicitud <= $P{fechaFinPeriodoComisionesParam}
+and agt.cveGerente=$P{cveGerenteParam}),0.00)) as totalComPol,
+(select (AnticipoComision+totalComSol+totalComPol))as ComisionBruta,
+(select ifnull((select sum(importeDescuentoComisionGerente) from DetalleDescuentoComisionSolicitud detdes,Solicitud sol,Agente agt,Empleado emp,DetalleComisionSolicitud des
+where  agt.cveGerente=emp.cveEmpleado
+and detdes.folioSolicitud=sol.folioSolicitud
+and des.folioSolicitud=detdes.folioSolicitud
+and agt.cveGerente=$P{cveGerenteParam}),0.00)) as TotalDescCancel,
+(select ifnull((select sum(importeBonoGerente) from BonoTrimestralAgente bon,ProduccionQuincenaPuntosAgente prod
+where agt.cveGerente=$P{cveGerenteParam}
+and agt.cveAgente=bon.cveAgente
+and agt.cveAgente=prod.cveAgente
+and prod.numQuincenaComision=$P{numQuincenaReporteParam}),0.00)) as BonoTrimestral,
+(select ifnull((select sum(importeBonoExtra) 
+from BonoExtraEmpleado bonemp,Agente agt,Empleado emp 
+where emp.cveEmpleado=bonemp.cveEmpleado
+and agt.cveGerente=bonemp.cveEmpleado 
+and agt.cveGerente=emp.cveEmpleado
+and agt.cveGerente=$P{cveGerenteParam}
+and numQuincenaAplicacion=$P{numQuincenaReporteParam}
+and anioQuincenaAplicacion=$P{anioQuincenaReporteParam}),0.00))as OtrosBonos,
+$P{numQuincenaReporteParam} as Quincena,
+emp.banco,
+emp.noCuenta
+from Agente agt
+inner join Empleado emp on agt.cveEmpleado=emp.cveEmpleado
+inner join Solicitud sol on agt.cveAgente=sol.cveAgente
+inner join DetalleComisionSolicitud det on sol.folioSolicitud=det.folioSolicitud
+inner join Solicitante solic on solic.RFCsolicitante=sol.RFCsolicitante
+inner join CertificadoIndividual cer on cer.folioSolicitud=sol.folioSolicitud
+inner join Plaza pla on pla.idPlaza=cer.idPlaza
+inner join TarifaAportMensual tar on tar.cveTarifa=sol.cveTarifa
+where agt.cveGerente=$P{cveGerenteParam}
+and fechaSolicitud >=$P{fechaInicioPeriodoComisionesParam} and fechaSolicitud <= $P{fechaFinPeriodoComisionesParam}
+order by agt.cveAgente]]></queryString>
+
+	<field name="cveGerente" class="java.lang.Integer"/>
+	<field name="ApellidoPaternoGerente" class="java.lang.String"/>
+	<field name="ApellidoMaternoGerente" class="java.lang.String"/>
+	<field name="PrimerNombreGerente" class="java.lang.String"/>
+	<field name="SegundoNombreGerente" class="java.lang.String"/>
+	<field name="cvePlaza" class="java.lang.String"/>
+	<field name="importeTarifa" class="java.math.BigDecimal"/>
+	<field name="numCertificado" class="java.lang.Long"/>
+	<field name="AgtSol" class="java.lang.Long"/>
+	<field name="apPaternoSolicitante" class="java.lang.String"/>
+	<field name="apMaternoSolicitante" class="java.lang.String"/>
+	<field name="nombre1Solicitante" class="java.lang.String"/>
+	<field name="nombre2Solicitante" class="java.lang.String"/>
+	<field name="fechaAltaDependencia" class="java.sql.Date"/>
+	<field name="fechaBajaDependencia" class="java.sql.Date"/>
+	<field name="PagosAsgALaFecha" class="java.lang.Long"/>
+	<field name="comisionSolicitudAgente" class="java.math.BigDecimal"/>
+	<field name="comisionPolizaAgente" class="java.math.BigDecimal"/>
+	<field name="importeDescuentoComisionGerente" class="java.math.BigDecimal"/>
+	<field name="AnticipoComision" class="java.math.BigDecimal"/>
+	<field name="totalComSol" class="java.math.BigDecimal"/>
+	<field name="totalComPol" class="java.math.BigDecimal"/>
+	<field name="ComisionBruta" class="java.math.BigDecimal"/>
+	<field name="TotalDescCancel" class="java.math.BigDecimal"/>
+	<field name="BonoTrimestral" class="java.math.BigDecimal"/>
+	<field name="OtrosBonos" class="java.math.BigDecimal"/>
+	<field name="Quincena" class="java.lang.Long"/>
+	<field name="banco" class="java.lang.String"/>
+	<field name="noCuenta" class="java.lang.String"/>
+
+	<variable name="totalAnticipo" class="java.math.BigDecimal" resetType="Report" calculation="Nothing">
+	</variable>
+		<background>
+			<band height="0"  isSplitAllowed="true" >
+			</band>
+		</background>
+		<title>
+			<band height="66"  isSplitAllowed="true" >
+				<staticText>
+					<reportElement
+						x="434"
+						y="6"
+						width="75"
+						height="18"
+						forecolor="#0066FF"
+						key="staticText-2"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement>
+						<font size="12" isBold="true" isUnderline="true"/>
+					</textElement>
+				<text><![CDATA[Quincena:]]></text>
+				</staticText>
+				<staticText>
+					<reportElement
+						x="604"
+						y="6"
+						width="137"
+						height="18"
+						forecolor="#0066FF"
+						key="staticText-3"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement>
+						<font size="12" isBold="true" isUnderline="true"/>
+					</textElement>
+				<text><![CDATA[Fecha de Generación:]]></text>
+				</staticText>
+				<image  evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="930"
+						y="-1"
+						width="210"
+						height="63"
+						key="image-1"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<graphicElement stretchType="NoStretch"/>
+					<imageExpression class="java.lang.String"><![CDATA["C:\\Program Files\\Apache Software Foundation\\Tomcat 6.0\\webapps\\seguros2\\img\\logoEstrategas.gif"]]></imageExpression>
+				</image>
+				<textField isStretchWithOverflow="false" pattern="dd/MM/yyyy" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="746"
+						y="6"
+						width="98"
+						height="18"
+						key="textField-1"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement verticalAlignment="Middle">
+						<font/>
+					</textElement>
+				<textFieldExpression   class="java.util.Date"><![CDATA[new Date()]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="509"
+						y="6"
+						width="79"
+						height="18"
+						key="textField-31"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font/>
+					</textElement>
+				<textFieldExpression   class="java.lang.Long"><![CDATA[$F{Quincena}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement
+						mode="Opaque"
+						x="0"
+						y="0"
+						width="424"
+						height="27"
+						forecolor="#FFFFFF"
+						backcolor="#161869"
+						key="staticText-42"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement verticalAlignment="Middle">
+						<font size="18" isBold="false" isItalic="true" isUnderline="false" isStrikeThrough="false" />
+					</textElement>
+				<text><![CDATA[Reporte de Pago de Comisiones por Gerente]]></text>
+				</staticText>
+				<rectangle>
+					<reportElement
+						mode="Transparent"
+						x="423"
+						y="0"
+						width="450"
+						height="27"
+						key="rectangle-1"/>
+					<graphicElement stretchType="NoStretch"/>
+				</rectangle>
+			</band>
+		</title>
+		<pageHeader>
+			<band height="26"  isSplitAllowed="true" >
+				<staticText>
+					<reportElement
+						mode="Opaque"
+						x="0"
+						y="0"
+						width="68"
+						height="25"
+						forecolor="#0066FF"
+						key="staticText-4"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement verticalAlignment="Middle">
+						<font size="12" isBold="true" isUnderline="true"/>
+					</textElement>
+				<text><![CDATA[Gerente:]]></text>
+				</staticText>
+				<staticText>
+					<reportElement
+						mode="Opaque"
+						x="337"
+						y="0"
+						width="48"
+						height="23"
+						forecolor="#0066FF"
+						key="staticText-5"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement verticalAlignment="Middle">
+						<font size="12" isBold="true" isUnderline="true"/>
+					</textElement>
+				<text><![CDATA[Clave:]]></text>
+				</staticText>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="70"
+						y="0"
+						width="233"
+						height="25"
+						key="textField-2"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Left" verticalAlignment="Middle">
+						<font/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$F{ApellidoPaternoGerente} + ' ' + $F{ApellidoMaternoGerente} + ' ' + $F{PrimerNombreGerente} +' ' +  $F{SegundoNombreGerente}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="385"
+						y="0"
+						width="77"
+						height="23"
+						key="textField-3"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement verticalAlignment="Middle">
+						<font/>
+					</textElement>
+				<textFieldExpression   class="java.lang.Integer"><![CDATA[$F{cveGerente}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement
+						mode="Opaque"
+						x="518"
+						y="0"
+						width="123"
+						height="25"
+						forecolor="#0066FF"
+						key="staticText-38"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement verticalAlignment="Middle">
+						<font size="12" isBold="true" isUnderline="true"/>
+					</textElement>
+				<text><![CDATA[Banco Depósito:]]></text>
+				</staticText>
+				<staticText>
+					<reportElement
+						mode="Opaque"
+						x="750"
+						y="0"
+						width="123"
+						height="25"
+						forecolor="#0066FF"
+						key="staticText-39"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement verticalAlignment="Middle">
+						<font size="12" isBold="true" isUnderline="true"/>
+					</textElement>
+				<text><![CDATA[No. De Cuenta:]]></text>
+				</staticText>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="641"
+						y="0"
+						width="92"
+						height="23"
+						key="textField-32"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement verticalAlignment="Middle">
+						<font/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$F{banco}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="873"
+						y="0"
+						width="92"
+						height="23"
+						key="textField-33"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement verticalAlignment="Middle">
+						<font/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$F{noCuenta}]]></textFieldExpression>
+				</textField>
+			</band>
+		</pageHeader>
+		<columnHeader>
+			<band height="89"  isSplitAllowed="true" >
+				<staticText>
+					<reportElement
+						mode="Opaque"
+						x="26"
+						y="38"
+						width="1089"
+						height="21"
+						forecolor="#FFFFFF"
+						backcolor="#3399FF"
+						key="staticText-25"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="14" isBold="true"/>
+					</textElement>
+				<text><![CDATA[Producción]]></text>
+				</staticText>
+				<staticText>
+					<reportElement
+						mode="Opaque"
+						x="26"
+						y="59"
+						width="42"
+						height="30"
+						forecolor="#0033FF"
+						backcolor="#FFFFFF"
+						key="staticText-26"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font isBold="true" isUnderline="false"/>
+					</textElement>
+				<text><![CDATA[Plaza]]></text>
+				</staticText>
+				<staticText>
+					<reportElement
+						x="121"
+						y="59"
+						width="47"
+						height="30"
+						forecolor="#0033FF"
+						backcolor="#FFFFFF"
+						key="staticText-27"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font isBold="true" isUnderline="false"/>
+					</textElement>
+				<text><![CDATA[Tárifa]]></text>
+				</staticText>
+				<staticText>
+					<reportElement
+						x="68"
+						y="59"
+						width="53"
+						height="30"
+						forecolor="#0033FF"
+						backcolor="#FFFFFF"
+						key="staticText-28"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font isBold="true" isUnderline="false"/>
+					</textElement>
+				<text><![CDATA[No. Cert.]]></text>
+				</staticText>
+				<staticText>
+					<reportElement
+						x="168"
+						y="59"
+						width="67"
+						height="30"
+						forecolor="#0033FF"
+						backcolor="#FFFFFF"
+						key="staticText-29"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font isBold="true" isUnderline="false"/>
+					</textElement>
+				<text><![CDATA[Cve. Agente]]></text>
+				</staticText>
+				<staticText>
+					<reportElement
+						x="235"
+						y="59"
+						width="263"
+						height="30"
+						forecolor="#0033FF"
+						backcolor="#FFFFFF"
+						key="staticText-30"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font isBold="true" isUnderline="false"/>
+					</textElement>
+				<text><![CDATA[Asegurado]]></text>
+				</staticText>
+				<staticText>
+					<reportElement
+						x="498"
+						y="59"
+						width="83"
+						height="30"
+						forecolor="#0033FF"
+						backcolor="#FFFFFF"
+						key="staticText-31"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font isBold="true" isUnderline="false"/>
+					</textElement>
+				<text><![CDATA[Fecha Alta Dep.]]></text>
+				</staticText>
+				<staticText>
+					<reportElement
+						x="581"
+						y="59"
+						width="91"
+						height="30"
+						forecolor="#0033FF"
+						backcolor="#FFFFFF"
+						key="staticText-32"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font isBold="true" isUnderline="false"/>
+					</textElement>
+				<text><![CDATA[Pagos del Aseg a la Fecha]]></text>
+				</staticText>
+				<staticText>
+					<reportElement
+						x="755"
+						y="58"
+						width="360"
+						height="13"
+						forecolor="#0033FF"
+						backcolor="#FFFFFF"
+						key="staticText-33"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font isBold="true" isUnderline="false"/>
+					</textElement>
+				<text><![CDATA[Comisiones]]></text>
+				</staticText>
+				<staticText>
+					<reportElement
+						x="755"
+						y="71"
+						width="120"
+						height="18"
+						forecolor="#0033FF"
+						backcolor="#FFFFFF"
+						key="staticText-34"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font isBold="true" isUnderline="false"/>
+					</textElement>
+				<text><![CDATA[x Solicitud]]></text>
+				</staticText>
+				<staticText>
+					<reportElement
+						mode="Transparent"
+						x="875"
+						y="71"
+						width="120"
+						height="18"
+						forecolor="#0033FF"
+						backcolor="#FFFFFF"
+						key="staticText-35"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font isBold="true" isUnderline="false"/>
+					</textElement>
+				<text><![CDATA[x Póliza]]></text>
+				</staticText>
+				<staticText>
+					<reportElement
+						x="672"
+						y="59"
+						width="83"
+						height="30"
+						forecolor="#0033FF"
+						backcolor="#FFFFFF"
+						key="staticText-36"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font isBold="true" isUnderline="false"/>
+					</textElement>
+				<text><![CDATA[Fecha Baja Def.]]></text>
+				</staticText>
+				<staticText>
+					<reportElement
+						x="995"
+						y="71"
+						width="120"
+						height="18"
+						forecolor="#0033FF"
+						backcolor="#FFFFFF"
+						key="staticText-37"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font isBold="true" isUnderline="false"/>
+					</textElement>
+				<text><![CDATA[Dcto. x Cancel.]]></text>
+				</staticText>
+				<staticText>
+					<reportElement
+						mode="Opaque"
+						x="10"
+						y="7"
+						width="1122"
+						height="21"
+						forecolor="#FFFFFF"
+						backcolor="#9C9D9D"
+						key="staticText-40"
+						stretchType="RelativeToBandHeight"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="14" isBold="true" isPdfEmbedded ="false"/>
+					</textElement>
+				<text><![CDATA[DETALLE]]></text>
+				</staticText>
+			</band>
+		</columnHeader>
+		<detail>
+			<band height="17"  isSplitAllowed="true" >
+				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="26"
+						y="0"
+						width="42"
+						height="17"
+						key="textField-4"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$F{cvePlaza}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="121"
+						y="0"
+						width="47"
+						height="17"
+						key="textField-5"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font/>
+					</textElement>
+				<textFieldExpression   class="java.math.BigDecimal"><![CDATA[$F{importeTarifa}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="68"
+						y="0"
+						width="53"
+						height="17"
+						key="textField-6"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font/>
+					</textElement>
+				<textFieldExpression   class="java.lang.Long"><![CDATA[$F{numCertificado}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="168"
+						y="0"
+						width="67"
+						height="17"
+						key="textField-7"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font/>
+					</textElement>
+				<textFieldExpression   class="java.lang.Long"><![CDATA[$F{AgtSol}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="235"
+						y="0"
+						width="263"
+						height="17"
+						key="textField-8"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$F{apPaternoSolicitante} + ' ' + $F{apMaternoSolicitante} + ' ' + $F{nombre1Solicitante} +' ' +  $F{nombre2Solicitante}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="498"
+						y="0"
+						width="83"
+						height="17"
+						key="textField-9"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font/>
+					</textElement>
+				<textFieldExpression   class="java.util.Date"><![CDATA[$F{fechaAltaDependencia}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="581"
+						y="0"
+						width="91"
+						height="17"
+						key="textField-10"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font/>
+					</textElement>
+				<textFieldExpression   class="java.lang.Long"><![CDATA[$F{PagosAsgALaFecha}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="672"
+						y="0"
+						width="83"
+						height="17"
+						key="textField-11"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font/>
+					</textElement>
+				<textFieldExpression   class="java.util.Date"><![CDATA[$F{fechaBajaDependencia}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="755"
+						y="0"
+						width="120"
+						height="17"
+						key="textField-12"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font/>
+					</textElement>
+				<textFieldExpression   class="java.math.BigDecimal"><![CDATA[$F{comisionSolicitudAgente}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="875"
+						y="0"
+						width="120"
+						height="17"
+						key="textField-13"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font/>
+					</textElement>
+				<textFieldExpression   class="java.math.BigDecimal"><![CDATA[$F{comisionPolizaAgente}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="995"
+						y="0"
+						width="118"
+						height="17"
+						key="textField-14"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font/>
+					</textElement>
+				<textFieldExpression   class="java.math.BigDecimal"><![CDATA[$F{importeDescuentoComisionGerente}]]></textFieldExpression>
+				</textField>
+			</band>
+		</detail>
+		<columnFooter>
+			<band height="0"  isSplitAllowed="true" >
+			</band>
+		</columnFooter>
+		<pageFooter>
+			<band height="0"  isSplitAllowed="true" >
+			</band>
+		</pageFooter>
+		<lastPageFooter>
+			<band height="353"  isSplitAllowed="true" >
+				<staticText>
+					<reportElement
+						x="348"
+						y="37"
+						width="209"
+						height="18"
+						key="staticText-8"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement verticalAlignment="Middle">
+						<font/>
+					</textElement>
+				<text><![CDATA[Anticipo Solicitado p/Quincena Actual]]></text>
+				</staticText>
+				<staticText>
+					<reportElement
+						x="348"
+						y="57"
+						width="178"
+						height="18"
+						key="staticText-9"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement verticalAlignment="Middle">
+						<font/>
+					</textElement>
+				<text><![CDATA[+ Total Comisiones x Solicitud:]]></text>
+				</staticText>
+				<staticText>
+					<reportElement
+						x="348"
+						y="78"
+						width="178"
+						height="18"
+						key="staticText-11"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement verticalAlignment="Middle">
+						<font/>
+					</textElement>
+				<text><![CDATA[+ Total Comisiones x Póliza:]]></text>
+				</staticText>
+				<line direction="TopDown">
+					<reportElement
+						x="348"
+						y="103"
+						width="159"
+						height="0"
+						key="line-1"/>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
+				<staticText>
+					<reportElement
+						x="348"
+						y="108"
+						width="178"
+						height="18"
+						key="staticText-12"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement verticalAlignment="Middle">
+						<font isBold="true" isUnderline="true"/>
+					</textElement>
+				<text><![CDATA[Comisión Bruta:]]></text>
+				</staticText>
+				<staticText>
+					<reportElement
+						x="348"
+						y="129"
+						width="264"
+						height="18"
+						key="staticText-13"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement verticalAlignment="Middle">
+						<font/>
+					</textElement>
+				<text><![CDATA[- Cargos por Anticipos (Comisión y/o Extraordinario)]]></text>
+				</staticText>
+				<staticText>
+					<reportElement
+						x="348"
+						y="148"
+						width="178"
+						height="18"
+						key="staticText-14"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement verticalAlignment="Middle">
+						<font/>
+					</textElement>
+				<text><![CDATA[- Total Descuentos x cancelación:]]></text>
+				</staticText>
+				<staticText>
+					<reportElement
+						x="348"
+						y="169"
+						width="178"
+						height="18"
+						key="staticText-16"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement verticalAlignment="Middle">
+						<font/>
+					</textElement>
+				<text><![CDATA[+ Bono Trimestral:]]></text>
+				</staticText>
+				<staticText>
+					<reportElement
+						x="348"
+						y="189"
+						width="178"
+						height="18"
+						key="staticText-17"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement verticalAlignment="Middle">
+						<font/>
+					</textElement>
+				<text><![CDATA[+ Otros Bonos:]]></text>
+				</staticText>
+				<staticText>
+					<reportElement
+						x="348"
+						y="214"
+						width="178"
+						height="18"
+						key="staticText-22"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement verticalAlignment="Middle">
+						<font isBold="true" isUnderline="true"/>
+					</textElement>
+				<text><![CDATA[Comisión por Pagar:]]></text>
+				</staticText>
+				<line direction="TopDown">
+					<reportElement
+						x="349"
+						y="208"
+						width="159"
+						height="0"
+						key="line-3"/>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
+				<line direction="TopDown">
+					<reportElement
+						x="622"
+						y="103"
+						width="156"
+						height="0"
+						key="line-4"/>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
+				<line direction="TopDown">
+					<reportElement
+						x="627"
+						y="208"
+						width="151"
+						height="0"
+						key="line-5"/>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="651"
+						y="37"
+						width="125"
+						height="17"
+						key="textField-15"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font/>
+					</textElement>
+				<textFieldExpression   class="java.math.BigDecimal"><![CDATA[$F{AnticipoComision}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="625"
+						y="57"
+						width="151"
+						height="18"
+						key="textField-16"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font/>
+					</textElement>
+				<textFieldExpression   class="java.math.BigDecimal"><![CDATA[$F{totalComSol}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="625"
+						y="78"
+						width="151"
+						height="18"
+						key="textField-17"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font/>
+					</textElement>
+				<textFieldExpression   class="java.math.BigDecimal"><![CDATA[$F{totalComPol}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" pattern="$ #,##0.00" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						mode="Opaque"
+						x="625"
+						y="108"
+						width="151"
+						height="18"
+						backcolor="#DBE691"
+						key="textField-18"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font/>
+					</textElement>
+				<textFieldExpression   class="java.math.BigDecimal"><![CDATA[$F{ComisionBruta}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="625"
+						y="129"
+						width="151"
+						height="18"
+						key="textField-19"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font/>
+					</textElement>
+				<textFieldExpression   class="java.math.BigDecimal"><![CDATA[$V{totalAnticipo}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="625"
+						y="148"
+						width="151"
+						height="18"
+						key="textField-20"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font/>
+					</textElement>
+				<textFieldExpression   class="java.math.BigDecimal"><![CDATA[$F{TotalDescCancel}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="625"
+						y="169"
+						width="151"
+						height="18"
+						key="textField-21"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font/>
+					</textElement>
+				<textFieldExpression   class="java.math.BigDecimal"><![CDATA[$F{BonoTrimestral}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="625"
+						y="189"
+						width="151"
+						height="18"
+						key="textField-22"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font/>
+					</textElement>
+				<textFieldExpression   class="java.math.BigDecimal"><![CDATA[$F{OtrosBonos}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" pattern="$ #,##0.00" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						mode="Opaque"
+						x="625"
+						y="214"
+						width="151"
+						height="18"
+						backcolor="#DBE691"
+						key="textField-23"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font/>
+					</textElement>
+				<textFieldExpression   class="java.math.BigDecimal"><![CDATA[$F{ComisionBruta}.subtract( $V{totalAnticipo} ).subtract( $F{TotalDescCancel} ).add( $F{BonoTrimestral} ).add( $F{OtrosBonos} )]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement
+						mode="Opaque"
+						x="10"
+						y="11"
+						width="1122"
+						height="21"
+						forecolor="#FFFFFF"
+						backcolor="#9C9D9D"
+						key="staticText-41"
+						stretchType="RelativeToBandHeight"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="14" isBold="true" isPdfEmbedded ="false"/>
+					</textElement>
+				<text><![CDATA[RESUMEN]]></text>
+				</staticText>
+				<staticText>
+					<reportElement
+						x="627"
+						y="37"
+						width="19"
+						height="18"
+						key="staticText-43"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font/>
+					</textElement>
+				<text><![CDATA[$]]></text>
+				</staticText>
+			</band>
+		</lastPageFooter>
+		<summary>
+			<band height="36"  isSplitAllowed="true" >
+				<subreport  isUsingCache="true">
+					<reportElement
+						x="-2"
+						y="0"
+						width="178"
+						height="36"
+						key="subreport-1"/>
+					<subreportParameter  name="cveAgenteParam">
+						<subreportParameterExpression><![CDATA[$P{cveGerenteParam}]]></subreportParameterExpression>
+					</subreportParameter>
+					<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+					<subreportExpression  class="java.lang.String"><![CDATA["C:\\Program Files\\Apache Software Foundation\\Tomcat 6.0\\webapps\\seguros2\\WEB-INF\\jasper\\AnticipoGerente.jasper"
+]]></subreportExpression>
+				</subreport>
+				<subreport  isUsingCache="true">
+					<reportElement
+						x="447"
+						y="-1"
+						width="182"
+						height="36"
+						key="subreport-2"/>
+					<subreportParameter  name="cveAgenteParam">
+						<subreportParameterExpression><![CDATA[$P{cveGerenteParam}]]></subreportParameterExpression>
+					</subreportParameter>
+					<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+					<returnValue subreportVariable="montoPagadoSummary" toVariable="totalAnticipo"/>
+					<subreportExpression  class="java.lang.String"><![CDATA["C:\\Program Files\\Apache Software Foundation\\Tomcat 6.0\\webapps\\seguros2\\WEB-INF\\jasper\\montoPagadoGer.jasper"]]></subreportExpression>
+				</subreport>
+			</band>
+		</summary>
+</jasperReport>

@@ -1,0 +1,674 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="ReporteCertificadoIndividual" pageWidth="612" pageHeight="792" whenNoDataType="AllSectionsNoDetail" columnWidth="584" leftMargin="14" rightMargin="14" topMargin="20" bottomMargin="2">
+	<property name="ireport.scriptlethandling" value="0"/>
+	<property name="ireport.encoding" value="UTF-8"/>
+	<property name="ireport.zoom" value="2.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<import value="net.sf.jasperreports.engine.*"/>
+	<import value="java.util.*"/>
+	<import value="net.sf.jasperreports.engine.data.*"/>
+	<style name="revocable" isBold="false" isItalic="false" isUnderline="false"/>
+	<style name="irrevocable" isBold="false" isItalic="false" isUnderline="false"/>
+	<parameter name="folioSolicitudParam" class="java.lang.Integer" isForPrompting="false">
+		<defaultValueExpression><![CDATA[new Integer(29801)]]></defaultValueExpression>
+	</parameter>
+	<parameter name="numPolizaParam" class="java.lang.Integer" isForPrompting="false">
+		<defaultValueExpression><![CDATA[new Integer (91031093)]]></defaultValueExpression>
+	</parameter>
+	<parameter name="numCertificadoParam" class="java.lang.Integer" isForPrompting="false">
+		<defaultValueExpression><![CDATA[new Integer(1)]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[SELECT DISTINCT
+     apPaternoSolicitante,
+     apMaternoSolicitante,
+     nombre1Solicitante,
+     nombre2Solicitante,
+     fechaNacimientoSolicitante,
+     puestoSolicitante,
+     nombreGrupoAsegurado,
+     numPolizaColectiva,
+     numPoliza,
+     PolizaIndividual.`fechaExpedicion`,
+     fechaInicioVigencia,
+     numConsignatario,
+     numNominaContratante,
+     nombrePlaza,
+     cvePlaza,
+     numCertificado,
+     sumaAseguradaColectiva
+FROM
+     `Solicitante` Solicitante,
+     `GrupoAsegurado` GrupoAsegurado,
+     `PolizaIndividual` PolizaIndividual,
+     `Solicitud` Solicitud,
+     `Plaza` Plaza,
+     `CertificadoIndividual` CertificadoIndividual,
+     `PrimaMensualSeguroColectivo` PrimaMensualSeguroColectivo,
+     `Empresa` Empresa,
+     `TarifaAportMensual` TarifaAportMensual
+WHERE
+     PolizaIndividual.folioSolicitud = Solicitud.folioSolicitud
+ AND PolizaIndividual.formatoSolicitud = Solicitud.formatoSolicitud
+ AND Solicitante.RFCsolicitante = Solicitud.RFCsolicitante
+ AND Solicitud.cveEmpresa = Empresa.cveEmpresa
+ AND Empresa.cveGrupoAsegurado = GrupoAsegurado.cveGrupoAsegurado
+ AND CertificadoIndividual.idPlaza = Plaza.idPlaza
+ AND Solicitud.cveTarifa = TarifaAportMensual.cveTarifa
+ AND TarifaAportMensual.importePrimaColectiva = PrimaMensualSeguroColectivo.importePrimaColectiva
+ AND CertificadoIndividual.folioSolicitud = Solicitud.folioSolicitud
+ AND CertificadoIndividual.formatoSolicitud = Solicitud.formatoSolicitud
+ AND numCertificado = $P{numCertificadoParam}
+ AND numPoliza=$P{numPolizaParam}]]>
+	</queryString>
+	<field name="apPaternoSolicitante" class="java.lang.String"/>
+	<field name="apMaternoSolicitante" class="java.lang.String"/>
+	<field name="nombre1Solicitante" class="java.lang.String"/>
+	<field name="nombre2Solicitante" class="java.lang.String"/>
+	<field name="fechaNacimientoSolicitante" class="java.sql.Date"/>
+	<field name="puestoSolicitante" class="java.lang.String"/>
+	<field name="nombreGrupoAsegurado" class="java.lang.String"/>
+	<field name="numPolizaColectiva" class="java.lang.Integer"/>
+	<field name="numPoliza" class="java.lang.Long"/>
+	<field name="fechaExpedicion" class="java.sql.Date"/>
+	<field name="fechaInicioVigencia" class="java.sql.Date"/>
+	<field name="numConsignatario" class="java.lang.Long"/>
+	<field name="numNominaContratante" class="java.lang.String"/>
+	<field name="nombrePlaza" class="java.lang.String"/>
+	<field name="cvePlaza" class="java.lang.String"/>
+	<field name="numCertificado" class="java.lang.Long"/>
+	<field name="sumaAseguradaColectiva" class="java.math.BigDecimal"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band splitType="Stretch"/>
+	</title>
+	<pageHeader>
+		<band splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band splitType="Stretch"/>
+	</columnHeader>
+	<detail>
+		<band height="712" splitType="Stretch">
+			<rectangle>
+				<reportElement key="rectangle-4" mode="Transparent" x="2" y="55" width="579" height="652"/>
+			</rectangle>
+			<rectangle>
+				<reportElement key="rectangle-1" x="315" y="0" width="248" height="29"/>
+			</rectangle>
+			<staticText>
+				<reportElement key="staticText-1" x="289" y="0" width="247" height="28"/>
+				<box topPadding="5" leftPadding="5" bottomPadding="5" rightPadding="5">
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle" rotation="None" markup="styled">
+					<font size="14" isBold="true" isItalic="true" pdfFontName="Helvetica-BoldOblique"/>
+				</textElement>
+				<text><![CDATA[CERTIFICADO INDIVIDUAL]]></text>
+			</staticText>
+			<rectangle>
+				<reportElement key="rectangle-2" x="10" y="85" width="563" height="29" backcolor="#CCCCCC"/>
+			</rectangle>
+			<staticText>
+				<reportElement key="staticText-2" x="199" y="85" width="141" height="22"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="SansSerif" isBold="true" isItalic="true" pdfFontName="Helvetica-BoldOblique"/>
+				</textElement>
+				<text><![CDATA[DATOS GENERALES]]></text>
+			</staticText>
+			<rectangle>
+				<reportElement key="rectangle-3" x="10" y="273" width="562" height="29" backcolor="#CCCCCC"/>
+			</rectangle>
+			<staticText>
+				<reportElement key="staticText-3" x="206" y="278" width="147" height="22"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="SansSerif" isBold="true" isItalic="true" pdfFontName="Helvetica-BoldOblique"/>
+				</textElement>
+				<text><![CDATA[DATOS DE BENEFICIARIOS]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-4" x="18" y="396" width="534" height="23"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement lineSpacing="Single">
+					<font size="8" isStrikeThrough="false"/>
+				</textElement>
+				<text><![CDATA[EL ASEGURADO DEBE DESIGNAR EN FORMA CLARA Y PRECISA, PARA EVITAR CUALQUIER INCERTIDUMBRE SOBRE EL PARTICULAR.
+ADVERTENCIAS:
+]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-5" x="222" y="370" width="140" height="26"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true" isUnderline="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[NOTA IMPORTANTE]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-6" x="18" y="665" width="498" height="34"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement verticalAlignment="Top">
+					<font size="6" isItalic="false" pdfFontName="Helvetica"/>
+				</textElement>
+				<text><![CDATA[ASEGURADA ANTES EXPRESADA O LA QUE RESULTE DE APLICAR LA REGLA PARA DETERMINARLA, LA CUAL SE PAGARA AL BENEFICIARIO DESIGNADO
+PREVIA LA PRESENTACION DE PRUEBAS FEHACIENTES DEL FALLECIMIENTO, DE SUS CAUSAS Y DEL DERECHO DEL RECLAMANTE SIEMPRE QUE LA POLIZA
+Y ESTE CERTIFICADO SE ENCUENTREN EN VIGOR DE ACUERDO Y CON SUJECION A LAS CONDICIONES GENERALES Y ESPECIALES DE LA POLIZA
+APROBADAS POR LA COMISION NACIONAL DE SEGUROS Y FIANZAS]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-9" x="21" y="636" width="284" height="14"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement>
+					<font size="10" isItalic="true" pdfFontName="Helvetica-Oblique"/>
+				</textElement>
+				<text><![CDATA[CERTIFICADO: CONSERVAR EN PODER DEL ASEGURADO]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-10" x="362" y="593" width="149" height="27"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement>
+					<font isBold="true" isUnderline="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[SEGUROS INBURSA, S.A.
+GRUPO FINANCIERO INBURSA]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-11" x="193" y="312" width="194" height="26"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Serif"/>
+				</textElement>
+				<text><![CDATA[DESIGNACION DEL BENEFICIARIO]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-12" x="10" y="123" width="68" height="20"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Serif" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[POLIZA No.:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-13" x="10" y="153" width="127" height="20"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Serif" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[GRUPO ASEGURADO:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-14" x="10" y="183" width="152" height="20"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Serif" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[NOMBRE DEL ASEGURADO:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-15" x="10" y="213" width="141" height="20"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Serif" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[FECHA DE NACIMIENTO:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-16" x="10" y="242" width="141" height="20"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Serif" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[SUMA ASEGURADA:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-17" x="246" y="127" width="101" height="20"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Serif" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[CERTIFICADO No.:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-18" x="306" y="153" width="126" height="20"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Serif" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[NUMERO DE NOMINA:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-19" x="287" y="242" width="82" height="19"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Serif" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[OCUPACION:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-20" x="19" y="556" width="84" height="20"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[CUBRE A PARTIR DE:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-21" x="19" y="581" width="59" height="20"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[EXPEDIDA EN:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-22" x="19" y="606" width="101" height="20"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[FECHA DE EXPEDICION:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-23" x="19" y="526" width="393" height="20"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font size="8" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[LOS BENEFICIARIOS DE ESTA POLIZA CORRESPONDEN A LOS QUE APARECEN EN LA POLIZA NO:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-24" x="335" y="546" width="77" height="20"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font size="8" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[CONSIGNATARIO:]]></text>
+			</staticText>
+			<textField isBlankWhenNull="false">
+				<reportElement key="textField-1" x="78" y="123" width="84" height="20"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression class="java.lang.String"><![CDATA[($F{numPolizaColectiva}).toString()]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="false">
+				<reportElement key="textField-2" x="131" y="153" width="182" height="20"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{nombreGrupoAsegurado}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="false">
+				<reportElement key="textField-3" x="155" y="183" width="423" height="20"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{apPaternoSolicitante} + ' ' + $F{apMaternoSolicitante} + ' ' + $F{nombre1Solicitante} +' ' +  $F{nombre2Solicitante}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="false">
+				<reportElement key="textField-4" x="141" y="213" width="165" height="20"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression class="java.lang.String"><![CDATA[($F{fechaNacimientoSolicitante}).toString()]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="false">
+				<reportElement key="textField-5" x="369" y="242" width="123" height="20"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{puestoSolicitante}]]></textFieldExpression>
+			</textField>
+			<textField pattern="$ #,##0.00" isBlankWhenNull="false">
+				<reportElement key="textField-6" x="140" y="242" width="143" height="20"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[($F{sumaAseguradaColectiva})]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="false">
+				<reportElement key="textField-7" x="347" y="127" width="142" height="20"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{cvePlaza} + "-" + ($F{numCertificado}).toString()]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="false">
+				<reportElement key="textField-8" x="432" y="153" width="142" height="20"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression class="java.lang.String"><![CDATA[($F{numNominaContratante}).toString()]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="false">
+				<reportElement key="textField-9" x="114" y="556" width="108" height="20"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[($F{fechaInicioVigencia}).toString()]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="false">
+				<reportElement key="textField-10" x="93" y="581" width="129" height="20"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{nombrePlaza}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="false">
+				<reportElement key="textField-11" x="125" y="606" width="129" height="20"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[($F{fechaExpedicion}).toString()]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="false">
+				<reportElement key="textField-12" x="423" y="526" width="105" height="20"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[($F{numPoliza}).toString()]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="false">
+				<reportElement key="textField-13" x="421" y="546" width="112" height="20"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[($F{numConsignatario}).toString()]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement key="staticText-25" x="217" y="654" width="292" height="10"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement verticalAlignment="Bottom">
+					<font size="6"/>
+				</textElement>
+				<text><![CDATA[(LA COMPAÑIA) CERTIFICA QUE SE ASEGURA LA VIDA DEL ASEGURADO POR LA SUMA ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-27" x="18" y="654" width="198" height="11"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font size="7" isItalic="true" pdfFontName="Helvetica-Oblique"/>
+				</textElement>
+				<text><![CDATA[SEGUROS INBURSA, S. A. GRUPO FINANCIERO INBURSA ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-28" style="revocable" x="162" y="342" width="79" height="20"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true" isUnderline="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[REVOCABLE]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-29" style="irrevocable" x="343" y="342" width="79" height="20"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[IRREVOCABLE]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-30" x="18" y="421" width="532" height="51"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Justified" lineSpacing="Single">
+					<font size="8" isStrikeThrough="false"/>
+				</textElement>
+				<text><![CDATA[EN EL CASO DE QUE SE DESEE NOMBRAR BENEFICARIOS A MENORES DE EDAD, NO SE DEBE SEÑALAR A UN MAYOR DE EDAD COMO
+REPRESENTANTE DE LOS MENORES PARA EFECTO DE QUE, EN SU REPRESENTACION CUBRE LA INDEMNIZACION. LO ANTERIOR POR
+QUE LAS LEGISLACIONES CIVILES PREVIENEN LA FORMA EN QUE DEBEN DESIGNARSE TUTORES, ALBACEAS, REPRESENTANTES DE HEREDEROS U OTROS CASO SIMILARES Y NO CONSIDERAN AL CONTRATO DE SEGURO COMO EL INSTRUMENTO ADECUADO PARA
+TALES DESIGNACIONES.
+]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-31" x="18" y="474" width="532" height="43"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Justified" lineSpacing="Single">
+					<font size="8" isStrikeThrough="false"/>
+				</textElement>
+				<text><![CDATA[LA DESIGNACION QUE SE HICIERA DE UN MAYOR DE EDAD COMO REPRESENTANTE DE MENORES BENEFICIARIOS, DURANTE LA MI-
+NORIA DE EDAD DE ELLOS, LEGALMENTE PUEDE IMPLICAR QUE SE NOMBRE BENEFICIARIO AL MAYOR DE EDAD, QUIEN EN TODO
+CASO SOLO TENDRIA UNA OBLIGACION MORAL, PUES LA DESIGNACION QUE SE HACE DE BENEFICIARIOS EN UN CONTRATO DE SE-
+GURO LE CONCEDE EL DERECHO INCONDICIONADO DE DISPONER DE LA SUMA ASEGURADA.
+]]></text>
+			</staticText>
+			<image onErrorType="Blank">
+				<reportElement key="image-1" x="3" y="1" width="272" height="54"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<imageExpression class="java.lang.String"><![CDATA["/img/logoSegurosInbursa.jpg"]]></imageExpression>
+			</image>
+		</band>
+	</detail>
+	<columnFooter>
+		<band splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band height="40" splitType="Stretch">
+			<staticText>
+				<reportElement key="staticText-7" x="20" y="6" width="494" height="21"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement>
+					<font size="5"/>
+				</textElement>
+				<text><![CDATA["ESTE DOCUMENTO Y LA NOTA TECNICA QUE LO FUNDAMENTA, ESTAN REGISTRADOS ANTE LA COMISION NACIONAL DE SEGUROS Y FIANZAS, DE CONFORMIDAD CON LO DISPUESTO
+EN EL ARTICULO 36 DE LA LEY GENERAL DE INSTITUCIONES Y SOCIEDADES MUTUALISTAS DE SEGUROS, POR OFICIO No. 20584 DE FECHA 11 DE SEPTIEMBRE DE 1990"
+AV. INSURGENTES SUR No. 3500 C.P. 14060 MEXICO, D.F. APDOS Nos. 22-365 Y 22-366 SEGUROS INBURSA, S.A.]]></text>
+			</staticText>
+		</band>
+	</pageFooter>
+	<summary>
+		<band splitType="Stretch"/>
+	</summary>
+</jasperReport>

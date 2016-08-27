@@ -1,0 +1,665 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE beans PUBLIC 
+"-//SPRING//DTD BEAN//EN" 
+"http://www.springframework.org/dtd/spring-beans.dtd">
+<beans>
+    
+    <bean id="multipartResolver"
+          class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+        <property name="maxUploadSize" value="60000000"/>
+    </bean> 
+    
+    <!--Controllers auxiliares-->
+    
+    <bean name="/consultaPolizaAdminController"
+          class="mx.com.seguros.web.poliza.ConsultaPolizaAdminController">
+        <property name="polizaBusiness" ref="polizaBusiness"/>
+    </bean>
+    
+    
+    <bean name="/generarEntregaPolizaOp1Controller"
+          class="mx.com.seguros.web.poliza.GenerarEntregaPolizaOp1Controller">
+        <property name="polizaBusiness" ref="polizaBusiness"/>
+    </bean>
+    
+    <bean name="/obtenerEstatusPolizaOp1" class="mx.com.seguros.web.poliza.ObtenerEstatusPolizaOp1Controller">
+        <property name="methodNameResolver" ref="obtenEstatusPolizaOp1MethodResolver" />
+        <property name="polizaBusiness" ref="polizaBusiness"/>
+    </bean>
+    
+    <bean id="obtenEstatusPolizaOp1MethodResolver"   class="org.springframework.web.servlet.mvc.multiaction.PropertiesMethodNameResolver">
+        <property name="mappings">
+            <props>
+                <prop key="/obtenerEstatusPolizaOp1">obtenerEstatusOp1</prop>
+            </props>
+        </property>
+    </bean>
+    
+    
+    
+    <bean name="/generarEntregaPolizaAdminController"
+          class="mx.com.seguros.web.poliza.GenerarEntregaPolizaAdminController">
+        <property name="polizaBusiness" ref="polizaBusiness"/>
+    </bean>
+    
+    <bean name="/obtenerEstatusPolizaAdmin" class="mx.com.seguros.web.poliza.ObtenerEstatusPolizaAdminController">
+        <property name="methodNameResolver" ref="obtenEstatusPolizaAdminMethodResolver" />
+        <property name="polizaBusiness" ref="polizaBusiness"/>
+    </bean>
+    
+    <bean id="obtenEstatusPolizaAdminMethodResolver"   class="org.springframework.web.servlet.mvc.multiaction.PropertiesMethodNameResolver">
+        <property name="mappings">
+            <props>
+                <prop key="/obtenerEstatusPolizaAdmin">obtenerEstatus</prop>
+            </props>
+        </property>
+    </bean>
+    <!--Controllers de seguridad-->
+    <!-- <bean id="initAdminController"
+		class="mx.com.seguros.web.seguridad.AdminController" />
+    <bean id="initParamSubmitController"
+		class="mx.com.seguros.web.seguridad.UserController" />
+    <bean id="indexController"
+          class="mx.com.seguros.web.seguridad.IndexController"/>
+    -->
+    <!--URL mappping-->
+    
+    <bean name="/indexcontroller" class="mx.com.seguros.web.seguridad.IndexController">
+        <property name="methodNameResolver" ref="mostrarPaginaIndexMethodResolver" />
+    </bean>
+    <bean id="mostrarPaginaIndexMethodResolver"   class="org.springframework.web.servlet.mvc.multiaction.PropertiesMethodNameResolver">
+        <property name="mappings">
+            <props>
+                <prop key="/indexcontroller">mostrarPagina</prop>
+            </props>
+        </property>
+    </bean>
+    
+    <bean name="/indexadmincontroller" class="mx.com.seguros.web.seguridad.IndexAdminController">
+        <property name="methodNameResolver" ref="mostrarPaginaIndexAdminMethodResolver" />
+    </bean>
+    <bean id="mostrarPaginaIndexAdminMethodResolver"   class="org.springframework.web.servlet.mvc.multiaction.PropertiesMethodNameResolver">
+        <property name="mappings">
+            <props>
+                <prop key="/indexadmincontroller">mostrarPaginaAdmin</prop>
+            </props>
+        </property>
+    </bean>
+    
+    <bean name="/indexvtascontroller" class="mx.com.seguros.web.seguridad.IndexVtasController">
+        <property name="methodNameResolver" ref="mostrarPaginaIndexVtasMethodResolver" />
+    </bean>
+    <bean id="mostrarPaginaIndexVtasMethodResolver"   class="org.springframework.web.servlet.mvc.multiaction.PropertiesMethodNameResolver">
+        <property name="mappings">
+            <props>
+                <prop key="/indexvtascontroller">mostrarPaginaVtas</prop>
+            </props>
+        </property>
+    </bean>
+    
+    <bean name="/indexop1controller" class="mx.com.seguros.web.seguridad.IndexOp1Controller">
+        <property name="methodNameResolver" ref="mostrarPaginaIndexOp1MethodResolver" />
+    </bean>
+    <bean id="mostrarPaginaIndexOp1MethodResolver"   class="org.springframework.web.servlet.mvc.multiaction.PropertiesMethodNameResolver">
+        <property name="mappings">
+            <props>
+                <prop key="/indexop1controller">mostrarPaginaOp1</prop>
+            </props>
+        </property>
+    </bean>
+    
+    <bean name="/indexop2controller" class="mx.com.seguros.web.seguridad.IndexOp2Controller">
+        <property name="methodNameResolver" ref="mostrarPaginaIndexOp2MethodResolver" />
+    </bean>
+    <bean id="mostrarPaginaIndexOp2MethodResolver"   class="org.springframework.web.servlet.mvc.multiaction.PropertiesMethodNameResolver">
+        <property name="mappings">
+            <props>
+                <prop key="/indexop2controller">mostrarPaginaOp2</prop>
+            </props>
+        </property>
+    </bean>
+    
+    <bean name="/logincontroller" class="mx.com.seguros.web.seguridad.LoginController">
+        <property name="methodNameResolver" ref="muestraPaginaMethodResolver" />
+    </bean>
+    <bean id="muestraPaginaMethodResolver"   class="org.springframework.web.servlet.mvc.multiaction.PropertiesMethodNameResolver">
+        <property name="mappings">
+            <props>
+                <prop key="/logincontroller">mostrarPagina</prop>
+            </props>
+        </property>
+    </bean>
+    <bean name="/deniedcontroller" class="mx.com.seguros.web.seguridad.DeniedController">
+        <property name="methodNameResolver" ref="muestraPaginaDeniedMethodResolver" />
+    </bean>
+    <bean id="muestraPaginaDeniedMethodResolver"   class="org.springframework.web.servlet.mvc.multiaction.PropertiesMethodNameResolver">
+        <property name="mappings">
+            <props>
+                <prop key="/deniedcontroller">mostrarAccesoDenegado</prop>
+            </props>
+        </property>
+    </bean>
+    
+    <bean name="/logoutcontroller" class="mx.com.seguros.web.seguridad.LogoutController">
+        <property name="methodNameResolver" ref="cierraSesionMethodResolver" />
+    </bean>
+    <bean id="cierraSesionMethodResolver"   class="org.springframework.web.servlet.mvc.multiaction.PropertiesMethodNameResolver">
+        <property name="mappings">
+            <props>
+                <prop key="/logoutcontroller">terminaSesion</prop>
+            </props>
+        </property>
+    </bean>
+   
+    <!--Fin de Controllers de seguridad-->
+    
+    
+    
+    
+    <!--Controller para el Helper -->
+    <bean name="/generarHelper"
+          class="qtx.component.front.helper.spring.GUIHelperController">
+        <property name="helperBinder" ref="helperBinder" />
+        <property name="modelProvider" ref="modelProvider" />
+    </bean>
+    
+    <bean name="/capturaSolicitudController" 
+          class="mx.com.seguros.web.solicitud.CapturaSolicitudController">
+        <property name="solicitudBusiness" ref="solicitudBusiness"/>
+        <property name="archivoPolizaBusiness" ref="archivoPolizasBusiness"/>
+        <property name="polizaBusiness" ref="polizaBusiness"/>
+        <property name="seguridadUtil" ref="seguridadUtil"></property>
+    </bean>
+    
+    <bean name="/registroPolizaController" 
+          class="mx.com.seguros.web.poliza.RegistroPolizaController">
+        <property name="polizaBusiness" ref="polizaBusiness"/>
+    </bean>
+    
+    <bean name="/consultaPolizaController"
+          class="mx.com.seguros.web.poliza.ConsultaPolizaController">
+        <property name="polizaBusiness" ref="polizaBusiness"/>
+    </bean>
+    
+    <bean name="/generarEntregaPolizaController"
+          class="mx.com.seguros.web.poliza.GenerarEntregaPolizaController">
+        <property name="polizaBusiness" ref="polizaBusiness"/>
+    </bean>
+    <bean name="/generarFormatoDescuentoController"
+          class="mx.com.seguros.web.poliza.GenerarFormatoDescuentoController">
+        <property name="polizaBusiness" ref="polizaBusiness"/>
+    </bean>
+    
+    <bean name="/generarFormatoAplicDescController"
+          class="mx.com.seguros.web.poliza.GenerarFormatoAplicDescController">
+        <property name="descuentoReporte" ref="descuentoReporte"/>
+        <property name="polizaBusiness" ref="polizaBusiness"/>
+    </bean>
+    
+    <bean name="/cancelarPolizaController"
+          class="mx.com.seguros.web.poliza.CancelarPolizaController">
+        <property name="polizaBusiness" ref="polizaBusiness"/>
+    </bean>
+    
+    
+    <bean name="/autofinanciarPolizaCancelController"
+          class="mx.com.seguros.web.poliza.AutofinanciarPolizaCancelController">
+        <property name="polizaBusiness" ref="polizaBusiness"/>
+    </bean>
+    
+    <bean name="/obtenerEstatusPoliza" class="mx.com.seguros.web.poliza.ObtenerEstatusPolizaController">
+        <property name="methodNameResolver" ref="obtenEstatusPolizaMethodResolver" />
+        <property name="polizaBusiness" ref="polizaBusiness"/>
+    </bean>
+    
+    <bean name="/generarPagoComisionesController" class="mx.com.seguros.web.comisiones.GenerarPagoComisionesController">
+        <property name="bonoBusiness" ref="bonoBusiness"/>
+        <property name="calculoComisionesBusiness" ref="calculoComisionesBusiness"/>
+        <property name="calculoDescuentoComisionesBusiness" ref="calculoDescuentoComisionesBusiness"/>
+        <property name="registroAbonoPrestamosBusiness" ref="registroAbonoPrestamosBusiness"/>
+    </bean>
+    
+    
+    <bean name="/registrarPrestamoEmpleadoController" class="mx.com.seguros.web.prestamos.RegistroPrestamosEmpleadoController">
+        <property name="prestamosBusiness" ref="prestamosBusiness"/>
+    </bean>
+    
+    <bean name="/generarArchivoMovimientosDependenciaController" class="mx.com.seguros.web.movimientosdependencia.GenerarArchivoMovimientosDependenciaController">
+        <property name="generarArchivoMovDepBusiness" ref="generarArchivoMovDepBusiness"/>
+    </bean>    
+    
+    <bean name="/generarArchivoPagosRetenedorController" class="mx.com.seguros.web.movimientosdependencia.GenerarArchivoPagosRetenedor2Controller">
+        <property name="commandClass" value="mx.com.seguros.web.movimientosdependencia.GenerarArchivoPagosRetenedorCommand"/>
+        <property name="commandName" value="command"/>
+        <property name="formView" value="generarArchivoPagosRetenedor/generarArchivoPagosRetenedor"/>
+        <property name="successView" value="confirmation"/>
+        <property name="generarArchivoPagosRetenedorBusiness" ref="generarArchivoPagosRetenedorBusiness"/>
+    </bean>
+    
+    <bean name="/generarReporteAltaAseguradoController" class="mx.com.seguros.web.movimientosdependencia.GenerarReporteAltaAseguradoController">
+        <property name="commandClass" value="mx.com.seguros.web.movimientosdependencia.GenerarReporteAltaAseguradoCommand"/>
+        <property name="formView" value="generarArchivoAltaAsegurados/generarArchivoAltaAsegurados"/>
+        <property name="successView" value="confirmation"/>
+        <property name="generarArchivoPagosRetenedorBusiness" ref="generarArchivoPagosRetenedorBusiness"/>
+    </bean>
+    
+    <bean name="/registrarBonoEmpleadoController" class="mx.com.seguros.web.bonos.RegistroBonoEmpleadoController">
+        <property name="prestamosBusiness" ref="prestamosBusiness"/>
+    </bean>
+    
+    <!-- HEFS mapeo de URL hacia clases-->
+    <bean name="/polizaEntregadaEmitidaAgente" class="mx.com.seguros.web.poliza.EmitidaEntregadaAgenteController">
+        <property name="methodNameResolver" ref="entregaPolizaEmitidaMethodResolver" />
+        <property name="polizaBusiness" ref="polizaBusiness"/>
+    </bean>
+    
+    <bean name="/polizaEntregadaEmitida" class="mx.com.seguros.web.poliza.EmitidaEntregadaAgenteController">
+        <property name="methodNameResolver" ref="entregaPolizaEmitidaMethodResolver" />
+    </bean>
+    
+    <bean name="/emitidasEntregadasAsegurados" class="mx.com.seguros.web.poliza.EmitidaEntregadaAseguradosController">
+        <property name="methodNameResolver" ref="emitidaEntregadaAseguradosMethodResolver" />
+        <property name="polizaBusiness" ref="polizaBusiness"/>
+    </bean>
+    
+    <bean name="/cargaArchivoDescuento" class="mx.com.seguros.utils.ControllerAuxiliar">
+        <property name="methodNameResolver" ref="cargaArchivoMethodResolver" />
+    </bean>
+    
+    <!--bean name="/cargaArchivo" class="mx.com.seguros.web.descuentos.DescuentosController"-->
+    <bean name="/cargaArchivo" class="mx.com.seguros.web.pagos.PagosBusinessController">
+        <property name="commandClass" value="mx.com.seguros.utils.CargaArchivoVO"/>
+        <!--property name="formView" value="cargaArchivos/cargaArchivo"/>
+        <property name="successView" value="confirmation"/>
+        <property name="descuentosBusiness" ref="descuentosBusiness"/-->
+        <property name="pagosBusiness" ref="pagosBusiness"/>
+    </bean>
+    
+    <!--HEFS Mapeo de métodos para clases-->
+    <bean id="emitidaEntregadaAseguradosMethodResolver"   class="org.springframework.web.servlet.mvc.multiaction.PropertiesMethodNameResolver">
+        <property name="mappings">
+            <props>
+                <prop key="/emitidasEntregadasAsegurados">metodoControlador</prop>
+            </props>
+        </property>
+    </bean>
+    
+    <bean id="entregaPolizaEmitidaMethodResolver"  class="org.springframework.web.servlet.mvc.multiaction.PropertiesMethodNameResolver">
+        <property name="mappings">
+            <props>
+                <prop key="/polizaEntregadaEmitidaAgente">consultaPolizaEmitida</prop>
+                <prop key="/polizaEntregadaEmitida">metodoNulo</prop>
+            </props>
+        </property>
+    </bean>
+    
+    <bean id="cargaArchivoMethodResolver"  class="org.springframework.web.servlet.mvc.multiaction.PropertiesMethodNameResolver">
+        <property name="mappings">
+            <props>
+                <prop key="/cargaArchivoDescuento">metodoControlador</prop>
+            </props>
+        </property>
+    </bean>
+    
+    <bean id="obtenEstatusPolizaMethodResolver"   class="org.springframework.web.servlet.mvc.multiaction.PropertiesMethodNameResolver">
+        <property name="mappings">
+            <props>
+                <prop key="/obtenerEstatusPoliza">obtenerEstatusPoliza</prop>
+            </props>
+        </property>
+    </bean>
+    
+    <bean id="viewResolver" 
+          class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+        <!--property name="order" value="1"/-->
+        <property name="prefix" value="/jsp/" />
+        <property name="suffix" value=".jsp" />
+    </bean>
+    
+    <bean id="auxViewResolver" 
+          class="org.springframework.web.servlet.view.XmlViewResolver">
+        <property name="order" value="2"/>
+        <property name="location" value="/WEB-INF/views.xml"/>
+    </bean>
+    <bean name="/registroBonoExitoso"
+          class="org.springframework.web.servlet.mvc.UrlFilenameViewController" />
+    
+    <bean name="/registroPrestamoExitoso"
+          class="org.springframework.web.servlet.mvc.UrlFilenameViewController" />
+    
+    <bean name="/operacionCorrecta"
+          class="org.springframework.web.servlet.mvc.UrlFilenameViewController" />
+    
+    <bean name="/polizaCancelada"
+          class="org.springframework.web.servlet.mvc.UrlFilenameViewController" />
+    
+    <bean name="/polizaCanceladaExitosamente"
+          class="org.springframework.web.servlet.mvc.UrlFilenameViewController" />
+    
+    <bean name="/autofinanciarPolizaPorCancelacion"
+          class="org.springframework.web.servlet.mvc.UrlFilenameViewController" />
+    
+    <bean name="/polizaAutofinanciadaCorrectamente"
+          class="org.springframework.web.servlet.mvc.UrlFilenameViewController" />      
+    
+    <bean name="/registroSolicitudExitoso"
+          class="org.springframework.web.servlet.mvc.UrlFilenameViewController" />
+    
+    <bean name="/reporteGeneradoExitosamente"
+          class="org.springframework.web.servlet.mvc.UrlFilenameViewController" />
+    
+    <bean name="/reporteDescuentoGeneradoExitosamente"
+          class="org.springframework.web.servlet.mvc.UrlFilenameViewController" />
+    
+    <bean name="/reporteAplicDescGeneradoExitosamente"
+          class="org.springframework.web.servlet.mvc.UrlFilenameViewController" />
+    
+    <bean name="/reporteAplicDescExitoso"
+          class="org.springframework.web.servlet.mvc.UrlFilenameViewController" />
+          
+    <bean name="/generarArchivoMovDepExitoso"
+          class="org.springframework.web.servlet.mvc.UrlFilenameViewController" />
+    
+    <bean id="blundleViewResolver"
+          class="org.springframework.web.servlet.view.ResourceBundleViewResolver">
+        <property name="basename" value="views"/>
+        <property name="order" value="1"/>
+    </bean>
+    <!-- JasperReports -->
+    <!--bean id="viewResolverJasper"
+          class="org.springframework.web.servlet.view.ResourceBundleViewResolver">
+        <property name="basename" value="/WEB-INF/reporteCartaResumenPoliza_es_MX"/>
+    </bean-->
+    <!--bean id="reportView" 
+          class="org.springframework.web.servlet.view.jasperreports.JasperReportsPdfView">
+        <property name="url" value="/WEB-INF/reportes/reporteCertificadoIndividual.jasper"/>
+        <property name="jdbcDataSource" ref="jdbcDataSource"/>
+        <property name="exporterParameters">
+            <map>
+                <entry key="net.sf.jasperreports.engine.export.JRHtmlExporterParameter.IMAGES_URI" 
+                       value="/myusers/images/"/>
+            </map>
+        </property>
+    </bean-->
+
+    <bean name="/consultarRegistrosPendientesArchivoPolizasController" class="mx.com.seguros.web.archivopolizas.ConsultarRegistrosPendientesArchivoPolizasController">
+        <property name="archivoPolizasBusiness" ref="archivoPolizasBusiness"/>
+        
+        <property name="registrosPorPagina" value="2500"/>
+    </bean>
+    
+    <bean name="/consultaGeneralSolicitudesController" class="mx.com.seguros.web.consulta.ConsultaGeneralSolicitudesController">
+        <property name="formView" value="consulta/consultaGeneralSolicitudes"/>
+        <property name="successView" value="consulta/consultaGeneralSolicitudes"/>
+        <property name="registrosPorPagina" value="7000"/>
+        <property name="commandClass" value="mx.com.seguros.dto.CriteriosConsultaSolicitudesDTO"/>
+        <property name="commandName" value="criteriosBusqueda"/>
+        <property name="bindOnNewForm" value="true"/>
+        <property name="consultaGeneralSolicitudesBusiness" ref="consultaGeneralSolicitudesBusiness"/>
+        <property name="seguridadUtil" ref="seguridadUtil"></property>
+        <property name="sessionForm" value="true"></property>
+    </bean>
+
+    <bean name="/consultaDetalleSolicitudController" class="mx.com.seguros.web.consulta.ConsultaDetalleSolicitudController">
+        <property name="polizaBusiness" ref="polizaBusiness"/>
+        <property name="solicitudBusiness" ref="solicitudBusiness"/>
+        <property name="administrarProductosInburnominaService" ref="administrarProductosInburnominaService"></property>
+        <property name="seguridadUtil" ref="seguridadUtil"></property>
+    </bean>
+    
+    <bean name="/registroBeneficiosaAdicionalesPolizaController" class="mx.com.seguros.web.poliza.RegistroBeneficiosaAdicionalesPolizaController">
+        <property name="polizaBusiness" ref="polizaBusiness"/>
+        <property name="commandClass" value="mx.com.seguros.web.poliza.RegistroPolizaCommand"/>
+        <property name="commandName" value="datosPoliza"/>
+        <property name="bindOnNewForm" value="true"/>
+    </bean>
+
+	<bean id="localeResolver"
+        class="org.springframework.web.servlet.i18n.SessionLocaleResolver">
+        <property name="defaultLocale" value="es_MX" />
+    </bean>
+    
+    <bean name="/registrarTicketCorreccion" class="mx.com.seguros.web.correccion.RegistrarTicketCorreccionController">
+        <property name="commandClass" value="mx.com.seguros.web.correccion.RegistrarTicketCorreccionCommand"/>
+        <property name="commandName" value="command"></property>
+        <property name="formView" value="correccion/registrarTicket"/>
+        <property name="successView" value="correccion/ticketRegistroExito"/>
+        <property name="polizaBusiness" ref="polizaBusiness"/>
+        <property name="bindOnNewForm" value="true"/>
+        <property name="seguridadUtil" ref="seguridadUtil"></property>
+        <property name="solicitudBusiness" ref="solicitudBusiness"/>
+        <property name="procesoCorreccionDatosBusiness" ref="procesoCorreccionDatosBusiness"></property>
+        <property name="sessionForm" value="true"></property>
+    </bean>
+    
+    <bean name="/consultarTicketsCorreccion" class="mx.com.seguros.web.correccion.ConsultarTicketsController">
+     
+       <property name="procesoCorreccionDatosBusiness" ref="procesoCorreccionDatosBusiness"></property>
+       <property name="seguridadUtil" ref="seguridadUtil"></property>
+      
+    </bean>
+    
+    <bean name="/consultarDetalleTicketController" class="mx.com.seguros.web.correccion.ConsultarDetalleTickeController">
+        <property name="commandClass" value="mx.com.seguros.web.correccion.RegistrarTicketCorreccionCommand"/>
+        <property name="commandName" value="command"></property>
+        <property name="formView" value="correccion/registrarTicket"/>
+        <property name="successView" value="correccion/listadoTickets"/>
+        <property name="bindOnNewForm" value="true"/>
+        <property name="seguridadUtil" ref="seguridadUtil"></property>
+        <property name="procesoCorreccionDatosBusiness" ref="procesoCorreccionDatosBusiness"></property>
+        <property name="sessionForm" value="true"></property>
+        <property name="polizaBusiness" ref="polizaBusiness"/>
+    </bean>
+    
+    <bean name="/generarReportesPolizaController" class="mx.com.seguros.web.reportes.GenerarReportesPolizaController">
+    	<property name="reporteBusiness" ref="reporteBusiness"/>
+    </bean>
+    <bean name="/consultarArchivosPolizasCargadosController" class="mx.com.seguros.web.archivopolizas.ConsultarArchivosPolizasCargadosController">
+    	<property name="archivoPolizaBusiness" ref="archivoPolizasBusiness"/>
+    	<property name="commandClass" value="mx.com.seguros.web.archivopolizas.CargarArchivoPolizasInbursaCommand"/>
+        <property name="commandName" value="command"></property>
+        <property name="formView" value="archivoPolizas/consultaCargaArchivosInbursa"/>
+        <property name="successView" value="archivoPolizas/resultadoCargaArchivo"/>
+        <property name="seguridadUtil" ref="seguridadUtil"></property>
+    </bean>
+    <bean name="/consultarDetalleArchivoPolizasController" class="mx.com.seguros.web.archivopolizas.ConsultarDetalleArchivoPolizasController">
+    	<property name="archivoPolizasBusiness" ref="archivoPolizasBusiness"/>
+    </bean>
+    
+    <bean name="/generarReporteGenericoController" class="mx.com.seguros.web.reportes.GenerarReporteGenericoController">
+    	<property name="reporteBusiness" ref="reporteBusiness"/>
+    	<property name="commandClass" value="mx.com.seguros.web.reportes.GenerarReporteGenericoCommand"/>
+        <property name="commandName" value="command"></property>
+        <property name="formView" value="reportes/emitirReporteGenerico"/>
+        <property name="successView" value="reportes/emitirReporteGenerico"/>
+        <property name="seguridadUtil" ref="seguridadUtil"></property>
+        <property name="inventarioReportes" ref="inventarioReportes"></property>
+    </bean>
+	<bean name="/consultarTarifasController" class="mx.com.seguros.web.consulta.ConsultarTarifasController">
+    	<property name="solicitudBusiness" ref="solicitudBusiness"/>
+    </bean>
+    
+    <bean name="/consultarDetalleCalculoSumaAseguradaController" class="mx.com.seguros.web.consulta.ConsultarDetalleCalculoSumaAseguradaController">
+    	<property name="solicitudBusiness" ref="solicitudBusiness"/>
+    	<property name="polizaBusiness" ref="polizaBusiness"/>
+    </bean>
+    
+    <bean name="/cargaArchivoAplicacionController" class="mx.com.seguros.web.pagos.CargaArchivoAplicacionPagosController">
+        <property name="commandClass" value="mx.com.seguros.utils.CargaArchivoVO"/>
+        <property name="pagosBusiness" ref="pagosBusiness"/>
+    </bean>
+    
+    
+    <bean name="/consultarArchivoAplicacionCargadoController" class="mx.com.seguros.web.pagos.ConsultarArchivoAplicacionCargadoController">
+     
+        <property name="pagosBusiness" ref="pagosBusiness"/>
+    </bean>
+    
+    
+    <bean name="/calcularBonoPolizaAgenteController" class="mx.com.seguros.web.bonos.CalcularBonoPolizaAgenteController">
+    	<property name="commandClass" value="mx.com.seguros.web.bonos.CalcularBonoPolizaAgenteCommand"></property>
+    	<property name="commandName" value="calcularBonoPolizaAgenteCommand"></property>
+        <property name="formView" value="bonos/calcularBonoPolizaAgente"/>
+        <property name="successView" value="bonos/calcularBonoPolizaAgente"/>
+        <property name="calculoBonoPolizaBusiness" ref="calculoBonoPolizaBusiness"></property>
+        <property name="solicitudBusiness" ref="solicitudBusiness"></property>
+    </bean>
+    
+     <bean name="/consultarBonoPolizaAgenteController" class="mx.com.seguros.web.bonos.ConsultarBonoPolizaAgenteController">
+    	<property name="commandClass" value="mx.com.seguros.web.bonos.ConsultarBonoPolizaAgenteCommand"></property>
+    	<property name="commandName" value="consultarBonoPolizaAgenteCommand"></property>
+        <property name="formView" value="bonos/consultarBonoPolizaAgente"/>
+        <property name="successView" value="bonos/consultarBonoPolizaAgente"/>
+        <property name="calculoBonoPolizaBusiness" ref="calculoBonoPolizaBusiness"></property>
+    </bean>
+	<bean name="/consultaDetalleProcesoCalculoBonoController" class="mx.com.seguros.web.bonos.ConsultaDetalleProcesoCalculoBonoController">
+        <property name="calculoBonoPolizaBusiness" ref="calculoBonoPolizaBusiness"></property>
+    </bean>
+	<bean name="/generarReportesBonoController" class="mx.com.seguros.web.bonos.GenerarReportesBonoController">
+        <property name="reporteBusiness" ref="reporteBusiness"></property>
+    </bean>
+    
+    <bean name="/consultarCatalogoEscuelasController" class="mx.com.seguros.web.escuelas.ConsultarCatalogoEscuelasController">
+        <property name="administracionEmpresasService" ref="administracionEmpresasService"></property>
+        <property name="commandClass" value="mx.com.seguros.web.escuelas.ConsultarCatalogoEscuelasCommand"></property>
+    	<property name="commandName" value="consultarCatalogoEscuelasCommand"></property>
+        <property name="formView" value="escuelas/consultarCatalogoEscuelas"/>
+        <property name="successView" value="escuelas/consultarCatalogoEscuelas"/>
+    </bean>
+    
+    <bean name="/agregarEscuelaController" class="mx.com.seguros.web.escuelas.AgregarEscuelaController">
+        <property name="administracionEmpresasService" ref="administracionEmpresasService"></property>
+        <property name="commandClass" value="mx.com.seguros.web.escuelas.AgregarEscuelaCommand"></property>
+    	<property name="commandName" value="agregarEscuelaCommand"></property>
+        <property name="formView" value="escuelas/agregarEscuela"/>
+        <property name="successView" value="escuelas/agregarEscuela"/>
+    </bean>
+    
+    <bean name="/agregarSucursalController" class="mx.com.seguros.web.escuelas.AgregarSucursalController">
+        <property name="administracionEmpresasService" ref="administracionEmpresasService"></property>
+        <property name="commandClass" value="mx.com.seguros.web.escuelas.AgregarSucursalColoniaCommand"></property>
+    	<property name="commandName" value="agregarSucursalColoniaCommand"></property>
+        <property name="formView" value="escuelas/agregarSucursal"/>
+        <property name="successView" value="escuelas/agregarSucursal"/>
+    </bean>
+    
+    <bean name="/agregarColoniaController" class="mx.com.seguros.web.escuelas.AgregarColoniaController">
+        <property name="administracionEmpresasService" ref="administracionEmpresasService"></property>
+        <property name="commandClass" value="mx.com.seguros.web.escuelas.AgregarSucursalColoniaCommand"></property>
+    	<property name="commandName" value="agregarSucursalColoniaCommand"></property>
+        <property name="formView" value="escuelas/agregarColonia"/>
+        <property name="successView" value="escuelas/agregarColonia"/>
+    </bean>
+    
+    <bean name="/listadoTramitesPolizaController" class="mx.com.seguros.web.tramitesPoliza.ListadoTramitesPolizaController">
+        <property name="polizaBusiness" ref="polizaBusiness"></property>
+        <property name="commandClass" value="mx.com.seguros.web.tramitesPoliza.ListadoTramitesPolizaCommand"/>
+        <property name="commandName" value="listadoTramitesPolizaCommand"/>
+        <property name="formView" value="tramitesPoliza/listadoTramitesPoliza"/>
+        <property name="successView" value="tramitesPoliza/listadoTramitesPoliza"/>
+        <property name="seguridadUtil" ref="seguridadUtil"></property>
+    </bean>
+    
+    <bean name="/consultarListaTramitesController" class="mx.com.seguros.web.tramitesPoliza.ConsultarListaTramitesController">
+        <property name="polizaBusiness" ref="polizaBusiness"></property>
+        <property name="seguridadUtil" ref="seguridadUtil"></property>
+    </bean>
+    
+    <bean name="/cargaArchivoCambioEstatusPolizaController" class="mx.com.seguros.web.archivoestatus.CargaArchivoCambioEstatusPolizaController">
+    	<property name="archivoCambioEstatusPolizaBusiness" ref="archivoCambioEstatusPolizaBusiness"/>
+    	<property name="commandClass" value="mx.com.seguros.utils.CargaArchivoVO"/>
+        <property name="commandName" value="command"></property>
+        <property name="formView" value="CargaArchivos/cargaArchivoCambioEstatus"/>
+        <property name="successView" value="CargaArchivos/cargaArchivoCambioEstatus"/>
+        <property name="seguridadUtil" ref="seguridadUtil"></property>
+    </bean>
+
+	<bean name="/consultarArchivoCambioEstatusController" class="mx.com.seguros.web.archivoestatus.ConsultarArchivoCambioEstatusController">
+    	<property name="archivoCambioEstatusPolizaBusiness" ref="archivoCambioEstatusPolizaBusiness"/>
+    </bean>
+    
+    <bean name="/cargaArchivoRetirosController" class="mx.com.seguros.web.archivoretiros.CargaArchivoRetirosController">
+    	<property name="archivoTramiteRetirosBusiness" ref="archivoTramiteRetirosBusiness"/>
+    	<property name="commandClass" value="mx.com.seguros.utils.CargaArchivoVO"/>
+        <property name="commandName" value="command"></property>
+        <property name="formView" value="archivoRetiros/cargaArchivoRetiros"/>
+        <property name="successView" value="archivoRetiros/cargaArchivoRetiros"/>
+        <property name="seguridadUtil" ref="seguridadUtil"></property>
+    </bean>
+    
+    <bean name="/consultarArchivoRetirosController" class="mx.com.seguros.web.archivoretiros.ConsultarArchivoRetirosController">
+    	<property name="archivoTramiteRetirosBusiness" ref="archivoTramiteRetirosBusiness"/>
+    </bean>
+    
+    <bean name="/consultarDetalleRetirosController" class="mx.com.seguros.web.archivoretiros.ConsultarDetalleRetirosController">
+    	<property name="archivoTramiteRetirosBusiness" ref="archivoTramiteRetirosBusiness"/>
+    </bean>
+    
+   <bean name="/cargaArchivoCambioEstatusPagosPolizaController" class="mx.com.seguros.web.archivoestatus.CargaArchivoCambioEstatusPagosPolizaController">
+    	<property name="archivoCambioEstatusPolizaBusiness" ref="archivoCambioEstatusPolizaBusiness"/>
+    	<property name="commandClass" value="mx.com.seguros.utils.CargaArchivoVO"/>
+        <property name="commandName" value="command"></property>
+        <property name="formView" value="CargaArchivos/cargaArchivoCambioEstatusPagoPolizas"/>
+        <property name="successView" value="CargaArchivos/cargaArchivoCambioEstatusPagoPolizas"/>
+        <property name="seguridadUtil" ref="seguridadUtil"></property>
+    </bean>
+    
+    <bean name="/consultarArchivoCambioEstatusPagosPolizaController" class="mx.com.seguros.web.archivoestatus.ConsultarArchivoCambioEstatusPagosPolizaController">
+    	<property name="archivoCambioEstatusPolizaBusiness" ref="archivoCambioEstatusPolizaBusiness"/>
+    </bean>
+    
+	<bean name="/registrarProductosInburnominaController" class="mx.com.seguros.web.inburnomina.RegistrarProductosInburnominaController">
+    	<property name="seguridadUtil" ref="seguridadUtil"></property>
+    	<property name="administrarProductosInburnominaService" ref="administrarProductosInburnominaService"></property>
+    	<property name="commandClass" value="mx.com.seguros.web.inburnomina.RegistrarProductosInburnominaCommand"/>
+        <property name="commandName" value="command"></property>
+        <property name="formView" value="inburnomina/registroInburnomina"/>
+        <property name="successView" value="inburnomina/registroInburnomina"/>
+    </bean>
+    
+    <bean name="/consultarProductosInburnominaController" class="mx.com.seguros.web.inburnomina.ConsultarProductosInburnominaController">
+    	<property name="administrarProductosInburnominaService" ref="administrarProductosInburnominaService"></property>
+    </bean>
+
+
+	 <bean name="/consultaPolizasPorBajaController" class="mx.com.seguros.web.consulta.ConsultaPolizasPorBajaController">
+        <property name="formView" value="consulta/consultaPolizasPorBaja"/>
+        <property name="successView" value="consulta/consultaPolizasPorBaja"/>
+        <property name="registrosPorPagina" value="20"/>
+        <property name="commandClass" value="mx.com.seguros.dto.CriteriosConsultaPolizaPorBajaDTO"/>
+        <property name="commandName" value="criteriosBusqueda"/>
+        <property name="bindOnNewForm" value="true"/>
+        <property name="seguridadUtil" ref="seguridadUtil"></property>
+        <property name="sessionForm" value="true"></property>
+        <property name="consultaGeneralSolicitudesBusiness" ref="consultaGeneralSolicitudesBusiness"/>
+         <property name="polizaBusiness" ref="polizaBusiness"/>
+    </bean>
+    
+    <bean name="/ejecutarAutofinanciamientoController" class="mx.com.seguros.web.pagos.EjecutarAutofinanciamientoController">
+        <property name="formView" value="autofinanciamiento/ejecutarAutofinanciamiento"/>
+        <property name="successView" value="autofinanciamiento/ejecutarAutofinanciamiento"/>
+        <property name="commandClass" value="mx.com.seguros.dto.CriteriosEjecucionAutofinanciamientoDTO"/>
+        <property name="commandName" value="criteriosBusqueda"/>
+        <property name="bindOnNewForm" value="true"/>
+        <property name="seguridadUtil" ref="seguridadUtil"></property>
+        <property name="sessionForm" value="true"></property>
+        <property name="polizaBusiness" ref="polizaBusiness"/>
+        <property name="pagosBusiness" ref="pagosBusiness"/>
+    </bean>
+    
+    <!-- JLVO: Nuevo Controller para consulta de trámites -->
+     
+    <bean name="/consultaReporteTramitesController" class="mx.com.seguros.web.tramitesPoliza.ConsultaReporteTramitesController">
+        <property name="polizaBusiness" ref="polizaBusiness"></property>
+        <property name="commandClass" value="mx.com.seguros.dto.CriteriosConsultaReporteTramitesDTO"/>
+        <property name="commandName" value="criteriosConsulta"/>
+        <property name="formView" value="tramitesPoliza/consultaReporteTramitesPoliza"/>
+        <property name="successView" value="tramitesPoliza/consultaReporteTramitesPoliza"/>
+        <property name="seguridadUtil" ref="seguridadUtil"></property>
+        <property name="bindOnNewForm" value="true"/>
+        <property name="sessionForm" value="true"></property>            
+    </bean>
+ 
+    
+    
+</beans>
