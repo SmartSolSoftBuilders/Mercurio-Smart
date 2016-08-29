@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8" ?> 
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap namespace="archivoRetirosCargado">
+	<typeAlias alias="archivoRetirosCargado" type="mx.com.seguros.model.ArchivoRetirosCargado"/>
+	   
+	<resultMap class="archivoRetirosCargado" id="archivoRetirosCargadoResultMap">
+		<result property="idArchivoRetirosCargado" column="idArchivoRetirosCargado"/>
+		<result property="fechaCarga" column="fechaCarga"/>
+		<result property="username" column="username"/>
+		<result property="fechaHoraInicio" column="fechaHoraInicio"/>
+		<result property="fechaHoraFin" column="fechaHoraFin"/>
+		<result property="log" column="log"/>
+		<result property="numeroRegistros" column="numeroRegistros"/>
+		<result property="nombreArchivo" column="nombreArchivo"/>
+	</resultMap>
+    
+    <select id="obtenerArchivosRetiros" resultMap="archivoRetirosCargado.archivoRetirosCargadoResultMap">
+    	SELECT idArchivoRetirosCargado, fechaCarga,username,fechaHoraInicio,
+    	fechaHoraFin,log,numeroRegistros,nombreArchivo from ArchivoRetirosCargado
+    	order by fechaHoraInicio desc    
+    </select>
+    <select id="obtenerArchivosRetirosPorId" resultClass="archivoRetirosCargado"> 
+    	SELECT * from ArchivoRetirosCargado 
+    	WHERE
+    	idArchivoRetirosCargado = #value#
+    </select>
+    
+    <insert id="insertarArchivoRetiros" parameterClass="archivoRetirosCargado">
+    	INSERT INTO ArchivoRetirosCargado 
+    	(fechaCarga,username,fechaHoraInicio,fechaHoraFin,log,archivo,numeroRegistros,nombreArchivo)
+    	values
+    	(#fechaCarga#,#username#,#fechaHoraInicio#,#fechaHoraFin#,#log#,#archivo#,#numeroRegistros#,#nombreArchivo#)
+    	<selectKey keyProperty="idArchivoRetirosCargado" resultClass="int">  
+            SELECT LAST_INSERT_ID() AS idArchivoRetirosCargado  
+         </selectKey>  
+    </insert>
+    <update id="actualizarArchivoRetiros" parameterClass="archivoRetirosCargado">
+    update ArchivoRetirosCargado set
+    	fechaCarga = #fechaCarga#,
+    	username = #username#,
+    	fechaHoraInicio = #fechaHoraInicio#,
+    	fechaHoraFin = #fechaHoraFin#,
+    	log = #log#,
+    	archivo = #archivo#,
+    	numeroRegistros = #numeroRegistros#,
+    	nombreArchivo = #nombreArchivo#
+    	where idArchivoRetirosCargado = #idArchivoRetirosCargado#
+    </update>
+    
+    <delete id="eliminarArchivoRetiros">
+    	delete from ArchivoRetirosCargado where idArchivoRetirosCargado = #value#
+    </delete>
+    
+    
+</sqlMap>	

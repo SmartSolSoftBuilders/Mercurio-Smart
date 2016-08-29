@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" ?> 
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap namespace="cifrasControlProcesoAutofinanciar">
+	<typeAlias alias="cifrasControlProcesoAutofinanciar" type="mx.com.seguros.model.CifrasControlProcesoAutofinanciar"/>
+	
+
+    <insert id="insertarCifrasControlProcesoAutofinanciar" parameterClass="cifrasControlProcesoAutofinanciar">
+    	INSERT INTO CifrasControlProcesoAutofinanciar 
+    	(fechaHoraInicio,fechaHoraFin,totalRegistrosProcesados,totalDescuentosAplicados,log)
+    	values
+    	(#fechaHoraInicio#,#fechaHoraFin#,#totalRegistrosProcesados#,#totalDescuentosAplicados#,#log#)
+    	<selectKey keyProperty="idCifrasControlProcesoAutofinanciar" resultClass="int">  
+            SELECT LAST_INSERT_ID() AS idCifrasControlProcesoAutofinanciar  
+         </selectKey>  
+    </insert>
+    
+</sqlMap>	

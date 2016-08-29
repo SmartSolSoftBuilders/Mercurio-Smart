@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap
+PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
+"http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap namespace="Contratante">
+    <typeAlias alias="contratante" type="mx.com.seguros.model.Contratante"/>
+    <resultMap id="contratanteResult" class="contratante">
+        <!--result property="cveAgente" column="cveAgente" javaType="java.lang.Long" jdbcType="INTEGER"/-->
+        <result property="numNominaContratante" column="numNominaContratante"/>
+        <result property="apPaternoContratante" column="apPaternoContratante"/>
+        <result property="apMaternoContratante" column="apMaternoContratante"/>
+        <result property="nombre1Contratante" column="nombre1Contratante"/>
+        <result property="nombre2Contratante" column="nombre2Contratante"/>
+    </resultMap>
+    
+    <insert id="insertarContratante" parameterClass="contratante">
+        INSERT INTO Contratante (
+        numNominaContratante,
+        apPaternoContratante,
+        apMaternoContratante,
+        nombre1Contratante,
+        nombre2Contratante
+        )
+        VALUES(
+        #numNominaContratante#,
+        #apPaternoContratante#,
+        #apMaternoContratante#,
+        #nombre1Contratante#,
+        #nombre2Contratante#
+        )
+    </insert>
+    <update id="actualizaContratante" parameterClass="contratante">
+        update Contratante  set
+        apPaternoContratante = #apPaternoContratante#,
+        apMaternoContratante = #apMaternoContratante#,
+        nombre1Contratante = #nombre1Contratante#,
+        nombre2Contratante = #nombre2Contratante#
+        where  numNominaContratante = #numNominaContratante#
+       
+    </update>
+    <select id="recuperarContratantePorNumNomina" parameterClass="String" resultClass="contratante">
+        SELECT numNominaContratante, 
+        apPaternoContratante, apMaternoContratante, 
+        nombre1Contratante, nombre2Contratante
+        FROM Contratante
+        WHERE numNominaContratante = #value#
+    </select>
+</sqlMap>

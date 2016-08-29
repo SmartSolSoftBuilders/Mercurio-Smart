@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8" ?> 
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap namespace="archivoTramitePoliza">
+	<typeAlias alias="archivoTramitePoliza" type="mx.com.seguros.model.ArchivoTramitePoliza"/>
+	   
+	<resultMap class="archivoTramitePoliza" id="archivoTramitePolizaResultMap">
+		<result property="idArchivoTramitePoliza" column="idArchivoTramitePoliza"/>
+		<result property="fechaCarga" column="fechaCarga"/>
+		<result property="usuario" column="usuario"/>
+		<result property="fechaHoraInicio" column="fechaHoraInicio"/>
+		<result property="fechaHoraFin" column="fechaHoraFin"/>
+		<result property="log" column="log"/>
+		<result property="numeroRegistros" column="numeroRegistros"/>
+		<result property="nombreArchivo" column="nombreArchivo"/>
+	</resultMap>
+    
+    <select id="obtenerArchivosTramitePoliza" resultMap="archivoTramitePoliza.archivoTramitePolizaResultMap">
+    	SELECT idArchivoTramitePoliza, fechaCarga,usuario,fechaHoraInicio,
+    	fechaHoraFin,log,numeroRegistros,nombreArchivo from ArchivoTramitePoliza 
+    	order by fechaHoraInicio desc    
+    </select>
+    <select id="obtenerArchivosTramitePolizaPorId" resultClass="archivoTramitePoliza"> 
+    	SELECT * from ArchivoTramitePoliza 
+    	WHERE
+    	idArchivoTramitePoliza = #value#
+    </select>
+    
+    <insert id="insertarArchivoTramitePoliza" parameterClass="archivoTramitePoliza">
+    	INSERT INTO ArchivoTramitePoliza 
+    	(fechaCarga,usuario,fechaHoraInicio,fechaHoraFin,log,archivo,numeroRegistros,nombreArchivo)
+    	values
+    	(#fechaCarga#,#usuario#,#fechaHoraInicio#,#fechaHoraFin#,#log#,#archivo#,#numeroRegistros#,#nombreArchivo#)
+    	<selectKey keyProperty="idArchivoTramitePoliza" resultClass="int">  
+            SELECT LAST_INSERT_ID() AS idArchivoTramitePoliza  
+         </selectKey>  
+    </insert>
+    <update id="actualizarArchivoTramitePoliza" parameterClass="archivoTramitePoliza">
+    update ArchivoTramitePoliza set
+    	fechaCarga = #fechaCarga#,
+    	usuario = #usuario#,
+    	fechaHoraInicio = #fechaHoraInicio#,
+    	fechaHoraFin = #fechaHoraFin#,
+    	log = #log#,
+    	archivo = #archivo#,
+    	numeroRegistros = #numeroRegistros#,
+    	nombreArchivo = #nombreArchivo#
+    	where idArchivoTramitePoliza = #idArchivoTramitePoliza#
+    </update>
+    
+    <delete id="eliminarArchivoTramitePoliza">
+    	delete from ArchivoTramitePoliza where idArchivoTramitePoliza = #value#
+    </delete>
+    
+    
+</sqlMap>	

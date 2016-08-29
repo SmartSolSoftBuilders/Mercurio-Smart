@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap
+PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
+"http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap namespace="ProductosInburnomina">
+    
+    <typeAlias alias="productosInburnomina" type="mx.com.seguros.model.ProductosInburnomina"/>
+    <typeAlias alias="historicoProductosInburnomina" type="mx.com.seguros.model.HistoricoProductosInburnomina"/>
+    <!--poliza result-->
+    <resultMap id="productosInburnominaResult" class="productosInburnomina">
+        <result property="numPoliza" column="numPoliza"/>
+        <result property="numConsignatario" column="numConsignatario"/>
+        <result property="indRcLicencia" column="indRcLicencia"/>
+        <result property="indInburmedic" column="indInburmedic"/>
+        <result property="indSeguCancer" column="indSeguCancer"/>
+        <result property="numLicencia" column="numLicencia"/>
+        <result property="primaMensualLicencia" column="primaMensualLicencia"/>
+        <result property="primaMensualInburmedic" column="primaMensualInburmedic"/>
+        <result property="primaMensualSeguCancer" column="primaMensualSeguCancer"/>
+        <result property="fechaUltimaModif" column="fechaUltimaModif"/>
+        
+        <result property="numPolizaRcLicencia" column="numPolizaRcLicencia"/>
+        <result property="numConsignatarioRcLicencia" column="numConsignatarioRcLicencia"/>
+        <result property="fechaVigenciaRcLicencia" column="fechaVigenciaRcLicencia"/>
+        
+        <result property="numPolizaInburmedic" column="numPolizaInburmedic"/>
+        <result property="numConsignatarioInburmedic" column="numConsignatarioInburmedic"/>
+        <result property="fechaVigenciaInburmedic" column="fechaVigenciaInburmedic"/>
+        
+        <result property="numPolizaSeguCancer" column="numPolizaSeguCancer"/>
+        <result property="numConsignatarioSeguCancer" column="numConsignatarioSeguCancer"/>
+        <result property="fechaVigenciaSeguCancer" column="fechaVigenciaSeguCancer"/>
+        
+        
+    </resultMap>
+    
+    <resultMap id="historicoProductosInburnominaResult" class="historicoProductosInburnomina">
+        <result property="idHistoricoProductosInburnomina" column="idHistoricoProductosInburnomina"/>
+        <result property="numPoliza" column="numPoliza"/>
+        <result property="numConsignatario" column="numConsignatario"/>
+        <result property="indRcLicencia" column="indRcLicencia"/>
+        <result property="indInburmedic" column="indInburmedic"/>
+        <result property="indSeguCancer" column="indSeguCancer"/>
+        <result property="numLicencia" column="numLicencia"/>
+        <result property="primaMensualLicencia" column="primaMensualLicencia"/>
+        <result property="primaMensualInburmedic" column="primaMensualInburmedic"/>
+        <result property="primaMensualSeguCancer" column="primaMensualSeguCancer"/>
+        <result property="fechaModificacion" column="fechaModificacion"/>
+        <result property="usuarioModificacion" column="usuarioModificacion"/>
+        
+        <result property="numPolizaRcLicencia" column="numPolizaRcLicencia"/>
+        <result property="numConsignatarioRcLicencia" column="numConsignatarioRcLicencia"/>
+        <result property="fechaVigenciaRcLicencia" column="fechaVigenciaRcLicencia"/>
+        
+        <result property="numPolizaInburmedic" column="numPolizaInburmedic"/>
+        <result property="numConsignatarioInburmedic" column="numConsignatarioInburmedic"/>
+        <result property="fechaVigenciaInburmedic" column="fechaVigenciaInburmedic"/>
+        
+        <result property="numPolizaSeguCancer" column="numPolizaSeguCancer"/>
+        <result property="numConsignatarioSeguCancer" column="numConsignatarioSeguCancer"/>
+        <result property="fechaVigenciaSeguCancer" column="fechaVigenciaSeguCancer"/>
+    </resultMap>
+	
+	<select id="consultaProductosInburnominaPorPoliza" resultMap="productosInburnominaResult" parameterClass="java.util.Map">
+		select * from ProductosInburnomina where numPoliza = #numPoliza# and numConsignatario = #numConsignatario#	
+	</select>
+	
+	<insert id="guardarProductosInburnomina" parameterClass="productosInburnomina">
+		insert into ProductosInburnomina (numPoliza,numConsignatario,indRcLicencia,indInburmedic,indSeguCancer,numLicencia,
+		primaMensualLicencia,primaMensualInburmedic,primaMensualSeguCancer,fechaUltimaModif,
+		numPolizaRcLicencia,numConsignatarioRcLicencia,fechaVigenciaRcLicencia,
+		numPolizaInburmedic,numConsignatarioInburmedic,fechaVigenciaInburmedic,
+		numPolizaSeguCancer,numConsignatarioSeguCancer,fechaVigenciaSeguCancer)
+		values (#numPoliza#,#numConsignatario#,#indRcLicencia#,#indInburmedic#,#indSeguCancer#,#numLicencia#,
+		#primaMensualLicencia#,#primaMensualInburmedic#,#primaMensualSeguCancer#,#fechaUltimaModif#,
+		#numPolizaRcLicencia#,#numConsignatarioRcLicencia#,#fechaVigenciaRcLicencia#,
+		#numPolizaInburmedic#,#numConsignatarioInburmedic#,#fechaVigenciaInburmedic#,
+		#numPolizaSeguCancer#,#numConsignatarioSeguCancer#,#fechaVigenciaSeguCancer#
+		)
+	</insert>
+
+    <update id="actualizarProductosInburnomina" parameterClass="productosInburnomina" >
+        UPDATE ProductosInburnomina
+        SET indRcLicencia =#indRcLicencia# ,indInburmedic =#indInburmedic# ,indSeguCancer =#indSeguCancer# ,numLicencia =#numLicencia# ,
+		primaMensualLicencia =#primaMensualLicencia# ,primaMensualInburmedic =#primaMensualInburmedic# ,
+		primaMensualSeguCancer =#primaMensualSeguCancer# ,fechaUltimaModif =#fechaUltimaModif# ,
+		numPolizaRcLicencia=#numPolizaRcLicencia#,numConsignatarioRcLicencia=#numConsignatarioRcLicencia#,fechaVigenciaRcLicencia=#fechaVigenciaRcLicencia#,
+		numPolizaInburmedic=#numPolizaInburmedic#,numConsignatarioInburmedic=#numConsignatarioInburmedic#,fechaVigenciaInburmedic=#fechaVigenciaInburmedic#,
+		numPolizaSeguCancer=#numPolizaSeguCancer#,numConsignatarioSeguCancer=#numConsignatarioSeguCancer#,fechaVigenciaSeguCancer=#fechaVigenciaSeguCancer#
+			
+        WHERE numPoliza= #numPoliza#
+        AND numConsignatario= #numConsignatario#
+    </update>
+    
+    <select id="countProductosInburnominaPorPoliza" resultClass="int" parameterClass="java.util.Map">
+		select count(*) from ProductosInburnomina where numPoliza = #numPoliza# and numConsignatario = #numConsignatario#	
+	</select>
+    
+    
+    <insert id="insertarHistoricoProductosInburnomina" parameterClass="historicoProductosInburnomina">
+    	insert into HistoricoProductosInburnomina (numPoliza,numConsignatario,indRcLicencia,indInburmedic,indSeguCancer,numLicencia,
+		primaMensualLicencia,primaMensualInburmedic,primaMensualSeguCancer,fechaModificacion,usuarioModificacion,
+		numPolizaRcLicencia,numConsignatarioRcLicencia,fechaVigenciaRcLicencia,
+		numPolizaInburmedic,numConsignatarioInburmedic,fechaVigenciaInburmedic,
+		numPolizaSeguCancer,numConsignatarioSeguCancer,fechaVigenciaSeguCancer)
+		values (#numPoliza#,#numConsignatario#,#indRcLicencia#,#indInburmedic#,#indSeguCancer#,#numLicencia#,
+		#primaMensualLicencia#,#primaMensualInburmedic#,#primaMensualSeguCancer#,#fechaModificacion#,#usuarioModificacion#,
+		#numPolizaRcLicencia#,#numConsignatarioRcLicencia#,#fechaVigenciaRcLicencia#,
+		#numPolizaInburmedic#,#numConsignatarioInburmedic#,#fechaVigenciaInburmedic#,
+		#numPolizaSeguCancer#,#numConsignatarioSeguCancer#,#fechaVigenciaSeguCancer#
+		)
+    	<selectKey keyProperty="idHistoricoProductosInburnomina" resultClass="int">  
+            SELECT LAST_INSERT_ID() AS idHistoricoProductosInburnomina  
+         </selectKey>  
+    </insert>
+    
+    <select id="consultaHistoricoProductosInburnominaPorPoliza" resultMap="historicoProductosInburnominaResult" parameterClass="java.util.Map">
+		select * from HistoricoProductosInburnomina where numPoliza = #numPoliza# and numConsignatario = #numConsignatario#	
+	</select>
+    
+</sqlMap>
+

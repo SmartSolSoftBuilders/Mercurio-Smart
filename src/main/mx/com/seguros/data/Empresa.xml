@@ -1,0 +1,219 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap
+PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
+"http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap namespace="Empresa">
+    <typeAlias alias="empresa" type="mx.com.seguros.model.Empresa"/>
+    <typeAlias alias="sucursal" type="mx.com.seguros.model.Sucursal"/>
+     <typeAlias alias="colonia" type="mx.com.seguros.model.Colonia"/>
+     <typeAlias alias="turnoEmpresa" type="mx.com.seguros.model.TurnoEmpresa"/>
+    <typeAlias alias="tipoEmpresa" type="mx.com.seguros.model.TipoEmpresa"/>
+    <typeAlias alias="criteriosEmpresa" type="mx.com.seguros.dto.CriteriosConsultaEscuelasDTO"/>
+    <resultMap id="empresaResult" class="empresa">
+        <result property="cveSucursal" column="cveSucursal"/>
+        <result property="sucursal.nombreSucursal" column="nombreSucursal"/>
+    </resultMap>
+    
+    <select id="obtenerSucursalesPorGrupo" resultMap="empresaResult" parameterClass="java.util.HashMap">
+        SELECT DISTINCT emp.cveSucursal, suc.nombreSucursal
+        FROM Empresa emp
+        LEFT OUTER JOIN Sucursal suc
+        ON suc.cveSucursal = emp.cveSucursal
+        WHERE emp.cveGrupoAsegurado = #cveGrupoAsegurado#
+        ORDER BY emp.cveSucursal
+        
+    </select>
+    
+    <resultMap id="coloniasPorSucursal" class="empresa">
+        <result property="cveColonia" column="cveColonia"/>
+        <result property="colonia.cveColonia" column ="cveColonia"/>
+        <result property="colonia.tipoAsentamiento" column ="tipoAsentamiento"/>
+        <result property="colonia.asentamiento" column="asentamiento"/>
+        <result property="colonia.municipio" column="municipio" />
+    </resultMap>
+    
+    <resultMap class="empresa" id="empresaCompletaResult">
+    	<result property="cveEmpresa" column="cveEmpresa"/>
+		<result property="nombreEmpresa" column="nombreEmpresa"/>
+		
+		<result property="cveGrupoAsegurado" column="cveGrupoAsegurado"/>
+		<result property="cveSucursal" column="cveSucursal"/>
+		<result property="cveColonia" column="cveColonia"/>
+		<result property="cveTurno" column="cveTurno"/>
+		<result property="grupoAsegurado.nombreGrupoAsegurado" column="nombreGrupoAsegurado"/>
+		<result property="grupoAsegurado.plaza" resultMap="Empresa.plazaResultMap"/>
+		<result property="sucursal.nombreSucursal" column="nombreSucursal"/>
+		<result property="colonia.tipoAsentamiento" column="tipoAsentamiento"/>
+		<result property="colonia.asentamiento" column="asentamiento"/>
+		<result property="turnoEmpresa.nombreTurno" column="nombreTurno"/>
+		<result property="tipoEmpresa.descripcionEmpresa" column="descripcionEmpresa"/>
+    </resultMap>
+    <resultMap class="plaza" id="plazaResultMap">
+    	<result property="idPlaza" column="idPlaza"/>
+    	<result property="cvePlaza" column="cvePlaza"/>
+    	<result property="nombrePlaza" column="nombrePlaza"/>
+    </resultMap>
+    
+    <select id="obtenerColoniasPorSucursal" resultMap="coloniasPorSucursal" parameterClass="java.util.HashMap">
+        SELECT DISTINCT emp.cveColonia, col.tipoAsentamiento, col.asentamiento, col.municipio
+        FROM Empresa emp
+        LEFT OUTER JOIN Colonia col
+        ON col.cveColonia = emp.cveColonia
+        WHERE emp.cveSucursal = #cveSucursal#
+	ORDER BY col.asentamiento
+        
+    </select>
+    
+    
+    <resultMap id="empresasPorColonia" class="empresa">
+        <result property="cveEmpresa" column="cveEmpresa"/>
+        <result property="nombreEmpresa" column="nombreEmpresa"/>
+        <result property="turnoEmpresa.nombreTurno" column="nombreTurno"/>
+        <result property="tipoEmpresa.descripcionEmpresa" column="descripcionEmpresa"/>
+    </resultMap>
+    
+      
+    <select id="obtenerEmpresasPorColonia" resultMap="empresasPorColonia" parameterClass="java.util.HashMap">
+        SELECT emp.cveEmpresa, tip.descripcionEmpresa, emp.nombreEmpresa, tur.nombreTurno
+        FROM Empresa emp , TurnoEmpresa tur, TipoEmpresa tip
+        WHERE 
+            emp.cveTurno = tur.cveTurno 
+	    AND emp.tipoEmpresa = tip.tipoEmpresa
+            AND emp.cveColonia=#cveColonia#
+        ORDER BY emp.nombreEmpresa
+    </select>
+    
+    <select id="selectCountConsultaEmpresas" resultClass="Integer" parameterClass="criteriosEmpresa">
+    	select count(*) from Empresa empresa 
+    	 <dynamic prepend="where" >
+              <isNotNull prepend="and" property="cveGrupoAsegurado">
+               	<![CDATA[   empresa.cveGrupoAsegurado = #cveGrupoAsegurado# ]]>
+              </isNotNull>
+              <isNotNull prepend="and" property="cveSucursal">
+               	<![CDATA[   empresa.cveSucursal = #cveSucursal# ]]>
+              </isNotNull>
+              <isNotNull prepend="and" property="cveColonia">
+               	<![CDATA[   empresa.cveColonia = #cveColonia# ]]>
+              </isNotNull>
+              <isNotNull prepend="and" property="nombreEscuela">
+               	<![CDATA[   empresa.nombreEmpresa like #nombreEscuela# ]]>
+              </isNotNull>
+         </dynamic>
+    
+    </select>
+    
+    <select id="selectConsultaEmpresas" resultMap="Empresa.empresaCompletaResult" parameterClass="criteriosEmpresa">
+    	select * from Empresa empresa 
+    	join GrupoAsegurado grupo on empresa.cveGrupoAsegurado = grupo.cveGrupoAsegurado
+    	join Sucursal sucursal on empresa.cveSucursal = sucursal.cveSucursal
+    	join Colonia colonia on empresa.cveColonia = colonia.cveColonia
+    	join Plaza plaza on grupo.idPlaza = plaza.idPlaza 
+    	join TurnoEmpresa turno on empresa.cveTurno = turno.cveTurno
+    	join TipoEmpresa tipoEmpresa on empresa.tipoEmpresa = tipoEmpresa.tipoEmpresa
+    	 <dynamic prepend="where" >
+              <isNotNull prepend="and" property="cveGrupoAsegurado">
+               	<![CDATA[   empresa.cveGrupoAsegurado = #cveGrupoAsegurado# ]]>
+              </isNotNull>
+              <isNotNull prepend="and" property="cveSucursal">
+               	<![CDATA[   empresa.cveSucursal = #cveSucursal# ]]>
+              </isNotNull>
+              <isNotNull prepend="and" property="cveColonia">
+               	<![CDATA[   empresa.cveColonia = #cveColonia# ]]>
+              </isNotNull>
+              <isNotNull prepend="and" property="nombreEscuela">
+               	<![CDATA[   empresa.nombreEmpresa like #nombreEscuela# ]]>
+              </isNotNull>
+         </dynamic>
+    	order by empresa.cveGrupoAsegurado, empresa.cveSucursal, empresa.cveColonia, empresa.nombreEmpresa
+    </select>
+    
+    <select id="selectEmpresaPorCveEmpresa" resultMap="Empresa.empresaCompletaResult">
+    	select * from Empresa empresa 
+    	join GrupoAsegurado grupo on empresa.cveGrupoAsegurado = grupo.cveGrupoAsegurado
+    	join Sucursal sucursal on empresa.cveSucursal = sucursal.cveSucursal
+    	join Colonia colonia on empresa.cveColonia = colonia.cveColonia
+    	join Plaza plaza on grupo.idPlaza = plaza.idPlaza 
+    	join TurnoEmpresa turno on empresa.cveTurno = turno.cveTurno
+    	join TipoEmpresa tipoEmpresa on empresa.tipoEmpresa = tipoEmpresa.tipoEmpresa
+    	where empresa.cveEmpresa = #value#
+    </select>
+    
+    <select id="selectTiposEmpresa" resultClass="tipoEmpresa">
+    	select * from tipoEmpresa order by tipoEmpresa
+    </select>
+    
+    
+    <select id="obtenerSucursales" resultMap="empresaResult" parameterClass="java.util.HashMap">
+        SELECT * from Sucursal
+        ORDER BY nombreSucursal
+    </select>
+     
+    <select id="obtenerColonias" resultClass="colonia" parameterClass="java.util.HashMap">
+        SELECT * from Colonia
+		ORDER BY estado, municipio, tipoAsentamiento, asentamiento
+    </select>
+    <select id="obtenerTurnosEmpresa" resultClass="turnoEmpresa" >
+        SELECT * from TurnoEmpresa
+		ORDER BY cveTurno
+    </select>
+    
+    
+    <insert id="agregarEmpresa" parameterClass="empresa">
+    	insert into Empresa 
+    	(nombreEmpresa,
+		cveGrupoAsegurado,
+		cveSucursal,
+		cveColonia,
+		tipoEmpresa,
+		cveTurno)
+    	values 
+    	(#nombreEmpresa#,
+    	 #cveGrupoAsegurado#,
+		 #cveSucursal#,
+		 #cveColonia#,
+		 #tipoEmpresa.tipoEmpresa#,
+		 #cveTurno#		 
+    	)
+    	<selectKey keyProperty="cveEmpresa" resultClass="int">  
+            SELECT LAST_INSERT_ID() AS cveEmpresa  
+         </selectKey>
+    </insert>
+    
+    
+    <update id="actualizarEmpresa" parameterClass="empresa">
+    	update Empresa set
+    		nombreEmpresa = #nombreEmpresa#,
+			cveGrupoAsegurado = #cveGrupoAsegurado#,
+			cveSucursal = #cveSucursal#,
+			cveColonia = #cveColonia#,
+			tipoEmpresa = #tipoEmpresa.tipoEmpresa#,
+			cveTurno = #cveTurno#
+			where cveEmpresa = #cveEmpresa#
+    </update>
+    
+    <insert id="agregarSucursal" parameterClass="sucursal">
+    	INSERT INTO Sucursal
+		(nombreSucursal)
+		VALUES
+		(#nombreSucursal#)    
+    	<selectKey keyProperty="cveSucursal" resultClass="int">  
+            SELECT LAST_INSERT_ID() AS cveSucursal  
+         </selectKey>
+    </insert>
+    <insert id="agregarColonia" parameterClass="colonia">
+    	INSERT INTO Colonia
+		(tipoAsentamiento,
+		 asentamiento,
+		 municipio,
+		 estado)
+		 VALUES
+		 (#tipoAsentamiento#,
+		 #asentamiento#,
+		 #municipio#,
+		 #estado#)    
+    	<selectKey keyProperty="cveColonia" resultClass="int">  
+            SELECT LAST_INSERT_ID() AS cveColonia  
+         </selectKey>
+    </insert>
+</sqlMap>
+

@@ -1,0 +1,1720 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap
+PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
+"http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap namespace="Poliza">
+    
+    <typeAlias alias="poliza" type="mx.com.seguros.model.PolizaIndividual"/>
+    <typeAlias alias="asegurado" type="mx.com.seguros.model.Asegurado"/>
+    <typeAlias alias="contratante" type="mx.com.seguros.model.Contratante"/>
+    <typeAlias alias="certificado" type="mx.com.seguros.model.CertificadoIndividual"/>
+    <typeAlias alias="estatuspoliza" type="mx.com.seguros.model.EstatusPolizaSeguimiento"/>
+    <typeAlias alias="solicitud" type="mx.com.seguros.model.Solicitud"/>
+    <typeAlias alias="descuentos" type="mx.com.seguros.model.DescuentosAplicados"/>
+    <typeAlias alias="calendario" type="mx.com.seguros.model.CalendarioEnvioMovimientosDependencias"/>
+    <typeAlias alias="historial" type="mx.com.seguros.model.HistorialMovimientosContratante"/>
+    <typeAlias alias="retenedor" type="mx.com.seguros.model.Retenedor"/>
+    <typeAlias alias="plaza" type="mx.com.seguros.model.Plaza"/>
+    <typeAlias alias="beneficioAdicional" type="mx.com.seguros.model.BeneficioAdicional"/>
+    <typeAlias alias="beneficioAdicionalPoliza" type="mx.com.seguros.model.BeneficioAdicionalPoliza"/>
+        <typeAlias alias="resultadoConsultaSolicitud" type="mx.com.seguros.dto.ResultadoConsultaSolicitudDTO"/>
+    <typeAlias alias="estatusPolizaGeneral" type="mx.com.seguros.model.EstatusPolizaGeneral"/>   
+    <typeAlias alias="criteriosConsultaPolizaPorBaja" type="mx.com.seguros.dto.CriteriosConsultaPolizaPorBajaDTO"/>
+    
+    <typeAlias alias="plazaResultClass" type="mx.com.seguros.model.Plaza"/>
+    
+    <!--poliza result-->
+    <resultMap id="polizasVigentesResult" class="poliza">
+        <result property="numPoliza" column="numPoliza"/>
+        <result property="numConsignatario" column="numConsignatario"/>
+        <result property="tipoMovimientoPoliza" column="tipoMovimientoPoliza"/>
+        <result property="solicitud.tarifa.importeTarifa" column="importeTarifa"/>
+        <result property="folioSolicitud" column="folioSolicitud"/>
+        <result property="formatoSolicitud" column="formatoSolicitud"/>
+        <result property="qnaProgEnvioMvtoPoliza" column="qnaProgEnvioMvtoPoliza"/>
+    </resultMap>
+    
+    <resultMap class="beneficioAdicional" id="beneficioAdicionalResult">
+       	<result property="idBeneficioAdicional" column="idBeneficioAdicional"/>
+    	<result property="descripcionBeneficioAdicional" column="descripcionBeneficioAdicional"/>
+    </resultMap>
+    <resultMap class="beneficioAdicionalPoliza" id="beneficioAdicionalPolizaResult">
+       	<result property="idBeneficioAdicional" column="idBeneficioAdicional"/>
+    	<result property="numPoliza" column="numPoliza"/>
+       	<result property="numConsignatario" column="numConsignatario"/>
+    	<result property="sumaBeneficio" column="sumaBeneficio"/>
+    	<result property="montoCobertura" column="montoCobertura"/>
+    	<result property="descripcionBeneficio" column="descripcionBeneficioAdicional"/>
+    </resultMap>
+    
+    <resultMap id="polizaResult" class="poliza">
+
+        <result property="numPoliza" column="numPoliza"/>
+        <result property="numConsignatario" column="numConsignatario"/>
+        <result property="cvePlaza" column="cvePlaza"/>
+        <result property="agrupacionCIS" column="agrupacionCIS"/>
+        <result property="tipoMovimientoPoliza" column="tipoMovimientoPoliza"/>
+        <result property="tipoSeguro" column="tipoSeguro"/>
+        <result property="fechaInicioVigencia" column="fechaInicioVigencia"/>
+        <result property="fechaFinVigencia" column="fechaFinVigencia"/>
+        <result property="fechaExpedicion" column="fechaExpedicion"/>
+        <result property="idEstatusPagosPoliza" column="idEstatusPagosPoliza"/>
+        <result property="idEstatusPolizaSeguimiento" column="idEstatusPolizaSeguimiento"/>
+        <result property="estatusPolizaSeguimiento.descripcionEstatusPoliza" column="descripcionEstatusPoliza"/>
+        <result property="estatusPolizaPagos.descripcionEstatusPagosPoliza" column="descripcionEstatusPagosPoliza"/>
+        <result property="sumaAseguradaIndividual" column="sumaAseguradaIndividual"/>
+        <result property="sumaGastosFunerarios" column="sumaGastosFunerarios"/>
+        <result property="sumaSEVI" column="sumaSEVI"/>
+        <result property="sumaBAF" column="sumaBAF"/>
+        <result property="sumaCPF" column="sumaCPF"/>
+        <result property="montoCoberturaBeneficios" column="montoCoberturaBeneficios"/>
+        <result property="descripcionPaqueteVidadxn" column="descripcionPaqueteVidadxn"/>
+        <result property="descripcionTipoSeguro" column="descripcionTipoSeguro"/>
+        <result property="solicitud.tarifa.primaMensualSeguroColectivo.sumaAseguradaColectiva" column="sumaAseguradaColectiva"/>
+        <result property="solicitud.tarifa.importePrimaInd" column="importePrimaInd"/>
+        <result property="solicitud.tarifa.importePrimaColectiva" column="importePrimaColectiva"/>
+        <result property="solicitud.tarifa.importeTarifa" column="importeTarifa"/>
+        <result property="solicitud.tarifa.descripcion" column="descripcion"/>
+        <result property="solicitud.certificadoindividual.plaza.cvePlaza" column="cvePlaza"/>
+        <result property="solicitud.certificadoindividual.numCertificado" column="numCertificado"/>
+        <result property="asegurado.idAsegurado" column="idAsegurado"/>
+        <result property="asegurado.apPaternoAsegurado" column="apPaternoAsegurado"/>
+        <result property="asegurado.apMaternoAsegurado" column="apMaternoAsegurado"/>
+        <result property="asegurado.nombre1Asegurado" column="nombre1Asegurado"/>
+        <result property="asegurado.nombre2Asegurado" column="nombre2Asegurado"/>
+        <result property="asegurado.RFCasegurado" column="RFCasegurado"/>
+        <result property="asegurado.fechaNacimientoAsegurado" column="fechaNacimientoAsegurado"/>
+        <result property="solicitud.contratante.numNominaContratante" column="numNominaContratante"/>
+        <result property="solicitud.contratante.apPaternoContratante" column="apPaternoContratante"/>
+        <result property="solicitud.contratante.apMaternoContratante" column="apMaternoContratante"/>
+        <result property="solicitud.contratante.nombre1Contratante" column="nombre1Contratante"/>
+        <result property="solicitud.contratante.nombre2Contratante" column="nombre2Contratante"/>
+        <result property="solicitud.agente.cveAgente" column="cveAgente"/>
+        <result property="solicitud.empleado.apPaternoEmpleado" column="apPaternoEmpleado"/>
+        <result property="solicitud.empleado.apMaternoEmpleado" column="apMaternoEmpleado"/>
+        <result property="solicitud.empleado.nombre1Empleado" column="nombre1Empleado"/>
+        <result property="solicitud.empleado.nombre2Empleado" column="nombre2Empleado"/>
+        <result property="solicitud.folioSolicitud" column="folioSolicitud"/>
+        <result property="solicitud.formatoSolicitud" column="formatoSolicitud"/>
+        <result property="solicitud.tarifaTotal" column="tarifaTotal"/>
+        
+        <result property="fechaSolicitudCancelacion" column="fechaSolicitudCancelacion"/>
+        <result property="fechaCancelacionDescuento" column="fechaCancelacionDescuento"/>
+        <result property="importeAhorroAdicionalMensual" column="importeAhorroAdicionalMensual"/>
+        <result property="idEstatusPolizaGeneral" column="idEstatusPolizaGeneral"/>
+        
+        <result property="numQuincenaUltimoDescuento" column="numQuincenaUltimoDescuento"/>        
+        <result property="anhoUltimoDescuento" column="anhoUltimoDescuento"/>
+        
+    </resultMap>
+    
+    <resultMap id="aseguradoResult" class="asegurado">
+        <result property="apPaternoAsegurado" column="apPaternoAsegurado"/>
+        <result property="apMaternoAsegurado" column="apMaternoAsegurado"/>
+        <result property="nombre1Asegurado" column="nombre1Asegurado"/>
+        <result property="nombre2Asegurado" column="nombre2Asegurado"/>
+        <result property="RFCasegurado" column="RFCasegurado"/>
+    </resultMap>
+    
+    <resultMap id="certificadoResult" class="certificado">
+        <result property="numCertificado" column="numCertificado"/>
+    </resultMap>
+    
+    <resultMap id="retenedorResult" class="retenedor">
+        <result property="cveRetenedor" column="cveRetenedor"/>
+        <result property="cveDescuento" column="cveDescuento"/>
+    </resultMap>
+    
+    <resultMap id="estatuspolizaResult" class="estatuspoliza">
+        <result property="idEstatusPolizaSeguimiento" column="idEstatusPolizaSeguimiento"/>
+        <result property="descripcionEstatusPoliza" column="descripcionEstatusPoliza"/>
+    </resultMap>
+    
+    <!--HEFS Result's para consultas-->
+    
+    <resultMap id="polizaEmitidaEntregadaResult" class="poliza">
+        <result property="numPoliza" column="numPoliza"/>
+        <result property="numConsignatario" column="numConsignatario"/>
+        <result property="numCertificado" column="numCertificado"/>
+        <result property="cvePlaza" column="cvePlaza"/>
+    </resultMap>
+    
+    <resultMap id="entregarPolizaAsegurado" class="poliza">
+        <result property="numPoliza" column="numPoliza"/>
+        <result property="numConsignatario" column="numConsignatario"/>
+        <result property="numCertificado" column="numCertificado"/>
+        <result property="cvePlaza" column="cvePlaza"/>
+        <result property="asegurado.apPaternoAsegurado" column="apPaternoAsegurado"/>
+        <result property="asegurado.apMaternoAsegurado" column="apMaternoAsegurado"/>
+        <result property="asegurado.nombre1Asegurado" column="nombre1Asegurado"/>
+        <result property="asegurado.nombre2Asegurado" column="nombre2Asegurado"/>
+    </resultMap>
+    
+    
+      
+    <!-- HEFS Campos de tabla polizaIndividual-->
+    <resultMap id="tablaPolizaIndividualResultMap" class="poliza">
+        <result property="numPoliza" column="numPoliza"/>
+        <result property="numConsignatario" column="numConsignatario"/>
+        <result property="fechaInicioVigencia" column="fechaInicioVigencia"/>
+        <result property="fechaFinVigencia" column="fechaFinVigencia"/>
+        <result property="fechaFinVigencia" column="fechaFinVigencia"/>
+        <result property="sumaAseguradaIndividual" column="sumaAseguradaIndividual"/>
+        <result property="fechaExpedicion" column="fechaExpedicion"/>
+        <result property="fechaRecepcionPoliza" column="fechaRecepcionPoliza"/>
+        <result property="folioSolicitud" column="folioSolicitud"/>
+        <result property="formatoSolicitud" column="formatoSolicitud"/>
+        <result property="tipoSeguro" column="tipoSeguro"/>
+        <result property="agrupacionCIS" column="agrupacionCIS"/>
+        <result property="idEstatusPolizaSeguimiento" column="idEstatusPolizaSeguimiento"/>
+        <result property="nombrePersonaRecibe" column="nombrePersonaRecibe"/>
+        <result property="fechaRecepcionPoliza" column="fechaRecepcionPoliza"/>
+        <result property="sumaGastosFunerarios" column="sumaGastosFunerarios"/>
+        <result property="sumaSEVI" column="sumaSEVI"/>
+    </resultMap>
+    
+    <resultMap id="listaPolizasCambioResultMap" class="poliza">
+        <result property="numPolizaCambio" column="numPoliza"/>
+        <result property="numConsignatarioCambio" column="numConsignatario"/>
+        <result property="tipoMovimientoPolizaCambio" column="tipoMovimientoPoliza"/>
+        <result property="solicitud.tarifa.importeTarifa" column="importeTarifa"/>
+    </resultMap>
+
+    <resultMap id="polizasAnterioresResultMap" class="poliza">
+        <result property="cvePlaza" column="cvePlaza"/>
+        <result property="numCertificado" column="numCertificado"/>
+        <result property="solicitud.tarifa.importeTarifa" column="importeTarifa"/>
+        <result property="estatusPolizaPagos.descripcionEstatusPagosPoliza" column="descripcionEstatusPagosPoliza"/>
+    </resultMap>
+    
+    
+    
+     <resultMap id="polizaBatchResultMap" class="poliza">
+		<result property="solicitud.folioSolicitud" column="folioSolicitud"/>
+        <result property="solicitud.formatoSolicitud" column="formatoSolicitud"/>
+        <result property="folioSolicitud" column="folioSolicitud"/>
+        <result property="formatoSolicitud" column="formatoSolicitud"/>
+        <result property="numPoliza" column="numPoliza"/>
+        <result property="numConsignatario" column="numConsignatario"/>
+        <result property="cvePlaza" column="cvePlaza"/>
+        <result property="agrupacionCIS" column="agrupacionCIS"/>
+        <result property="tipoSeguro" column="tipoSeguro"/>
+        <result property="fechaInicioVigencia" column="fechaInicioVigencia"/>
+        <result property="fechaFinVigencia" column="fechaFinVigencia"/>
+        <result property="fechaExpedicion" column="fechaExpedicion"/>
+        <result property="idEstatusPagosPoliza" column="idEstatusPagosPoliza"/>
+        <result property="idEstatusPolizaSeguimiento" column="idEstatusPolizaSeguimiento"/>
+        <result property="sumaAseguradaIndividual" column="sumaAseguradaIndividual"/>
+        <result property="sumaGastosFunerarios" column="sumaGastosFunerarios"/>
+        <result property="sumaSEVI" column="sumaSEVI"/>
+        <result property="sumaBAF" column="sumaBAF"/>
+        <result property="sumaCPF" column="sumaCPF"/>
+        <result property="montoCoberturaBeneficios" column="montoCoberturaBeneficios"/>
+        <result property="descripcionPaqueteVidadxn" column="descripcionPaqueteVidadxn"/>
+        <result property="solicitud.tarifa.importePrimaInd" column="importePrimaInd"/>
+        <result property="solicitud.tarifa.importePrimaColectiva" column="importePrimaColectiva"/>
+        <result property="solicitud.tarifa.importeTarifa" column="importeTarifa"/>
+        <result property="solicitud.certificadoindividual.plaza.cvePlaza" column="cvePlaza"/>
+        <result property="solicitud.certificadoindividual.numCertificado" column="numCertificado"/>
+               
+    </resultMap>
+    
+    
+    <!--resultMap id="solicResult" class="solicitud">
+        <result property="folioSolicitud" column="folioSolicitud"/>
+    </resultMap-->
+    <!--
+    Document   : Poliza.xml
+    Created on : 25 de septiembre de 2007, 11:33 AM
+    Author     : Cesar
+    Description:
+        Purpose of the document follows.
+    -->
+	
+	<select id="consultarCatalogoBeneficiosAdicionales" resultMap="beneficioAdicionalResult">
+		select * from BeneficioAdicional
+	</select>
+	<select id="consultarBeneficiosAdicionalesDePoliza" resultMap="beneficioAdicionalPolizaResult" 
+	parameterClass="java.util.Map">
+		select * from BeneficioAdicionalPoliza, BeneficioAdicional
+		where numPoliza = #numPoliza# and numConsignatario = #numConsignatario#
+		and BeneficioAdicionalPoliza.idBeneficioAdicional = BeneficioAdicional.idBeneficioAdicional
+	</select>
+	<delete id="eliminarBeneficiosAdicionalesDePoliza" parameterClass="java.util.Map">
+		delete from BeneficioAdicionalPoliza 
+		where numPoliza = #numPoliza# and numConsignatario = #numConsignatario#
+	</delete>
+	<insert id="guardarBeneficioAdicionalPoliza" parameterClass="beneficioAdicionalPoliza">
+		insert into BeneficioAdicionalPoliza (idBeneficioAdicional,numPoliza,numConsignatario,sumaBeneficio,montoCobertura)
+		values(#idBeneficioAdicional#,#numPoliza#,#numConsignatario#,#sumaBeneficio#,#montoCobertura#);
+	
+	</insert>
+
+    <update id="autofinanciarPolizaPorCancel" parameterClass="poliza" >
+        UPDATE PolizaIndividual
+        SET idEstatusPagosPoliza= 4,
+        fechaCancelacion=#fechaCancelacion#
+        WHERE numPoliza= #numPoliza#
+        AND numConsignatario= #numConsignatario#
+    </update>
+
+
+    <update id="cancelarPoliza" parameterClass="poliza">
+        UPDATE PolizaIndividual
+        SET idEstatusPolizaSeguimiento= 5,
+        idEstatusPagosPoliza=6,
+        fechaCancelacion=#fechaCancelacion#,
+        tipoMovimientoPoliza=#tipoMovimientoPoliza#
+        WHERE numPoliza= #numPoliza#
+        AND numConsignatario= #numConsignatario#
+    </update>
+
+
+    <insert id="insertarPoliza" parameterClass="poliza">
+        INSERT INTO PolizaIndividual (
+        folioSolicitud,
+        formatoSolicitud,
+        numConsignatario,
+        numPoliza,
+        agrupacionCIS,
+        fechaInicioVigencia,
+        fechaFinVigencia,
+        sumaAseguradaIndividual,
+        fechaExpedicion,
+        tipoSeguro,
+        idEstatusPolizaSeguimiento,
+        idEstatusPagosPoliza,
+        indicadorPagoComisionEntregaPoliza,
+        indicadorDescuentoComision,
+        tipoMovimientoPoliza,
+        qnaProgEnvioMvtoPoliza,
+        sumaGastosFunerarios,
+        sumaSEVI,
+        sumaBAF,
+        sumaCPF,
+        fechaSolicitudCancelacion,
+        fechaCancelacionDescuento,
+        importeAhorroAdicionalMensual,
+        idEstatusPolizaGeneral,
+        numQuincenaUltimoDescuento
+        )
+        VALUES(
+        #folioSolicitud#,
+        #formatoSolicitud#,
+        #numConsignatario#,
+        #numPoliza#,
+        #agrupacionCIS#,
+        #fechaInicioVigencia#,
+        #fechaFinVigencia#,
+        #sumaAseguradaIndividual#,
+        #fechaExpedicion#,
+        #tipoSeguro#,
+        #idEstatusPolizaSeguimiento#,
+        #idEstatusPagosPoliza#,
+        #indicadorPagoComisionEntregaPoliza#,
+        #indicadorDescuentoComision#,
+        #tipoMovimientoPoliza#,
+        #qnaProgEnvioMvtoPoliza#,
+        #sumaGastosFunerarios#,
+        #sumaSEVI#,
+        #sumaBAF#,
+        #sumaCPF#,
+        #fechaSolicitudCancelacion#,
+        #fechaCancelacionDescuento#,
+        #importeAhorroAdicionalMensual#,
+        #idEstatusPolizaGeneral#,
+        #numQuincenaUltimoDescuento#
+        )
+        <!--selectKey
+            resultClass="int"
+            keyProperty="numPoliza"
+        >
+            select LAST_INSERT_ID()
+        </selectKey-->
+    </insert>
+
+
+    <update id="actualizaPolizaCambio" parameterClass="poliza">
+        UPDATE PolizaIndividual
+        SET tipoMovimientoPoliza = 'R'
+        WHERE numPoliza = #numPolizaCambio#
+        AND numConsignatario = #numConsignatarioCambio#
+    </update>
+
+
+    <update id="actualizarSolicitud" parameterClass="mx.com.seguros.dto.SolicitudPKParamDTO">
+        UPDATE Solicitud
+        SET idEstatusSolicitud = 2
+        WHERE folioSolicitud = #folioSolicitud# and formatoSolicitud = #formatoSolicitud#
+    </update>
+
+
+    <select id="obtenerCvePlaza" resultClass="String" parameterClass="mx.com.seguros.dto.SolicitudPKParamDTO">
+        SELECT cvePlaza
+        FROM CertificadoIndividual,Solicitud,Plaza
+        WHERE Solicitud.folioSolicitud = CertificadoIndividual.folioSolicitud
+        AND Solicitud.formatoSolicitud = CertificadoIndividual.formatoSolicitud
+        AND CertificadoIndividual.idPlaza=Plaza.idPlaza
+        AND Solicitud.folioSolicitud = #folioSolicitud# 
+        AND Solicitud.formatoSolicitud = #formatoSolicitud#
+    </select>
+
+
+    <select id="seleccionarPolizaNum" resultMap="polizaResult" parameterClass="java.util.Map">
+        SELECT pol.numPoliza,
+        pol.tipoMovimientoPoliza,
+        pol.numConsignatario,
+        pol.tipoSeguro,
+        cer.numCertificado,
+        pla.cvePlaza,
+        pol.sumaAseguradaIndividual,
+        pol.sumaGastosFunerarios,
+        pol.sumaSEVI,
+        pol.sumaBAF,
+        pol.sumaCPF,
+        pol.folioSolicitud,
+        pol.formatoSolicitud,
+        pol.fechaSolicitudCancelacion,
+        pol.fechaCancelacionDescuento,
+        (SELECT sum(benef.montoCobertura) from BeneficioAdicionalPoliza benef where benef.numPoliza = pol.numPoliza and benef.numConsignatario = pol.numConsignatario)
+        as montoCoberturaBeneficios,
+        pol.fechaInicioVigencia,
+        pol.fechaFinvigencia,
+        pol.fechaExpedicion,
+        pol.idEstatusPagosPoliza,
+        pol.idEstatusPolizaSeguimiento,
+        pol.agrupacionCis,
+        pol.importeAhorroAdicionalMensual,
+        pol.numQuincenaUltimoDescuento,
+        pol.idEstatusPolizaGeneral,
+        asg.apPaternoAsegurado,
+        asg.apMaternoAsegurado,
+        asg.nombre1Asegurado,
+        asg.nombre2Asegurado,
+        asg.RFCasegurado,
+        asg.fechaNacimientoAsegurado,
+        asg.idAsegurado,
+        (SELECT espol.descripcionEstatusPoliza
+        FROM EstatusPolizaSeguimiento espol
+        WHERE espol.idEstatusPolizaSeguimiento=pol.idEstatusPolizaSeguimiento)
+        AS descripcionEstatusPoliza,
+        (SELECT espolpag.descripcionEstatusPagosPoliza
+        FROM EstatusPolizaPagos espolpag
+        WHERE espolpag.idEstatusPagosPoliza=pol.idEstatusPagosPoliza)
+        AS descripcionEstatusPagosPoliza,
+        (SELECT prsc.sumaAseguradaColectiva
+        FROM PrimaMensualSeguroColectivo prsc
+        WHERE prsc.importePrimaColectiva=tar.importePrimaColectiva)
+        AS sumaAseguradaColectiva,
+        tar.importePrimaInd,
+        tar.importePrimaColectiva,
+        tar.importeTarifa,
+        tar.descripcion,
+        sol.tarifaTotal,
+        (SELECT sol.numNominaContratante
+        FROM  Solicitud sol
+        WHERE pol.folioSolicitud = sol.folioSolicitud AND pol.formatoSolicitud = sol.formatoSolicitud)AS numNominaContratante,
+        ctr.apPaternoContratante,
+        ctr.apMaternoContratante,
+        ctr.nombre1Contratante,
+        ctr.nombre2Contratante,
+        agt.cveAgente,
+        empl.apPaternoEmpleado,
+        empl.apMaternoEmpleado,
+        empl.nombre1Empleado,
+        empl.nombre2Empleado,
+        IFNULL((SELECT paquete.nombrePaquete
+        FROM  PaqueteVidaDxN paquete
+        WHERE paquete.idPaqueteVidaDxN = pol.tipoSeguro),(SELECT tipoSeguro.nombreTipoSeguro
+        FROM  TipoSeguro tipoSeguro
+        WHERE tipoSeguro.tipoSeguro = pol.tipoSeguro)) AS descripcionPaqueteVidadxn,
+        (SELECT tipoSeguro.nombreTipoSeguro
+        FROM  TipoSeguro tipoSeguro
+        WHERE tipoSeguro.tipoSeguro = pol.tipoSeguro) AS descripcionTipoSeguro
+        FROM PolizaIndividual pol
+        INNER JOIN EstatusPolizaPagos espolpag ON espolpag.idEstatusPagosPoliza=pol.idEstatusPagosPoliza
+        INNER JOIN EstatusPolizaSeguimiento espol ON espol.idEstatusPolizaSeguimiento=pol.idEstatusPolizaSeguimiento
+        INNER JOIN Solicitud sol ON pol.folioSolicitud=sol.folioSolicitud AND pol.formatoSolicitud = sol.formatoSolicitud
+        INNER JOIN Contratante ctr ON sol.numNominaContratante=ctr.numNominaContratante
+        INNER JOIN TarifaAportMensual tar ON sol.cveTarifa=tar.cveTarifa
+        INNER JOIN Asegurado asg  ON pol.numPoliza=asg.numPoliza
+	AND asg.numConsignatario = pol.numConsignatario
+        INNER JOIN CertificadoIndividual cer ON pol.foliosolicitud= cer.foliosolicitud and pol.formatoSolicitud = cer.formatoSolicitud
+        INNER JOIN Plaza pla ON pla.idPlaza=cer.idPlaza
+        INNER JOIN Agente agt ON agt.cveAgente = sol.cveAgente
+        INNER JOIN Empleado empl ON empl.cveEmpleado = agt.cveEmpleado
+        AND pol.numPoliza=#numPoliza#
+    </select>
+
+     <select id="seleccionarPolizaNumConsignatario" resultMap="polizaResult" parameterClass="java.util.HashMap">
+        SELECT pol.numPoliza,
+        pol.tipoMovimientoPoliza,
+        pol.numConsignatario,
+        pol.tipoSeguro,
+        pol.agrupacionCis,
+        cer.numCertificado,
+        pla.cvePlaza,
+        pol.sumaAseguradaIndividual,
+        pol.sumaGastosFunerarios,
+        pol.sumaSEVI,
+        pol.sumaBAF,
+        pol.sumaCPF,
+        pol.folioSolicitud,
+        pol.formatoSolicitud,
+        pol.fechaSolicitudCancelacion,
+        pol.fechaCancelacionDescuento,
+        (SELECT sum(benef.montoCobertura) from BeneficioAdicionalPoliza benef where benef.numPoliza = pol.numPoliza and benef.numConsignatario = pol.numConsignatario)
+        as montoCoberturaBeneficios,
+        pol.fechaInicioVigencia,
+        pol.fechaFinvigencia,
+        pol.fechaExpedicion,
+        pol.idEstatusPagosPoliza,
+        pol.idEstatusPolizaSeguimiento,
+        pol.importeAhorroAdicionalMensual,
+        pol.numQuincenaUltimoDescuento,
+        pol.anhoUltimoDescuento,
+        pol.idEstatusPolizaGeneral,
+        asg.apPaternoAsegurado,
+        asg.apMaternoAsegurado,
+        asg.nombre1Asegurado,
+        asg.nombre2Asegurado,
+        asg.RFCasegurado,
+        asg.fechaNacimientoAsegurado,
+        asg.idAsegurado,
+        (SELECT espol.descripcionEstatusPoliza
+        FROM EstatusPolizaSeguimiento espol
+        WHERE espol.idEstatusPolizaSeguimiento=pol.idEstatusPolizaSeguimiento)
+        AS descripcionEstatusPoliza,
+        (SELECT espolpag.descripcionEstatusPagosPoliza
+        FROM EstatusPolizaPagos espolpag
+        WHERE espolpag.idEstatusPagosPoliza=pol.idEstatusPagosPoliza)
+        AS descripcionEstatusPagosPoliza,
+        (SELECT prsc.sumaAseguradaColectiva
+        FROM PrimaMensualSeguroColectivo prsc
+        WHERE prsc.importePrimaColectiva=tar.importePrimaColectiva)
+        AS sumaAseguradaColectiva,
+        tar.importePrimaInd,
+        tar.importePrimaColectiva,
+        tar.importeTarifa,
+        tar.descripcion,
+        sol.tarifaTotal,
+        (SELECT sol.numNominaContratante
+        FROM  Solicitud sol
+        WHERE pol.folioSolicitud = sol.folioSolicitud AND pol.formatoSolicitud = sol.formatoSolicitud)AS numNominaContratante,
+        ctr.apPaternoContratante,
+        ctr.apMaternoContratante,
+        ctr.nombre1Contratante,
+        ctr.nombre2Contratante,
+        agt.cveAgente,
+        empl.apPaternoEmpleado,
+        empl.apMaternoEmpleado,
+        empl.nombre1Empleado,
+        empl.nombre2Empleado,
+        IFNULL((SELECT paquete.nombrePaquete
+        FROM  PaqueteVidaDxN paquete
+        WHERE paquete.idPaqueteVidaDxN = pol.tipoSeguro),(SELECT tipoSeguro.nombreTipoSeguro
+        FROM  TipoSeguro tipoSeguro
+        WHERE tipoSeguro.tipoSeguro = pol.tipoSeguro)) AS descripcionPaqueteVidadxn,
+        (SELECT tipoSeguro.nombreTipoSeguro
+        FROM  TipoSeguro tipoSeguro
+        WHERE tipoSeguro.tipoSeguro = pol.tipoSeguro) AS descripcionTipoSeguro
+        FROM PolizaIndividual pol
+        INNER JOIN EstatusPolizaPagos espolpag ON espolpag.idEstatusPagosPoliza=pol.idEstatusPagosPoliza
+        INNER JOIN EstatusPolizaSeguimiento espol ON espol.idEstatusPolizaSeguimiento=pol.idEstatusPolizaSeguimiento
+        INNER JOIN Solicitud sol ON pol.folioSolicitud=sol.folioSolicitud AND pol.formatoSolicitud = sol.formatoSolicitud
+        INNER JOIN Contratante ctr ON sol.numNominaContratante=ctr.numNominaContratante
+        INNER JOIN TarifaAportMensual tar ON sol.cveTarifa=tar.cveTarifa
+        LEFT OUTER JOIN Asegurado asg  ON (pol.numPoliza=asg.numPoliza
+        AND asg.numConsignatario = pol.numConsignatario)
+        LEFT OUTER JOIN CertificadoIndividual cer ON pol.foliosolicitud= cer.foliosolicitud and pol.formatoSolicitud = cer.formatoSolicitud
+        LEFT OUTER JOIN Plaza pla ON pla.idPlaza=cer.idPlaza
+        LEFT OUTER JOIN Agente agt ON agt.cveAgente = sol.cveAgente
+        LEFT OUTER JOIN Empleado empl ON empl.cveEmpleado = agt.cveEmpleado
+        WHERE
+        pol.numPoliza=#numPoliza#
+        AND pol.numConsignatario=#numConsignatario#
+    </select>
+
+   <select id="seleccionarPolizaNumContratante" resultMap="polizaResult" parameterClass="java.util.Map">
+        SELECT pol.numPoliza,
+        pol.tipoMovimientoPoliza,
+        pol.numConsignatario,
+        pol.tipoSeguro,
+        cer.numCertificado,
+        pla.cvePlaza,
+        pol.agrupacionCis,
+        pol.sumaAseguradaIndividual,
+        pol.sumaGastosFunerarios,
+        pol.sumaSEVI,
+        pol.sumaBAF,
+        pol.sumaCPF,
+        pol.folioSolicitud,
+        pol.formatoSolicitud,
+        pol.fechaSolicitudCancelacion,
+        pol.fechaCancelacionDescuento,
+        (SELECT sum(benef.montoCobertura) from BeneficioAdicionalPoliza benef where benef.numPoliza = pol.numPoliza and benef.numConsignatario = pol.numConsignatario)
+        as montoCoberturaBeneficios,
+        pol.fechaInicioVigencia,
+        pol.fechaFinvigencia,
+        pol.fechaExpedicion,
+        pol.idEstatusPagosPoliza,
+        pol.idEstatusPolizaSeguimiento,
+        pol.importeAhorroAdicionalMensual,
+        pol.numQuincenaUltimoDescuento,
+        pol.idEstatusPolizaGeneral,
+        asg.apPaternoAsegurado,
+        asg.apMaternoAsegurado,
+        asg.nombre1Asegurado,
+        asg.nombre2Asegurado,
+        asg.RFCasegurado,
+        asg.fechaNacimientoAsegurado,
+        asg.idAsegurado,
+        (SELECT espol.descripcionEstatusPoliza
+        FROM EstatusPolizaSeguimiento espol
+        WHERE espol.idEstatusPolizaSeguimiento=pol.idEstatusPolizaSeguimiento)
+        AS descripcionEstatusPoliza,
+        (SELECT espolpag.descripcionEstatusPagosPoliza
+        FROM EstatusPolizaPagos espolpag
+        WHERE espolpag.idEstatusPagosPoliza=pol.idEstatusPagosPoliza)
+        AS descripcionEstatusPagosPoliza,
+        (SELECT prsc.sumaAseguradaColectiva
+        FROM PrimaMensualSeguroColectivo prsc
+        WHERE prsc.importePrimaColectiva=tar.importePrimaColectiva)
+        AS sumaAseguradaColectiva,
+        tar.importePrimaInd,
+        tar.importePrimaColectiva,
+        tar.importeTarifa,
+        tar.descripcion,
+        sol.tarifaTotal,
+        (SELECT sol.numNominaContratante
+        FROM  Solicitud sol
+        WHERE pol.folioSolicitud = sol.folioSolicitud AND pol.formatoSolicitud = sol.formatoSolicitud)AS numNominaContratante,
+        ctr.apPaternoContratante,
+        ctr.apMaternoContratante,
+        ctr.nombre1Contratante,
+        ctr.nombre2Contratante,
+        agt.cveAgente,
+        empl.apPaternoEmpleado,
+        empl.apMaternoEmpleado,
+        empl.nombre1Empleado,
+        empl.nombre2Empleado,
+        IFNULL((SELECT paquete.nombrePaquete
+        FROM  PaqueteVidaDxN paquete
+        WHERE paquete.idPaqueteVidaDxN = pol.tipoSeguro),(SELECT tipoSeguro.nombreTipoSeguro
+        FROM  TipoSeguro tipoSeguro
+        WHERE tipoSeguro.tipoSeguro = pol.tipoSeguro)) AS descripcionPaqueteVidadxn,
+        (SELECT tipoSeguro.nombreTipoSeguro
+        FROM  TipoSeguro tipoSeguro
+        WHERE tipoSeguro.tipoSeguro = pol.tipoSeguro) AS descripcionTipoSeguro
+        FROM PolizaIndividual pol
+        INNER JOIN EstatusPolizaPagos espolpag ON espolpag.idEstatusPagosPoliza=pol.idEstatusPagosPoliza
+        INNER JOIN EstatusPolizaSeguimiento espol ON espol.idEstatusPolizaSeguimiento=pol.idEstatusPolizaSeguimiento
+        INNER JOIN Solicitud sol ON pol.folioSolicitud=sol.folioSolicitud AND pol.formatoSolicitud = sol.formatoSolicitud
+        INNER JOIN Contratante ctr ON sol.numNominaContratante=ctr.numNominaContratante
+        INNER JOIN TarifaAportMensual tar ON sol.cveTarifa=tar.cveTarifa
+        INNER JOIN Asegurado asg  ON pol.numPoliza=asg.numPoliza
+	AND asg.numConsignatario = pol.numConsignatario
+        INNER JOIN CertificadoIndividual cer ON pol.foliosolicitud= cer.foliosolicitud and pol.formatoSolicitud = cer.formatoSolicitud
+        INNER JOIN Plaza pla ON pla.idPlaza=cer.idPlaza
+        INNER JOIN Agente agt ON agt.cveAgente = sol.cveAgente
+        INNER JOIN Empleado empl ON empl.cveEmpleado = agt.cveEmpleado
+        AND ctr.numNominaContratante=#numNominaContratante#
+    </select>
+
+    <select id="seleccionarPolizaApPaternoContratante" resultMap="polizaResult" parameterClass="java.util.Map">
+        SELECT pol.numPoliza,
+        pol.tipoMovimientoPoliza,
+        pol.numConsignatario,
+        pol.tipoSeguro,
+        cer.numCertificado,
+        pla.cvePlaza,
+        pol.agrupacionCis,
+        pol.sumaAseguradaIndividual,
+        pol.sumaGastosFunerarios,
+        pol.sumaSEVI,
+        pol.sumaBAF,
+        pol.sumaCPF,
+        pol.folioSolicitud,
+        pol.formatoSolicitud,
+        pol.fechaSolicitudCancelacion,
+        pol.fechaCancelacionDescuento,
+        (SELECT sum(benef.montoCobertura) from BeneficioAdicionalPoliza benef where benef.numPoliza = pol.numPoliza and benef.numConsignatario = pol.numConsignatario)
+        as montoCoberturaBeneficios,
+        pol.fechaInicioVigencia,
+        pol.fechaFinvigencia,
+        pol.fechaExpedicion,
+        pol.idEstatusPagosPoliza,
+        pol.idEstatusPolizaSeguimiento,
+        pol.importeAhorroAdicionalMensual,
+        pol.numQuincenaUltimoDescuento,
+        pol.idEstatusPolizaGeneral,
+        asg.apPaternoAsegurado,
+        asg.apMaternoAsegurado,
+        asg.nombre1Asegurado,
+        asg.nombre2Asegurado,
+        asg.RFCasegurado,
+        asg.fechaNacimientoAsegurado,
+        asg.idAsegurado,
+        (SELECT espol.descripcionEstatusPoliza
+        FROM EstatusPolizaSeguimiento espol
+        WHERE espol.idEstatusPolizaSeguimiento=pol.idEstatusPolizaSeguimiento)
+        AS descripcionEstatusPoliza,
+        (SELECT espolpag.descripcionEstatusPagosPoliza
+        FROM EstatusPolizaPagos espolpag
+        WHERE espolpag.idEstatusPagosPoliza=pol.idEstatusPagosPoliza)
+        AS descripcionEstatusPagosPoliza,
+        (SELECT prsc.sumaAseguradaColectiva
+        FROM PrimaMensualSeguroColectivo prsc
+        WHERE prsc.importePrimaColectiva=tar.importePrimaColectiva)
+        AS sumaAseguradaColectiva,
+        tar.importePrimaInd,
+        tar.importePrimaColectiva,
+        tar.importeTarifa,
+        tar.descripcion,
+        sol.tarifaTotal
+        (SELECT sol.numNominaContratante
+        FROM  Solicitud sol
+        WHERE pol.folioSolicitud = sol.folioSolicitud AND pol.formatoSolicitud = sol.formatoSolicitud)AS numNominaContratante,
+        ctr.apPaternoContratante,
+        ctr.apMaternoContratante,
+        ctr.nombre1Contratante,
+        ctr.nombre2Contratante,
+        agt.cveAgente,
+        empl.apPaternoEmpleado,
+        empl.apMaternoEmpleado,
+        empl.nombre1Empleado,
+        empl.nombre2Empleado,
+        IFNULL((SELECT paquete.nombrePaquete
+        FROM  PaqueteVidaDxN paquete
+        WHERE paquete.idPaqueteVidaDxN = pol.tipoSeguro),(SELECT tipoSeguro.nombreTipoSeguro
+        FROM  TipoSeguro tipoSeguro
+        WHERE tipoSeguro.tipoSeguro = pol.tipoSeguro)) AS descripcionPaqueteVidadxn,
+        (SELECT tipoSeguro.nombreTipoSeguro
+        FROM  TipoSeguro tipoSeguro
+        WHERE tipoSeguro.tipoSeguro = pol.tipoSeguro) AS descripcionTipoSeguro
+        FROM PolizaIndividual pol
+        INNER JOIN EstatusPolizaPagos espolpag ON espolpag.idEstatusPagosPoliza=pol.idEstatusPagosPoliza
+        INNER JOIN EstatusPolizaSeguimiento espol ON espol.idEstatusPolizaSeguimiento=pol.idEstatusPolizaSeguimiento
+        INNER JOIN Solicitud sol ON pol.folioSolicitud=sol.folioSolicitud AND pol.formatoSolicitud = sol.formatoSolicitud
+        INNER JOIN Contratante ctr ON sol.numNominaContratante=ctr.numNominaContratante
+        INNER JOIN TarifaAportMensual tar ON sol.cveTarifa=tar.cveTarifa
+        INNER JOIN Asegurado asg  ON pol.numPoliza=asg.numPoliza
+        AND asg.numConsignatario = pol.numConsignatario
+        INNER JOIN CertificadoIndividual cer ON pol.foliosolicitud= cer.foliosolicitud and pol.formatoSolicitud = cer.formatoSolicitud
+        INNER JOIN Plaza pla ON pla.idPlaza=cer.idPlaza
+        INNER JOIN Agente agt ON agt.cveAgente = sol.cveAgente
+        INNER JOIN Empleado empl ON empl.cveEmpleado = agt.cveEmpleado
+        AND ctr.apPaternoContratante=#apPaternoContratante#
+    </select>
+
+
+    <select id="seleccionarPolizaNumeroCertificado" resultMap="polizaResult"  parameterClass="java.util.Map">
+        SELECT pol.numPoliza,
+        pol.tipoMovimientoPoliza,
+        pol.numConsignatario,
+        pol.tipoSeguro,
+        cer.numCertificado,
+        pla.cvePlaza,
+        pol.agrupacionCis,
+        pol.sumaAseguradaIndividual,
+        pol.sumaGastosFunerarios,
+        pol.sumaSEVI,
+        pol.sumaBAF,
+        pol.sumaCPF,
+        pol.folioSolicitud,
+        pol.formatoSolicitud,
+        pol.fechaSolicitudCancelacion,
+        pol.fechaCancelacionDescuento,
+        (SELECT sum(benef.montoCobertura) from BeneficioAdicionalPoliza benef where benef.numPoliza = pol.numPoliza and benef.numConsignatario = pol.numConsignatario)
+        as montoCoberturaBeneficios,
+        pol.fechaInicioVigencia,
+        pol.fechaFinvigencia,
+        pol.fechaExpedicion,
+        pol.idEstatusPagosPoliza,
+        pol.idEstatusPolizaSeguimiento,
+        pol.importeAhorroAdicionalMensual,
+        pol.numQuincenaUltimoDescuento,
+        pol.idEstatusPolizaGeneral,
+        asg.apPaternoAsegurado,
+        asg.apMaternoAsegurado,
+        asg.nombre1Asegurado,
+        asg.nombre2Asegurado,
+        asg.RFCasegurado,
+        asg.fechaNacimientoAsegurado,
+        asg.idAsegurado,
+        (SELECT espol.descripcionEstatusPoliza
+        FROM EstatusPolizaSeguimiento espol
+        WHERE espol.idEstatusPolizaSeguimiento=pol.idEstatusPolizaSeguimiento)
+        AS descripcionEstatusPoliza,
+        (SELECT espolpag.descripcionEstatusPagosPoliza
+        FROM EstatusPolizaPagos espolpag
+        WHERE espolpag.idEstatusPagosPoliza=pol.idEstatusPagosPoliza)
+        AS descripcionEstatusPagosPoliza,
+        (SELECT prsc.sumaAseguradaColectiva
+        FROM PrimaMensualSeguroColectivo prsc
+        WHERE prsc.importePrimaColectiva=tar.importePrimaColectiva)
+        AS sumaAseguradaColectiva,
+        tar.importePrimaInd,
+        tar.importePrimaColectiva,
+        tar.importeTarifa,
+        tar.descripcion,
+        sol.tarifaTotal,
+        (SELECT sol.numNominaContratante
+        FROM  Solicitud sol
+        WHERE pol.folioSolicitud = sol.folioSolicitud AND pol.formatoSolicitud = sol.formatoSolicitud)AS numNominaContratante,
+        ctr.apPaternoContratante,
+        ctr.apMaternoContratante,
+        ctr.nombre1Contratante,
+        ctr.nombre2Contratante,
+        agt.cveAgente,
+        empl.apPaternoEmpleado,
+        empl.apMaternoEmpleado,
+        empl.nombre1Empleado,
+        empl.nombre2Empleado,
+        IFNULL((SELECT paquete.nombrePaquete
+        FROM  PaqueteVidaDxN paquete
+        WHERE paquete.idPaqueteVidaDxN = pol.tipoSeguro),(SELECT tipoSeguro.nombreTipoSeguro
+        FROM  TipoSeguro tipoSeguro
+        WHERE tipoSeguro.tipoSeguro = pol.tipoSeguro)) AS descripcionPaqueteVidadxn,
+        (SELECT tipoSeguro.nombreTipoSeguro
+        FROM  TipoSeguro tipoSeguro
+        WHERE tipoSeguro.tipoSeguro = pol.tipoSeguro) AS descripcionTipoSeguro
+        FROM PolizaIndividual pol
+        INNER JOIN EstatusPolizaPagos espolpag ON espolpag.idEstatusPagosPoliza=pol.idEstatusPagosPoliza
+        INNER JOIN EstatusPolizaSeguimiento espol ON espol.idEstatusPolizaSeguimiento=pol.idEstatusPolizaSeguimiento
+        INNER JOIN Solicitud sol ON pol.folioSolicitud=sol.folioSolicitud AND pol.formatoSolicitud = sol.formatoSolicitud
+        INNER JOIN Contratante ctr ON sol.numNominaContratante=ctr.numNominaContratante
+        INNER JOIN TarifaAportMensual tar ON sol.cveTarifa=tar.cveTarifa
+        INNER JOIN Asegurado asg  ON pol.numPoliza=asg.numPoliza
+	AND asg.numConsignatario = pol.numConsignatario
+        INNER JOIN CertificadoIndividual cer ON pol.foliosolicitud= cer.foliosolicitud and pol.formatoSolicitud = cer.formatoSolicitud
+        INNER JOIN Plaza pla ON pla.idPlaza=cer.idPlaza
+        INNER JOIN Agente agt ON agt.cveAgente = sol.cveAgente
+        INNER JOIN Empleado empl ON empl.cveEmpleado = agt.cveEmpleado
+        AND cer.numCertificado= #numCertificado#
+    </select>
+
+    <select id="seleccionarPolizaRFC" resultMap="polizaResult" parameterClass="java.util.Map">
+        SELECT pol.numPoliza,
+        pol.tipoMovimientoPoliza,
+        pol.numConsignatario,
+        pol.tipoSeguro,
+        cer.numCertificado,
+        pla.cvePlaza,
+        pol.agrupacionCis,
+        pol.sumaAseguradaIndividual,
+        pol.sumaGastosFunerarios,
+        pol.sumaSEVI,
+        pol.sumaBAF,
+        pol.sumaCPF,
+        pol.folioSolicitud,
+        pol.formatoSolicitud,
+        pol.fechaSolicitudCancelacion,
+        pol.fechaCancelacionDescuento,
+        (SELECT sum(benef.montoCobertura) from BeneficioAdicionalPoliza benef where benef.numPoliza = pol.numPoliza and benef.numConsignatario = pol.numConsignatario)
+        as montoCoberturaBeneficios,
+        pol.fechaInicioVigencia,
+        pol.fechaFinvigencia,
+        pol.fechaExpedicion,
+        pol.idEstatusPagosPoliza,
+        pol.idEstatusPolizaSeguimiento,
+        pol.importeAhorroAdicionalMensual,
+        pol.numQuincenaUltimoDescuento,
+        pol.idEstatusPolizaGeneral,
+        asg.apPaternoAsegurado,
+        asg.apMaternoAsegurado,
+        asg.nombre1Asegurado,
+        asg.nombre2Asegurado,
+        asg.RFCasegurado,
+        asg.fechaNacimientoAsegurado,
+        asg.idAsegurado,
+        (SELECT espol.descripcionEstatusPoliza
+        FROM EstatusPolizaSeguimiento espol
+        WHERE espol.idEstatusPolizaSeguimiento=pol.idEstatusPolizaSeguimiento)
+        AS descripcionEstatusPoliza,
+        (SELECT espolpag.descripcionEstatusPagosPoliza
+        FROM EstatusPolizaPagos espolpag
+        WHERE espolpag.idEstatusPagosPoliza=pol.idEstatusPagosPoliza)
+        AS descripcionEstatusPagosPoliza,
+        (SELECT prsc.sumaAseguradaColectiva
+        FROM PrimaMensualSeguroColectivo prsc
+        WHERE prsc.importePrimaColectiva=tar.importePrimaColectiva)
+        AS sumaAseguradaColectiva,
+        tar.importePrimaInd,
+        tar.importePrimaColectiva,
+        tar.importeTarifa,
+        tar.descripcion,
+        sol.tarifaTotal,
+        (SELECT sol.numNominaContratante
+        FROM  Solicitud sol
+        WHERE pol.folioSolicitud = sol.folioSolicitud AND pol.formatoSolicitud = sol.formatoSolicitud)AS numNominaContratante,
+        ctr.apPaternoContratante,
+        ctr.apMaternoContratante,
+        ctr.nombre1Contratante,
+        ctr.nombre2Contratante,
+        agt.cveAgente,
+        empl.apPaternoEmpleado,
+        empl.apMaternoEmpleado,
+        empl.nombre1Empleado,
+        empl.nombre2Empleado,
+        IFNULL((SELECT paquete.nombrePaquete
+        FROM  PaqueteVidaDxN paquete
+        WHERE paquete.idPaqueteVidaDxN = pol.tipoSeguro),(SELECT tipoSeguro.nombreTipoSeguro
+        FROM  TipoSeguro tipoSeguro
+        WHERE tipoSeguro.tipoSeguro = pol.tipoSeguro)) AS descripcionPaqueteVidadxn,
+        (SELECT tipoSeguro.nombreTipoSeguro
+        FROM  TipoSeguro tipoSeguro
+        WHERE tipoSeguro.tipoSeguro = pol.tipoSeguro) AS descripcionTipoSeguro
+        FROM PolizaIndividual pol
+        INNER JOIN EstatusPolizaPagos espolpag ON espolpag.idEstatusPagosPoliza=pol.idEstatusPagosPoliza
+        INNER JOIN EstatusPolizaSeguimiento espol ON espol.idEstatusPolizaSeguimiento=pol.idEstatusPolizaSeguimiento
+        INNER JOIN Solicitud sol ON pol.folioSolicitud=sol.folioSolicitud AND pol.formatoSolicitud = sol.formatoSolicitud
+        INNER JOIN Contratante ctr ON sol.numNominaContratante=ctr.numNominaContratante
+        INNER JOIN TarifaAportMensual tar ON sol.cveTarifa=tar.cveTarifa
+        INNER JOIN Asegurado asg  ON pol.numPoliza=asg.numPoliza
+        AND asg.numConsignatario = pol.numConsignatario
+        INNER JOIN CertificadoIndividual cer ON pol.foliosolicitud= cer.foliosolicitud and pol.formatoSolicitud = cer.formatoSolicitud
+        INNER JOIN Plaza pla ON pla.idPlaza=cer.idPlaza
+        INNER JOIN Agente agt ON agt.cveAgente = sol.cveAgente
+        INNER JOIN Empleado empl ON empl.cveEmpleado = agt.cveEmpleado
+        AND asg.RFCasegurado=#RFCasegurado#
+    </select>
+
+
+    <select id="seleccionarPolizaApPaterno" resultMap="polizaResult" parameterClass="java.util.Map">
+        SELECT pol.numPoliza,
+        pol.tipoMovimientoPoliza,
+        pol.numConsignatario,
+        pol.tipoSeguro,
+        cer.numCertificado,
+        pla.cvePlaza,
+        pol.agrupacionCis,
+        pol.sumaAseguradaIndividual,
+        pol.sumaGastosFunerarios,
+        pol.sumaSEVI,
+        pol.sumaBAF,
+        pol.sumaCPF,
+        pol.folioSolicitud,
+        pol.formatoSolicitud,
+        pol.fechaSolicitudCancelacion,
+        pol.fechaCancelacionDescuento,
+        (SELECT sum(benef.montoCobertura) from BeneficioAdicionalPoliza benef where benef.numPoliza = pol.numPoliza and benef.numConsignatario = pol.numConsignatario)
+        as montoCoberturaBeneficios,
+        pol.fechaInicioVigencia,
+        pol.fechaFinvigencia,
+        pol.fechaExpedicion,
+        pol.idEstatusPagosPoliza,
+        pol.idEstatusPolizaSeguimiento,
+        pol.importeAhorroAdicionalMensual,
+        pol.numQuincenaUltimoDescuento,
+        pol.idEstatusPolizaGeneral,
+        asg.apPaternoAsegurado,
+        asg.apMaternoAsegurado,
+        asg.nombre1Asegurado,
+        asg.nombre2Asegurado,
+        asg.RFCasegurado,
+        asg.fechaNacimientoAsegurado,
+        asg.idAsegurado,
+        (SELECT espol.descripcionEstatusPoliza
+        FROM EstatusPolizaSeguimiento espol
+        WHERE espol.idEstatusPolizaSeguimiento=pol.idEstatusPolizaSeguimiento)
+        AS descripcionEstatusPoliza,
+        (SELECT espolpag.descripcionEstatusPagosPoliza
+        FROM EstatusPolizaPagos espolpag
+        WHERE espolpag.idEstatusPagosPoliza=pol.idEstatusPagosPoliza)
+        AS descripcionEstatusPagosPoliza,
+        (SELECT prsc.sumaAseguradaColectiva
+        FROM PrimaMensualSeguroColectivo prsc
+        WHERE prsc.importePrimaColectiva=tar.importePrimaColectiva)
+        AS sumaAseguradaColectiva,
+        tar.importePrimaInd,
+        tar.importePrimaColectiva,
+        tar.importeTarifa,
+        tar.descripcion,
+        sol.tarifaTotal,
+        (SELECT sol.numNominaContratante
+        FROM  Solicitud sol
+        WHERE pol.folioSolicitud = sol.folioSolicitud AND pol.formatoSolicitud = sol.formatoSolicitud )AS numNominaContratante,
+        ctr.apPaternoContratante,
+        ctr.apMaternoContratante,
+        ctr.nombre1Contratante,
+        ctr.nombre2Contratante,
+        agt.cveAgente,
+        empl.apPaternoEmpleado,
+        empl.apMaternoEmpleado,
+        empl.nombre1Empleado,
+        empl.nombre2Empleado,
+        IFNULL((SELECT paquete.nombrePaquete
+        FROM  PaqueteVidaDxN paquete
+        WHERE paquete.idPaqueteVidaDxN = pol.tipoSeguro),(SELECT tipoSeguro.nombreTipoSeguro
+        FROM  TipoSeguro tipoSeguro
+        WHERE tipoSeguro.tipoSeguro = pol.tipoSeguro)) AS descripcionPaqueteVidadxn,
+        (SELECT tipoSeguro.nombreTipoSeguro
+        FROM  TipoSeguro tipoSeguro
+        WHERE tipoSeguro.tipoSeguro = pol.tipoSeguro) AS descripcionTipoSeguro
+        FROM PolizaIndividual pol
+        INNER JOIN EstatusPolizaPagos espolpag ON espolpag.idEstatusPagosPoliza=pol.idEstatusPagosPoliza
+        INNER JOIN EstatusPolizaSeguimiento espol ON espol.idEstatusPolizaSeguimiento=pol.idEstatusPolizaSeguimiento
+        INNER JOIN Solicitud sol ON pol.folioSolicitud=sol.folioSolicitud AND pol.formatoSolicitud = sol.formatoSolicitud
+        INNER JOIN Contratante ctr ON sol.numNominaContratante=ctr.numNominaContratante
+        INNER JOIN TarifaAportMensual tar ON sol.cveTarifa=tar.cveTarifa
+        INNER JOIN Asegurado asg  ON pol.numPoliza=asg.numPoliza
+	AND asg.numConsignatario = pol.numConsignatario
+        INNER JOIN CertificadoIndividual cer ON pol.foliosolicitud= cer.foliosolicitud and pol.formatoSolicitud = cer.formatoSolicitud
+        INNER JOIN Plaza pla ON pla.idPlaza=cer.idPlaza
+        INNER JOIN Agente agt ON agt.cveAgente = sol.cveAgente
+        INNER JOIN Empleado empl ON empl.cveEmpleado = agt.cveEmpleado
+        AND asg.apPaternoAsegurado=#apPaternoAsegurado#
+    </select>
+    
+    
+    <select id="seleccionarPolizaEntregadaEmitidaAgente" resultMap="polizaEmitidaEntregadaResult" parameterClass="java.lang.String">
+        select PolizaIndividual.numPoliza, PolizaIndividual.numConsignatario, CertificadoIndividual.numCertificado,Plaza.cvePlaza
+        from Solicitud,PolizaIndividual,CertificadoIndividual,Plaza
+        where
+        Solicitud.folioSolicitud=PolizaIndividual.folioSolicitud and
+        Solicitud.formatoSolicitud=PolizaIndividual.formatoSolicitud and
+        Solicitud.folioSolicitud=CertificadoIndividual.folioSolicitud and
+        Solicitud.formatoSolicitud=CertificadoIndividual.formatoSolicitud and
+        CertificadoIndividual.idPlaza=Plaza.idPlaza and
+        Solicitud.cveAgente=#agente# and
+        PolizaIndividual.idEstatusPolizaSeguimiento=1 order by numCertificado asc;
+    </select>
+   
+    
+    <update id="actualizaPolizasEntregadas" parameterClass="poliza">
+        update PolizaIndividual
+        set
+            idEstatusPolizaSeguimiento=#idEstatusPolizaSeguimiento#,
+            nombrePersonaRecibe=#nombrePersonaRecibe#,
+            fechaRecepcionPoliza=#fechaRecepcionPoliza#
+        where numPoliza=#numPoliza#
+        and numConsignatario = #numConsignatario#
+    </update>
+   
+    
+    <update id="actualizaPolizas" parameterClass="poliza">
+        update PolizaIndividual
+        set
+            idEstatusPolizaSeguimiento=#idEstatusPolizaSeguimiento#,
+            fechaEntregaAgente=#fechaEntregaAgente#
+        where numPoliza=#numPoliza#
+        and numConsignatario = #numConsignatario#
+    </update>
+    
+    
+    <update id="actualizaEstatusPolizaPago" parameterClass="poliza">
+        update PolizaIndividual
+        set idEstatusPagosPoliza=#idEstatusPagosPoliza#
+        where numPoliza=#numPoliza#
+        and numConsignatario = #numConsignatario#
+    </update>
+
+    
+    <update id="actualizaEstatusPolizaSeguimiento" parameterClass="poliza">
+        update PolizaIndividual
+        set idEstatusPolizaSeguimiento=#idEstatusPolizaSeguimiento#
+        where numPoliza=#numPoliza#
+        and numConsignatario = #numConsignatario#
+    </update>
+
+
+   <update id="actualizaEstatusPolizaAmbos" parameterClass="poliza">
+        update PolizaIndividual
+        set
+            idEstatusPolizaSeguimiento=#idEstatusPolizaSeguimiento#,
+            idEstatusPagosPoliza=#idEstatusPagosPoliza#
+        where numPoliza=#numPoliza#
+        and numConsignatario = #numConsignatario#
+    </update>
+    
+    <update id="actualizarPoliza" parameterClass="poliza">
+        update PolizaIndividual 
+        set agrupacionCIS = #agrupacionCIS#,
+        fechaInicioVigencia = #fechaInicioVigencia#,
+        fechaFinVigencia = #fechaFinVigencia#,
+        sumaAseguradaIndividual = #sumaAseguradaIndividual#,
+        fechaExpedicion = #fechaExpedicion#,
+        tipoSeguro = #tipoSeguro#,
+        idEstatusPolizaSeguimiento = #idEstatusPolizaSeguimiento#,
+        idEstatusPagosPoliza = #idEstatusPagosPoliza#,
+        indicadorPagoComisionEntregaPoliza = #indicadorPagoComisionEntregaPoliza#,
+        indicadorDescuentoComision = #indicadorDescuentoComision#,
+        tipoMovimientoPoliza = #tipoMovimientoPoliza#,
+        qnaProgEnvioMvtoPoliza = #qnaProgEnvioMvtoPoliza#,
+        sumaGastosFunerarios = #sumaGastosFunerarios#,
+        sumaSEVI = #sumaSEVI#,
+        sumaBAF = #sumaBAF#,
+        sumaCPF = #sumaCPF#,
+        importeAhorroAdicionalMensual = #importeAhorroAdicionalMensual#      
+        where numPoliza = #numPoliza#
+        and numConsignatario = #numConsignatario# 
+               
+    </update>
+
+
+    <select id="obtenerEstatusPoliza"  resultMap="estatuspolizaResult">
+        select * from EstatusPolizaSeguimiento order by idEstatusPolizaSeguimiento
+    </select>
+
+
+   <select id="obtenPolizaPorEntregarAsegurado" resultMap="entregarPolizaAsegurado" parameterClass="java.lang.String">
+        SELECT pol.numPoliza, pol.numConsignatario, cer.numCertificado, pla.cvePlaza, asg.nombre1Asegurado,
+        asg.nombre2Asegurado, asg.apPaternoAsegurado, asg.apMaternoAsegurado
+        FROM PolizaIndividual pol, CertificadoIndividual cer, Plaza pla, Asegurado asg,Solicitud sol
+        WHERE pol.idEstatusPolizaSeguimiento=2
+        AND sol.folioSolicitud=pol.folioSolicitud
+        AND sol.formatoSolicitud = pol.formatoSolicitud
+        AND sol.cveAgente=#agente#
+        AND cer.folioSolicitud = sol.folioSolicitud
+        AND cer.formatoSolicitud = sol.formatoSolicitud
+        AND pla.idPlaza=cer.idPlaza
+        AND asg.numPoliza=pol.numPoliza
+        AND asg.numConsignatario=pol.numConsignatario
+        ORDER BY cer.numCertificado ASC
+    </select>
+
+
+   <update id="actualizaIndicadorPagoComisionEntregaPoliza" parameterClass="poliza">
+        update PolizaIndividual
+        set
+            indicadorPagoComisionEntregaPoliza=#indicadorPagoComisionEntregaPoliza#
+        where numPoliza=#numPoliza#
+        and numConsignatario=#numConsignatario#
+    </update>
+
+
+   <update id="actualizaIndicadorDescuentoComision" parameterClass="poliza">
+        update PolizaIndividual
+        set indicadorDescuentoComision=#indicadorDescuentoComision#
+        where numPoliza=#numPoliza#
+        and numConsignatario=#numConsignatario#
+    </update>
+
+    
+    <select id="obtenerPolizaPorSolicitud" resultClass="poliza" parameterClass="mx.com.seguros.dto.SolicitudPKParamDTO">
+        select * from PolizaIndividual where folioSolicitud=#folioSolicitud# and formatoSolicitud = #formatoSolicitud#
+    </select>
+
+
+     <select id="obtenListaDescuentosAplicados" resultClass="descuentos" parameterClass="int">
+        select * from DescuentosAplicados  where numPoliza=#numPoliza#
+    </select>
+
+
+    <select id="contarListaDescuentosAplicados" resultClass="String"  parameterClass="int">
+        select  count(*) from  DescuentosAplicados where numPoliza=#numPoliza#
+    </select>        
+
+
+    <select id="buscarFechaCalendario" resultClass="calendario"  parameterClass="calendario">
+        select * from CalendarioEnvioMovimientosDependencias
+        where inicioVigencia like #fechaBusqueda#
+        AND cveRetenedor = #cveRetenedor#
+    </select>
+
+
+    <select id="obtenerListaHistorialMovContratante" resultClass="historial" parameterClass="java.lang.String">
+        select * from HistorialMovimientosContratante
+        where numNominaContratante = #numNominaContratante#
+    </select>
+
+
+    <select id="obtenerRetenedor" resultMap="retenedorResult" parameterClass="mx.com.seguros.dto.SolicitudPKParamDTO">
+        SELECT ret.cveRetenedor, ret.cveDescuento FROM Solicitud sol, Empresa emp, GrupoAsegurado gpo, Retenedor ret
+        WHERE sol.folioSolicitud = #folioSolicitud# AND sol.formatoSolicitud = #formatoSolicitud#
+        AND sol.cveEmpresa = emp.CveEmpresa
+        AND emp.cveGrupoAsegurado = gpo.cveGrupoAsegurado
+        AND gpo.cveRetenedor = ret.CveRetenedor
+    </select>
+
+
+   <select id="obtenerPolizasPorNumNominaContratante"  resultClass="java.lang.Integer" parameterClass="java.lang.String">
+        select count(*)
+        from PolizaIndividual pol, Solicitud sol
+        where sol.numNominaContratante = #numNominaContratante#
+        and sol.folioSolicitud = pol.folioSolicitud
+        and sol.formatoSolicitud = pol.formatoSolicitud
+    </select>
+
+
+  <select id="consultaContadorPolizasVigentes" resultClass="java.lang.Integer" parameterClass="java.lang.String">
+       SELECT count(*)
+       FROM
+           PolizaIndividual pol,
+           Solicitud sol
+       WHERE   pol.folioSolicitud = sol.folioSolicitud
+       AND     pol.formatoSolicitud = sol.formatoSolicitud
+       AND     pol.tipoMovimientoPoliza IN ('A','C')
+       AND     sol.numNominaContratante=#numNominaContratante#
+    </select>
+
+
+ <select id="consultaPolizasVigentes" resultMap="polizasVigentesResult" parameterClass="java.lang.String">
+        SELECT
+            pol.numPoliza,
+            pol.numConsignatario,
+            pol.tipoMovimientoPoliza,
+            pol.folioSolicitud,
+            pol.formatoSolicitud,
+            pol.qnaProgEnvioMvtoPoliza,
+            tar.importeTarifa
+        FROM
+            Solicitud sol,
+            PolizaIndividual pol,
+            TarifaAportMensual tar
+        WHERE
+            pol.tipoMovimientoPoliza IN ('A','C')
+        AND sol.folioSolicitud = pol.folioSolicitud
+        AND sol.formatoSolicitud = pol.formatoSolicitud
+        AND sol.numNominaContratante=#numNominaContratante#
+        AND tar.cveTarifa = sol.cveTarifa
+
+    </select>
+
+
+    <select id="consultaContadorPolizasMvtoQnaCliente" resultClass="java.lang.Integer" parameterClass="historial">
+        SELECT 	count(*)
+        FROM Solicitud sol,	PolizaIndividual pol, TarifaAportMensual tar
+        WHERE sol.numNominaContratante=#numNominaContratante#
+        AND pol.qnaProgEnvioMvtoPoliza = #qnaProgramadaEnvioMovimientoHistorial#
+        AND pol.tipoMovimientoPoliza = 'B'
+        AND pol.folioSolicitud = sol.folioSolicitud
+        AND pol.formatoSolicitud = sol.formatoSolicitud
+        AND tar.cveTarifa = sol.cveTarifa
+    </select>
+
+
+    <select id="consultaPolizasMvtoQnaCliente" resultMap="polizasVigentesResult" parameterClass="historial">
+        SELECT
+            pol.numPoliza,
+            pol.numConsignatario,
+            pol.tipoMovimientoPoliza,
+            pol.folioSolicitud,
+            pol.formatoSolicitud,
+            pol.qnaProgEnvioMvtoPoliza,
+            tar.importeTarifa
+        FROM
+            Solicitud sol,
+            PolizaIndividual pol,
+            TarifaAportMensual tar
+        WHERE
+            pol.qnaProgEnvioMvtoPoliza = #qnaProgramadaEnvioMovimientoHistorial#
+        AND sol.numNominaContratante=#numNominaContratante#
+        AND pol.tipoMovimientoPoliza = 'B'
+        AND sol.folioSolicitud = pol.folioSolicitud
+        AND sol.formatoSolicitud = pol.formatoSolicitud
+        AND tar.cveTarifa = sol.cveTarifa
+    </select>
+
+
+    <select id="consultarClaveDescuentoPorSolicitud" resultClass="java.lang.String" parameterClass="mx.com.seguros.dto.SolicitudPKParamDTO">
+        SELECT
+            ret.cveDescuento
+        FROM
+            Solicitud sol,
+            Empresa emp,
+            GrupoAsegurado gpo,
+            Retenedor ret
+        WHERE
+            sol.folioSolicitud = #folioSolicitud#
+        AND sol.formatoSolicitud = #formatoSolicitud#
+        AND sol.cveEmpresa = emp.cveEmpresa
+        AND emp.cveGrupoAsegurado = gpo.cveGrupoAsegurado
+        AND gpo.cveRetenedor = ret.cveRetenedor
+    </select>
+
+
+     <insert id="insertarHistorial" parameterClass="historial">
+        INSERT INTO HistorialMovimientosContratante (
+            idMovimientoContratante,
+            numNominaContratante,
+            qnaProgramadaEnvioMovimientoHistorial,
+            tipoMovimientoEnvio,
+            totalImporteMovimiento,
+            cveDescuento,
+            indicadorEnvioArchivo
+        )
+        VALUES(
+                #idMovimientoContratante#,
+                #numNominaContratante#,
+                #qnaProgramadaEnvioMovimientoHistorial#,
+                #tipoMovimientoEnvio#,
+                #totalImporteMovimiento#,
+                #cveDescuento#,
+                #indicadorEnvioArchivo#
+        )
+    </insert>
+
+
+   <select id="obtenerPolizaNumPolizaNumConsignatario" resultClass="poliza" parameterClass="poliza">
+        SELECT * FROM PolizaIndividual
+        WHERE numPoliza = #numPoliza#
+        AND numConsignatario = #numConsignatario#
+    </select>
+
+
+   <update id="actualizarQnaProgEnvioPoliza" parameterClass="poliza">
+        UPDATE PolizaIndividual
+        SET qnaProgEnvioMvtoPoliza = #qnaProgEnvioMvtoPoliza#
+        WHERE numPoliza = #numPoliza#
+        AND numConsignatario = #numConsignatario#
+    </update>
+
+
+     <select id="obtenPolizaPorFolioSolicitud" resultClass="poliza" parameterClass="mx.com.seguros.dto.SolicitudPKParamDTO">
+        select * from PolizaIndividual 
+        where folioSolicitud=#folioSolicitud# and formatoSolicitud = #formatoSolicitud# and idEstatusPolizaSeguimiento!=5 
+     </select>
+    
+    
+    <select id="obtenListaPolizasCambio" resultMap="listaPolizasCambioResultMap" parameterClass="string">
+        SELECT 
+            pol.numPoliza,
+            pol.numConsignatario,
+            pol.tipoMovimientoPoliza,
+            tar.importeTarifa
+        FROM
+            Solicitud sol,
+            PolizaIndividual pol,
+            TarifaAportMensual tar
+        WHERE 
+            sol.numNominaContratante=#numNominaContratante#
+        AND sol.idEstatusSolicitud = 2
+        AND pol.folioSolicitud = sol.folioSolicitud
+        AND pol.formatoSolicitud = sol.formatoSolicitud
+        AND tar.cveTarifa = sol.cveTarifa
+        AND pol.tipoMovimientoPoliza IN ('A','C','')
+    </select>
+
+
+   <select id="buscarPolizasAnteriores" resultMap="polizasAnterioresResultMap" parameterClass="java.util.HashMap">
+       SELECT
+           pla.cvePlaza,
+           cer.numCertificado,
+           tar.importeTarifa,
+           epp.descripcionEstatusPagosPoliza
+       FROM
+           Plaza pla, CertificadoIndividual cer, Solicitud sol,
+           EstatusPolizaPagos epp, TarifaAportMensual tar, PolizaIndividual pol
+       WHERE
+           sol.numNominaContratante=#numNominaContratante#
+       AND sol.idEstatusSolicitud = 2
+       AND cer.folioSolicitud = sol.folioSolicitud
+       AND cer.formatoSolicitud = sol.formatoSolicitud
+       AND pla.idPlaza = cer.idPlaza
+       AND pol.folioSolicitud=cer.folioSolicitud
+       AND pol.formatoSolicitud = cer.formatoSolicitud
+       AND tar.cveTarifa=sol.cveTarifa
+       AND epp.idEstatusPagosPoliza = pol.idEstatusPagosPoliza
+       
+   </select>
+   
+   <select id="recuperarQnaPrimerIntentoPago" resultClass="int" parameterClass="poliza">
+    	SELECT qnaPrimerIntentoPago
+        FROM PolizaIndividual
+		WHERE numPoliza = #numPoliza#
+		AND numConsignatario = #numConsignatario#   	
+    </select>
+
+	<parameterMap class="java.util.Map"
+		id="insertarQnaPrimerIntentoPagoParameterMap">
+		<parameter property="qnaPrimerIntentoPago" />
+		<parameter property="numPoliza" />
+		<parameter property="numConsignatario" />
+	</parameterMap>
+    
+    <update id="insertarQnaPrimerIntentoPago" parameterMap="insertarQnaPrimerIntentoPagoParameterMap">
+        UPDATE PolizaIndividual
+        SET 
+        	qnaPrimerIntentoPago = ?
+        WHERE
+        	numPoliza = ?
+        	AND numConsignatario = ?
+    </update>
+
+	<parameterMap class="java.util.Map" id="consultaPolizasVigentesNewParameterMap">
+	 	<parameter property="numNominaContratante"/>
+	 	<parameter property="fechaLimiteCarga"/>
+	 </parameterMap>
+
+    <select id="consultaPolizasVigentesNew" resultClass="poliza" parameterMap="consultaPolizasVigentesNewParameterMap">
+    <![CDATA[
+        SELECT
+            pol.numPoliza,
+            pol.numConsignatario,
+            pol.tipoMovimientoPoliza,
+            pol.fechaInicioVigencia,
+            pol.folioSolicitud,
+            pol.formatoSolicitud,
+            pol.idEstatusPagosPoliza
+        FROM 
+           PolizaIndividual pol,
+           Solicitud sol
+        WHERE
+        	sol.idEstatusSolicitud = 2
+            AND sol.folioSolicitud = pol.folioSolicitud AND sol.formatoSolicitud = pol.formatoSolicitud
+             AND pol.idEstatusPolizaSeguimiento not in (5, 6)
+        	AND sol.numNominaContratante = ?
+        	AND sol.fechaSolicitud < ?
+    ]]>
+    </select>
+
+
+	<select id="obtenerPolizaById" resultClass="poliza" parameterClass="poliza">
+		SELECT 
+			*
+		FROM PolizaIndividual
+		WHERE numPoliza = #numPoliza#
+		AND numConsignatario = #numConsignatario#
+    </select>
+    
+    
+    <update id="actualizarSumaAseguradaTotal" parameterClass="poliza">
+    	update PolizaIndividual set sumaAseguradaTotal = #sumaAseguradaTotal# where
+    	numPoliza = #numPoliza# and numConsignatario = #numConsignatario#    
+    </update>
+    
+    <update id="actualizarPkPolizaIndividual" parameterClass="java.util.Map">
+    	update PolizaIndividual set numPoliza = #numPolizaNuevo# , numConsignatario = #numConsignatarioNuevo#
+    	where numPoliza = #numPoliza# and numConsignatario = #numConsignatario#
+    </update>
+    
+    
+    <select id="consultaPolizaCompletaBatch" parameterClass="java.util.Map" resultMap="polizaBatchResultMap">
+    	select
+                solicitud.folioSolicitud,
+                solicitud.formatoSolicitud,
+                polizaIndividual.numConsignatario,
+                certificado.numCertificado,
+                polizaIndividual.numPoliza,
+                grupoAsegurado.nombreGrupoAsegurado,
+                solicitud.numNominaContratante,
+                solicitud.rfcSolicitante,
+                polizaIndividual.fechaInicioVigencia,
+                polizaIndividual.fechaFinVigencia,
+                solicitud.fechaSolicitud,
+                paqueteVidaDxN.nombrePaquete,
+                polizaIndividual.plazoSeguro,
+                tarifaAportMensual.importeTarifa,
+                tarifaAportMensual.importePrimaInd,
+                tarifaAportMensual.importePrimaColectiva,
+                solicitud.tarifaTotal,
+				polizaIndividual.idEstatusPagosPoliza,
+				polizaIndividual.idEstatusPolizaSeguimiento,
+				polizaIndividual.fechaExpedicion,
+				polizaIndividual.agrupacionCIS,
+				polizaIndividual.tipoSeguro,
+                polizaIndividual.sumaAseguradaIndividual,
+                polizaIndividual.sumaBAF,
+                polizaIndividual.sumaCPF,
+                polizaIndividual.sumaGastosFunerarios,
+                polizaIndividual.sumaSEVI,
+                tarifaAportMensual.importeTarifa+
+                polizaIndividual.sumaAseguradaIndividual+
+                polizaIndividual.sumaBAF+
+                polizaIndividual.sumaGastosFunerarios+
+                polizaIndividual.sumaSEVI as totalProteccion,
+                polizaIndividual.fechaSolicitudCancelacion,
+        		polizaIndividual.fechaCancelacionDescuento,
+                plaza.idPlaza,
+                plaza.cvePlaza,
+                empresa.nombreEmpresa,
+                sucursal.nombreSucursal,
+                estatusPolizaPagos.descripcionEstatusPagosPoliza,
+				(SELECT sum(benef.montoCobertura) from BeneficioAdicionalPoliza benef where benef.numPoliza = polizaIndividual.numPoliza and benef.numConsignatario = polizaIndividual.numConsignatario)
+				as montoCoberturaBeneficios,
+				(SELECT tipoSeguro.nombreTipoSeguro
+				FROM  TipoSeguro tipoSeguro
+				WHERE tipoSeguro.tipoSeguro = polizaIndividual.tipoSeguro) AS descripcionPaqueteVidadxn
+        from Solicitud solicitud 
+        				left outer join CertificadoIndividual certificado  on certificado.foliosolicitud = solicitud.foliosolicitud 
+                        and certificado.formatoSolicitud = solicitud.formatoSolicitud
+                        left outer join EstatusSolicitud estatusSolicitud on estatusSolicitud.idEstatusSolicitud = solicitud.idEstatusSolicitud
+                        left outer join PolizaIndividual polizaIndividual on polizaIndividual.folioSolicitud = solicitud.folioSolicitud
+						and polizaIndividual.formatoSolicitud = solicitud.formatoSolicitud                        
+                        left outer join EstatusPolizaSeguimiento estatusPolizaSeguimiento on 
+                        estatusPolizaSeguimiento.idEstatusPolizaSeguimiento = polizaIndividual.idEstatusPolizaSeguimiento
+                        left outer join EstatusPolizaPagos estatusPolizaPagos on estatusPolizaPagos.idEstatusPagosPoliza = polizaIndividual.idEstatusPagosPoliza
+                        left outer join Plaza plaza on certificado.idPlaza = plaza.idPlaza
+                        left outer join Empresa empresa on empresa.cveEmpresa = solicitud.cveEmpresa
+                        left outer join Sucursal sucursal on sucursal.cveSucursal = empresa.cveSucursal
+                        left outer join GrupoAsegurado grupoAsegurado on grupoAsegurado.cveGrupoAsegurado = empresa.cveGrupoAsegurado
+                        left outer join PaqueteVidaDxN paqueteVidaDxN on paqueteVidaDxN.idPaqueteVidaDxN = polizaIndividual.tipoSeguro
+                        left outer join TarifaAportMensual tarifaAportMensual on tarifaAportMensual.cveTarifa = solicitud.cveTarifa
+         where concat(polizaIndividual.numPoliza,concat('-',polizaIndividual.numConsignatario)) in (#id0#,#id1#,#id2#,#id3#,#id4#,#id5#,#id6#,#id7#,#id8#,#id9#,#id10#,
+         #id11#,#id12#,#id13#,#id14#,#id15#,#id16#,#id17#,#id18#,#id19#,#id20#,
+         #id21#,#id22#,#id23#,#id24#,#id25#,#id26#,#id27#,#id28#,#id29#,#id30#,
+         #id31#,#id32#,#id33#,#id34#,#id35#,#id36#,#id37#,#id38#,#id39#,#id40#,
+         #id41#,#id42#,#id43#,#id44#,#id45#,#id46#,#id47#,#id48#,#id49#
+         )
+    </select>
+    
+    <select id="countConsultaPolizasBatchPorAutofinanciar" resultClass="java.lang.Integer"  parameterClass="map">
+     <![CDATA[   
+    	select count(*) from PolizaIndividual pol join 
+			Solicitud sol on sol.formatoSolicitud = pol.formatoSolicitud and sol.folioSolicitud = pol.folioSolicitud join
+			CertificadoIndividual certificado  on certificado.foliosolicitud = sol.foliosolicitud and certificado.formatoSolicitud = sol.formatoSolicitud join
+			CuentaCliente cta on cta.numPoliza = pol.numPoliza and cta.numConsignatario = pol.numConsignatario join
+			TarifaAportMensual tfa on sol.cveTarifa = tfa.cveTarifa
+			where 
+			pol.idEstatusPagosPoliza not in (6,7,1,11) and
+			(select max(dsc.fechaFinalCobertura) from DescuentosAplicados dsc where dsc.numPoliza = pol.numPoliza and 
+			dsc.numConsignatario = pol.numConsignatario) < #fecha# 
+    ]]>
+    	<dynamic prepend="" >
+                  <isNotNull prepend="and" property="idPlaza">
+                      certificado.idPlaza = #idPlaza#
+                  </isNotNull>
+          </dynamic>
+          
+           <!-- JLVO: Adicion de la eleccion de un estatus de pago definido -->
+           
+           <dynamic prepend="" >
+                  <isNotNull prepend="and" property="idEstatusPagosPoliza">
+                      pol.idEstatusPagosPoliza = #idEstatusPagosPoliza#
+                  </isNotNull>
+           </dynamic>          
+          
+          
+    </select>
+    
+    <resultMap id="polizaBatchAutofinanciarResultMap" class="poliza">
+	    <result property="numPoliza" column="numPoliza"/>
+	    <result property="numConsignatario" column="numConsignatario"/>
+	    <result property="fechaInicioVigencia" column="fechaInicioVigencia"/>
+	    <result property="folioSolicitud" column="folioSolicitud"/>
+	    <result property="formatoSolicitud" column="formatoSolicitud"/>
+	    <result property="solicitud.folioSolicitud" column="folioSolicitud"/>
+	    <result property="solicitud.formatoSolicitud" column="formatoSolicitud"/>
+	    <result property="tipoSeguro" column="tipoSeguro"/>
+	    <result property="idEstatusPolizaSeguimiento" column="idEstatusPolizaSeguimiento"/>
+	    <result property="idEstatusPagosPoliza" column="idEstatusPagosPoliza"/>
+	    <result property="solicitud.numNominaContratante" column="numNominaContratante"/>
+	    <result property="solicitud.cveTarifa" column="cveTarifa"/>
+	    <result property="solicitud.tarifa.importeTarifa" column="importeTarifa"/>
+    
+    </resultMap>
+    
+    <select id="consultaPolizasBatchPorAutofinanciar" resultClass="java.lang.Integer" 
+    parameterClass="map"
+    resultMap="polizaBatchAutofinanciarResultMap">
+     	<![CDATA[   
+    	select 
+    		pol.numPoliza,
+			pol.numConsignatario,
+			pol.fechaInicioVigencia,
+			pol.folioSolicitud,
+			pol.formatoSolicitud,
+			pol.tipoSeguro,
+			pol.idEstatusPolizaSeguimiento,
+			pol.idEstatusPagosPoliza,
+			sol.numNominaContratante,
+			sol.cveTarifa,
+			tfa.importeTarifa,
+			sol.tarifaTotal
+	   		from PolizaIndividual pol join 
+			Solicitud sol on sol.formatoSolicitud = pol.formatoSolicitud and sol.folioSolicitud = pol.folioSolicitud join
+			CertificadoIndividual certificado  on certificado.foliosolicitud = sol.foliosolicitud and certificado.formatoSolicitud = sol.formatoSolicitud join
+			CuentaCliente cta on cta.numPoliza = pol.numPoliza and cta.numConsignatario = pol.numConsignatario join
+			TarifaAportMensual tfa on sol.cveTarifa = tfa.cveTarifa
+			where 
+			pol.idEstatusPagosPoliza not in (6) and
+			(select max(dsc.fechaFinalCobertura) from DescuentosAplicados dsc where dsc.numPoliza = pol.numPoliza and 
+			dsc.numConsignatario = pol.numConsignatario) < #fecha# 
+    	]]>
+    		<dynamic prepend="" >
+                  <isNotNull prepend="and" property="idPlaza">
+                      certificado.idPlaza = #idPlaza#
+                  </isNotNull>
+           </dynamic>
+           
+           
+           <!-- JLVO: Adicion de la eleccion de un estatus de pago definido -->
+           
+           <dynamic prepend="" >
+                  <isNotNull prepend="and" property="idEstatusPagosPoliza">
+                      pol.idEstatusPagosPoliza = #idEstatusPagosPoliza#
+                  </isNotNull>
+           </dynamic>
+           
+           
+    </select>
+    <select id="consultarResumenPoliza" resultClass="poliza" parameterClass="map">
+    	select * from PolizaIndividual where 
+    	 numPoliza = #numPoliza# and numConsignatario = #numConsignatario#
+    </select>
+    
+     <update id="actualizarFechasCancelacionPoliza" parameterClass="poliza">
+    	update PolizaIndividual set fechaSolicitudCancelacion = #fechaSolicitudCancelacion# ,
+    	fechaCancelacionDescuento = #fechaCancelacionDescuento# where
+    	numPoliza = #numPoliza# and numConsignatario = #numConsignatario#    
+    </update>
+     <update id="actualizarEstatusPolizaGeneral" parameterClass="map">
+    	update PolizaIndividual set idEstatusPolizaGeneral = #idEstatusPolizaGeneral# 
+    	where
+    	numPoliza = #numPoliza# and numConsignatario = #numConsignatario#    
+    </update>
+    
+    <select id="consultaEstatusPolizaGeneral" resultClass="estatusPolizaGeneral" >
+    	select * from EstatusPolizaGeneral order by idEstatusPolizaGeneral asc
+    </select>
+    
+    
+    <update id="actualizarDatosPolizaAtencionClientes" parameterClass="poliza">
+    	update PolizaIndividual set 
+    	fechaSolicitudCancelacion = #fechaSolicitudCancelacion#,
+    	fechaCancelacionDescuento = #fechaCancelacionDescuento#,
+    	idEstatusPolizaSeguimiento = #idEstatusPolizaSeguimiento#,
+    	idEstatusPagosPoliza = #idEstatusPagosPoliza#,
+    	numQuincenaUltimoDescuento = #numQuincenaUltimoDescuento#,
+    	anhoUltimoDescuento = #anhoUltimoDescuento#
+    	 where
+    	numPoliza = #numPoliza# and numConsignatario = #numConsignatario#    
+    </update>
+    
+    
+    
+    <resultMap id="resultadoConsultaPolizaPorBajaResult" class="resultadoConsultaSolicitud">
+        <result property="folioSolicitud" column="folioSolicitud" />
+        <result property="formatoSolicitud" column="formatoSolicitud"/>
+        <result property="numConsignatario" column="numConsignatario"/>
+        <result property="numCertificado" column="numCertificado"/>
+        <result property="descripcionEstadoPoliza" column="descripcionEstatusPoliza"/>
+        <result property="numPoliza" column="numPoliza"/>
+        <result property="RFCasegurado" column="rfcSolicitante"/>
+        <result property="nombre2Contratante" column="nombre2Contratante"/>
+        <result property="nombre1Contratante" column="nombre1Contratante"/>
+        <result property="apPaternoContratante" column="apPaternoContratante"/>
+        <result property="apMaternoContratante" column="apMaternoContratante"/>
+        <result property="fechaInicioVigencia" column="fechaInicioVigencia"/>
+        <result property="fechaSolicitud" column="fechaSolicitud"/>
+        <result property="plazoSeguro" column="plazoSeguro"/>
+        <result property="sumaAseguradaIndividual" column="sumaAseguradaIndividual"/>
+        <result property="sumaBAF" column="sumaBAF"/>
+        <result property="sumaGastosFunerarios" column="sumaGastosFunerarios"/>
+        <result property="sumaSEVI" column="sumaSEVI"/>
+        <result property="totalProteccion" column="totalProteccion"/>
+      	<result property="cvePlaza" column="cvePlaza"/>
+      	<result property="descripcionEstadoPolizaPagos" column="descripcionEstatusPagosPoliza"/>
+      	
+      	<result property="telefonoSolicitante" column="telefono"/>
+       <result property="apPaternoAsegurado" column="apPaternoSolicitante"/>
+        <result property="apMaternoAsegurado" column="apMaternoSolicitante"/>
+        <result property="nombre1Asegurado" column="nombre1Solicitante"/>
+        <result property="nombre2Asegurado" column="nombre2Solicitante"/>
+        <result property="numNominaAsegurado" column="numNominaContratante"/>
+        <result property="RFCasegurado" column="rfcSolicitante"/>
+        
+        <result property="fechaSolicitudCancelacion" column="fechaSolicitudCancelacion"/>
+        <result property="numQuincenaUltimoDescuento" column="numQuincenaUltimoDescuento"/>
+        
+      	
+    </resultMap>
+    
+    <select id="consultaPolizasPorBaja"
+            resultMap="resultadoConsultaPolizaPorBajaResult"
+            parameterClass="criteriosConsultaPolizaPorBaja">
+       select
+                solicitud.folioSolicitud,
+                solicitud.formatoSolicitud,
+                polizaIndividual.numConsignatario,
+                certificado.numCertificado,
+               
+                estatusPolizaSeguimiento.descripcionEstatusPoliza,
+                polizaIndividual.numPoliza,
+                           
+                solicitud.numNominaContratante,
+                solicitud.rfcSolicitante,
+                contratante.nombre1Contratante,
+                contratante.nombre2Contratante,
+                contratante.apPaternoContratante,
+                contratante.apMaternoContratante,
+               solicitante.telefono,
+                polizaIndividual.fechaInicioVigencia,
+                polizaIndividual.fechaFinVigencia,
+                solicitud.fechaSolicitud,
+             
+                polizaIndividual.plazoSeguro,
+              
+                solicitante.apPaternoSolicitante,
+                solicitante.apMaternoSolicitante,
+                solicitante.nombre1Solicitante,
+                solicitante.nombre2Solicitante,
+                
+                polizaIndividual.sumaAseguradaIndividual,
+                polizaIndividual.sumaBAF,
+                polizaIndividual.sumaGastosFunerarios,
+                polizaIndividual.sumaSEVI,
+               	polizaIndividual.fechaSolicitudCancelacion,
+               	polizaIndividual.numQuincenaUltimoDescuento,
+                polizaIndividual.sumaAseguradaIndividual+
+                polizaIndividual.sumaBAF+
+                polizaIndividual.sumaGastosFunerarios+
+                polizaIndividual.sumaSEVI as totalProteccion,
+                plaza.cvePlaza,
+                estatusPolizaPagos.descripcionEstatusPagosPoliza
+        		from Solicitud solicitud 
+        				join Solicitante solicitante on solicitud.rfcSolicitante = solicitante.rfcSolicitante 
+        				join CertificadoIndividual certificado  on certificado.foliosolicitud = solicitud.foliosolicitud and certificado.formatoSolicitud = solicitud.formatoSolicitud
+                        join PolizaIndividual polizaIndividual on polizaIndividual.folioSolicitud = solicitud.folioSolicitud and polizaIndividual.formatoSolicitud = solicitud.formatoSolicitud                        
+                        join EstatusPolizaSeguimiento estatusPolizaSeguimiento on estatusPolizaSeguimiento.idEstatusPolizaSeguimiento = polizaIndividual.idEstatusPolizaSeguimiento
+                        join EstatusPolizaPagos estatusPolizaPagos on estatusPolizaPagos.idEstatusPagosPoliza = polizaIndividual.idEstatusPagosPoliza
+                        join Contratante contratante on contratante.numNominaContratante = solicitud.numNominaContratante
+                        join Plaza plaza on certificado.idPlaza = plaza.idPlaza
+        				
+        				 <dynamic prepend="where" >
+                            <isNotNull prepend="and" property="idEstatusPagosPoliza">
+                                polizaIndividual.idEstatusPagosPoliza = #idEstatusPagosPoliza#
+                            </isNotNull>
+                            <isNotNull prepend="and" property="quincenaSuspension">
+                                polizaIndividual.numQuincenaUltimoDescuento = #quincenaSuspension#
+                            </isNotNull>
+                            <isNotNull prepend="and" property="fechaSolicitudCancelacion">
+                                polizaIndividual.fechaSolicitudCancelacion = #fechaSolicitudCancelacion#
+                            </isNotNull>
+                             <isNotNull prepend="and" property="idPlaza">
+                                plaza.idPlaza = #idPlaza#
+                            </isNotNull>
+                        </dynamic>
+                        
+
+    </select>
+    
+    <select id="countConsultaPolizasPorBaja"
+            resultClass="java.lang.Long"
+            parameterClass="criteriosConsultaPolizaPorBaja">
+       select count(*)
+       					from Solicitud solicitud 
+       					join Solicitante solicitante on solicitud.rfcSolicitante = solicitante.rfcSolicitante 
+        				join CertificadoIndividual certificado  on certificado.foliosolicitud = solicitud.foliosolicitud and certificado.formatoSolicitud = solicitud.formatoSolicitud
+                        join PolizaIndividual polizaIndividual on polizaIndividual.folioSolicitud = solicitud.folioSolicitud and polizaIndividual.formatoSolicitud = solicitud.formatoSolicitud                        
+                        join EstatusPolizaSeguimiento estatusPolizaSeguimiento on estatusPolizaSeguimiento.idEstatusPolizaSeguimiento = polizaIndividual.idEstatusPolizaSeguimiento
+                        join EstatusPolizaPagos estatusPolizaPagos on estatusPolizaPagos.idEstatusPagosPoliza = polizaIndividual.idEstatusPagosPoliza
+                        join Contratante contratante on contratante.numNominaContratante = solicitud.numNominaContratante
+                        join Plaza plaza on certificado.idPlaza = plaza.idPlaza
+                        
+                        <dynamic prepend="where" >
+                            <isNotNull prepend="and" property="idEstatusPagosPoliza">
+                                polizaIndividual.idEstatusPagosPoliza = #idEstatusPagosPoliza#
+                            </isNotNull>
+                            <isNotNull prepend="and" property="quincenaSuspension">
+                                polizaIndividual.numQuincenaUltimoDescuento = #quincenaSuspension#
+                            </isNotNull>
+                            <isNotNull prepend="and" property="fechaSolicitudCancelacion">
+                                polizaIndividual.fechaSolicitudCancelacion = #fechaSolicitudCancelacion#
+                            </isNotNull>
+                             <isNotNull prepend="and" property="idPlaza">
+                                plaza.idPlaza = #idPlaza#
+                            </isNotNull>
+                        </dynamic>
+                        
+
+    </select>
+    
+    <select id="selectPlazas" resultClass="plazaResultClass">
+    	select * from Plaza order by cvePlaza
+    </select>
+  
+</sqlMap>
+

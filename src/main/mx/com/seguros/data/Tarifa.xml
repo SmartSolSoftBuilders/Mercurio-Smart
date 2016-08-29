@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap
+PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
+"http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap namespace="Tarifa">
+    <typeAlias alias="tarifa" type="mx.com.seguros.model.TarifaAportMensual"/>
+    <typeAlias alias="solicitud" type="mx.com.seguros.model.Solicitud"/>
+    
+    <!-- HEFS Campos de tabla Solicitud-->
+    <resultMap id="tablaSolicitudResultMap" class="solicitud">
+        <result property="folioSolicitud" column="folioSolicitud"/>
+        <result property="formatoSolicitud" column="formatoSolicitud"/>
+        <result property="fechaSolicitud" column="fechaSolicitud"/>
+        <result property="tipoSolicitudNormal" column="tipoSolicitud"/>
+        <result property="fechaCaptura" column="fechaCaptura"/>
+        <result property="cveAgente" column="cveAgente"/>
+        <result property="cvePromotor" column="cvePromotor"/>
+        <result property="cveTarifa" column="cveTarifa"/>
+        <result property="numNominaContratante" column="numNominaContratante"/>
+        <result property="RFCsolicitante" column="RFCsolicitante"/>
+        <result property="cveEmpresa" column="cveEmpresa"/>
+        <result property="idEstatusSolicitud" column="idEstatusSolicitud"/>
+    </resultMap>
+    
+    <select id="buscarTarifas" resultClass="mx.com.seguros.model.TarifaAportMensual">
+        SELECT cveTarifa, importeTarifa, descripcion FROM TarifaAportMensual
+        WHERE cveTarifa &gt;64
+        order By importeTarifa
+    </select>
+
+    <select id="obtenTarifaPorImporte" resultClass="tarifa"  parameterClass="java.lang.Double">
+        SELECT * FROM TarifaAportMensual
+        WHERE importeTarifa = #value# order by cveTarifa desc
+    </select>
+    <select id="findTarifaPoliza" resultClass="tarifa">
+		SELECT
+			TarifaAportMensual.cveTarifa
+			, TarifaAportMensual.importeTarifa, TarifaAportMensual.descripcion
+		FROM
+			TarifaAportMensual
+			, Solicitud
+			, PolizaIndividual
+		WHERE
+			TarifaAportMensual.cveTarifa = Solicitud.cveTarifa
+			AND Solicitud.folioSolicitud = PolizaIndividual.folioSolicitud
+			AND PolizaIndividual.folioSolicitud = #folioSolicitud#
+    </select>
+    <select id="obtenTarifaPorClave" resultClass="tarifa"  parameterClass="java.lang.Integer">
+        SELECT * FROM TarifaAportMensual
+        WHERE cveTarifa = #value#
+    </select>
+
+
+
+    <!--HEFS-->
+    
+</sqlMap>

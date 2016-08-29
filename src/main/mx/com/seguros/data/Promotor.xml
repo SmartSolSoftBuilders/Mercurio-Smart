@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap
+PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
+"http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap namespace="Promotor">
+    <typeAlias alias="promotor" type="mx.com.seguros.model.Promotor"/>
+    <!-- Modificado por cambio de producto 26/04/2010 ***CGB***
+    <resultMap id="agenteResult" class="agente">
+            <result property="cvePromotor" column="cvePromotor" javaType="java.lang.Long" jdbcType="INTEGER"/>
+            <result property="cveEmpleado" column="cveEmpleado"/>
+            <result property="apPaternoEmpleado" column="apPaternoEmpleado"/>
+            <result property="apMaternoEmpleado" column="apMaternoEmpleado"/>
+            <result property="nombre1Empleado" column="nombre1Empleado"/>
+            <result property="nombre2Empleado" column="nombre2Empleado"/>
+            <result property="RFCempleado" column="RFCempleado"/>
+    </resultMap>
+    -->
+    <resultMap id="promotorResult" class="promotor">
+        <result property="cvePromotor" column="cvePromotor" javaType="java.lang.Long" jdbcType="INTEGER"/>
+        <result property="nombrePromotor" column="nombrePromotor"/>
+    </resultMap>
+    
+    <select id="buscarPromotores" resultClass="mx.com.seguros.model.Promotor">
+        <!-- Modificado por cambio de producto 26/04/2010 ***CGB***
+        
+        SELECT prom.cvePromotor, prom.cveEmpleado,
+               em.apPaternoEmpleado, em.apMaternoEmpleado, em.nombre1Empleado, em.nombre2Empleado, em.RFCempleado
+        FROM Promotor prom
+        left outer join Empleado em
+        on prom.cveEmpleado = em.cveEmpleado -->
+        SELECT prom.cvePromotor, prom.nombrePromotor FROM Promotor prom WHERE activo = 1
+    </select>
+    
+    <select id="buscarPromotor" resultClass="mx.com.seguros.model.Promotor" parameterClass="Integer">
+        
+       
+        SELECT * FROM Promotor prom WHERE cvePromotor = #value#
+    </select>
+       
+</sqlMap>

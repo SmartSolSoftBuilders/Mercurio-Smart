@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap
+PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
+"http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<!-- Creado Martes 07 de Abril de 2010 -->
+<sqlMap namespace="EstatusPolizaSeguimiento">
+    <typeAlias alias="EstatusPolizaSeguimiento" type="mx.com.seguros.model.EstatusPolizaSeguimiento"/>
+    
+    <!-- CGM Campos de tabla EstatusPolizaSeguimiento -->
+    <!--
+    <resultMap id="tablaEstatusPolizaSeguimientoResultMap" class="estatusPolizaSeguimiento">
+        <result property="idEstatusPolizaSeguimiento" column="idEstatusPolizaSeguimiento"/>
+        <result property="descripcionEstatusPoliza" column="descripcionEstatusPoliza"/>
+    </resultMap>
+    -->
+    <select id="obtenEstatusPolizaSeguimientoPorId" resultClass="EstatusPolizaSeguimiento">
+        SELECT idEstatusPolizaSeguimiento, descripcionEstatusPoliza
+		FROM EstatusPolizaSeguimiento 
+		WHERE idEstatusPolizaSeguimiento=#statusId#
+    </select>
+    
+    <select id="obtenEstatusPolizaSeguimientoPorDescripcion" resultClass="EstatusPolizaSeguimiento">
+        SELECT idEstatusPolizaSeguimiento, descripcionEstatusPoliza
+		FROM EstatusPolizaSeguimiento 
+		WHERE descripcionEstatusPoliza=#descripcion#
+    </select>
+    
+    <select id="consultarEstatusPolizaSeguimiento" resultClass="EstatusPolizaSeguimiento">
+    	SELECT idEstatusPolizaSeguimiento, descripcionEstatusPoliza
+		FROM EstatusPolizaSeguimiento 
+		order by idEstatusPolizaSeguimiento
+    </select>
+    
+    <!--CGM-->
+    
+</sqlMap>

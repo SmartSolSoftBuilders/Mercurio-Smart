@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap
+PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
+"http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap namespace="Solicitante">
+    
+    <!--parameterMap id="parameterMapSolicitante" class="mx.com.seguros.model.Solicitante">
+        <parameter property ="estadoCivilSolicitante" 
+                   jdbcType="CHAR" 
+                   javaType="java.lang.Character"
+                   nullValue="0"
+                   />
+    </parameterMap-->
+    
+    <typeAlias alias="solicitante" type="mx.com.seguros.model.Solicitante"/>
+    <resultMap id="solicitanteResult" class="solicitante">
+        <result property="RFCsolicitante" column="RFCsolicitante"/>
+        <result property="apPaternoSolicitante" column="apPaternoSolicitante"/>
+        <result property="apMaternoSolicitante" column="apMaternoSolicitante"/>
+        <result property="nombre1Solicitante" column="nombre1Solicitante"/>
+        <result property="nombre2Solicitante" column="nombre2Solicitante"/>
+        <result property="fechaNacimientoSolicitante" column="fechaNacimientoSolicitante"/>
+        <result property="puestoSolicitante" column="puestoSolicitante"/>
+        <result property="sexoSolicitanteMasculino" column="sexoSolicitanteMasculino"/>
+        <result property="estadoCivilSolicitante" column="estadoCivilSolicitante"/>
+        <result property="ingresoMensualSolicitante" column="ingresoMensualSolicitante"/>
+        <result property="fechaAltaDependencia" column="fechaAltaDependencia"/>
+        <result property="numOficioAltaDependencia" column="numOficioAltaDependencia"/>
+        <result property="fechaBajaDependencia" column="fechaBajaDependencia"/>
+        <result property="numOficioBajaDependencia" column="numOficioBajaDependencia"/>
+        <result property="calle" column="calle"/>
+        <result property="edificio" column="edificio"/>
+        <result property="numExtInt" column="numExtInt"/>
+        <result property="colonia" column="colonia"/>
+        <result property="codPostal" column="codPostal"/>
+        <result property="delegacionMpio" column="delegacionMpio"/>
+        <result property="ciudadPoblacion" column="ciudadPoblacion"/>
+        <result property="entidadFederativa" column="entidadFederativa"/>
+        <result property="lada" column="lada"/>
+        <result property="telefono" column="telefono"/>
+        <result property="email" column="email"/>
+    </resultMap>
+    
+     <select id="recuperarSolicitantePorRFC" resultMap="solicitanteResult" parameterClass="String">
+      <!--resultClass="solicitante" parameterClass="java.util.HashMap"-->
+        SELECT	RFCsolicitante,
+        apPaternoSolicitante,
+        apMaternoSolicitante,
+        nombre1Solicitante,
+        nombre2Solicitante,
+        fechaNacimientoSolicitante,
+        puestoSolicitante,
+        sexoSolicitanteMasculino,
+        estadoCivilSolicitante,
+        ingresoMensualSolicitante,
+        fechaAltaDependencia,
+        numOficioAltaDependencia,
+        fechaBajaDependencia,
+        numOficioBajaDependencia,
+        calle,
+        edificio,
+        numExtInt,
+        colonia,
+        codPostal,
+        delegacionMpio,
+        ciudadPoblacion,
+        entidadFederativa,
+        lada,
+        telefono,
+        email
+FROM Solicitante
+WHERE RFCsolicitante= #value#
+    </select>
+    <!--insert id="insertarSolicitante" parameterClass="solicitante" parameterMap="parameterMapSolicitante" -->
+    <insert id="insertarSolicitante" parameterClass="solicitante" >
+        
+        INSERT INTO Solicitante (
+        RFCsolicitante,
+        apPaternoSolicitante,
+        apMaternoSolicitante,
+        nombre1Solicitante,
+        nombre2Solicitante,
+        fechaNacimientoSolicitante,
+        puestoSolicitante,
+        sexoSolicitanteMasculino,
+        estadoCivilSolicitante,
+        ingresoMensualSolicitante,
+        calle,
+        edificio,
+        numExtInt,
+        colonia,
+        codPostal,
+        delegacionMpio,
+        ciudadPoblacion,
+        entidadFederativa,
+        lada,
+        telefono,
+        email
+        )
+        
+        VALUES(
+        #RFCsolicitante#,
+        #apPaternoSolicitante#,
+        #apMaternoSolicitante#,
+        #nombre1Solicitante#,
+        #nombre2Solicitante#,
+        #fechaNacimientoSolicitante#,
+        #puestoSolicitante#,
+        #sexoSolicitanteMasculino#,
+        #estadoCivilSolicitante#,
+        #ingresoMensualSolicitante#,
+        #calle#,
+        #edificio#,
+        #numExtInt#,
+        #colonia#,
+        #codPostal#,
+        #delegacionMpio#,
+        #ciudadPoblacion#,
+        #entidadFederativa#,
+        #lada#,
+        #telefono#,
+        #email#
+        )
+    </insert>
+    
+    <update id="actualizarSolicitante" parameterClass="solicitante" >
+        update Solicitante set
+        apPaternoSolicitante = #apPaternoSolicitante#,
+        apMaternoSolicitante = #apMaternoSolicitante#,
+        nombre1Solicitante = #nombre1Solicitante#,
+        nombre2Solicitante = #nombre2Solicitante#,
+        fechaNacimientoSolicitante = #fechaNacimientoSolicitante#,
+        puestoSolicitante = #puestoSolicitante#,
+        sexoSolicitanteMasculino = #sexoSolicitanteMasculino#,
+        estadoCivilSolicitante = #estadoCivilSolicitante#,
+        ingresoMensualSolicitante = #ingresoMensualSolicitante#,
+        calle = #calle#,
+        edificio = #edificio#,
+        numExtInt = #numExtInt#,
+        colonia = #colonia#,
+        codPostal = #codPostal#,
+        delegacionMpio = #delegacionMpio#,
+        ciudadPoblacion = #ciudadPoblacion#,
+        entidadFederativa = #entidadFederativa#,
+        lada = #lada#,
+        telefono = #telefono#,
+        email = #email#
+        where RFCsolicitante = #RFCsolicitante#
+       
+    </update>
+
+    
+</sqlMap>

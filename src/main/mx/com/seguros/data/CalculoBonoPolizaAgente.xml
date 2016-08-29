@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE sqlMap
+PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
+"http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap namespace="CalculoBonoPolizaAgente">
+    <typeAlias alias="calculoBonoPolizaAgente" type="mx.com.seguros.model.CalculoBonoPolizaAgente"/>
+    <typeAlias alias="resumenCalculoBonoPolizaAgente" type="mx.com.seguros.model.ResumenCalculoBonoPolizaAgente"/>
+    <typeAlias alias="resumenProcesoCalculoBono" type="mx.com.seguros.model.ResumenProcesoCalculoBono"/>
+    <typeAlias alias="bonoPolizaPorCalcular" type="mx.com.seguros.dto.BonoPolizaPorCalcularDTO"/>
+    <typeAlias alias="resultadoCalculoBonoPolizaAgente" type="mx.com.seguros.dto.ResultadoCalculoBonoPolizaAgenteDTO"/>
+    
+    <resultMap class="calculoBonoPolizaAgente" id="calculoBonoPolizaAgenteResulMap">
+    	<result property="idCalculoBonoPolizaAgente" column="idCalculoBonoPolizaAgente"/>
+    	<result property="numPoliza" column="numPoliza"/>
+    	<result property="numConsignatario" column="numConsignatario"/>
+    	<result property="cveAgente" column="cveAgente"/>
+    	<result property="tarifa" column="tarifa"/>
+    	<result property="porcentaje" column="porcentaje"/>
+    	<result property="numeroQuincenas" column="numeroQuincenas"/>
+    	<result property="numeroQuincenaBase" column="numeroQuincenaBase"/>
+    	<result property="quincenaInicial" column="quincenaInicial"/>
+    	<result property="quincenaFinal" column="quincenaFinal"/>
+    	<result property="montoBono" column="montoBono"/>
+    	<result property="fechaCalculo" column="fechaCalculo"/>
+    </resultMap>
+    
+    <resultMap class="bonoPolizaPorCalcular" id="bonoPolizaPorCalcularResultMap">
+    	<result property="numPoliza" column="numPoliza"/>
+    	<result property="numConsignatario" column="numConsignatario"/>
+    	<result property="cveAgente" column="cveAgente"/>
+    	<result property="descuentosAplicados" column="descuentosAplicados"/>
+    	<result property="numQuincenasPagadas" column="numQuincenasPagadas"/>
+    </resultMap>
+    
+    <resultMap class="resumenProcesoCalculoBono" id="resumenProcesoCalculoBonoResultMap">
+    	<result property="idResumenProcesoCalculoBono" column="idResumenProcesoCalculoBono"/>
+    	<result property="cveUsuario" column="cveUsuario"/>
+    	<result property="montoTotal" column="montoTotal"/>
+    	<result property="fechaCalculo" column="fechaCalculo"/>
+    	<result property="idPlaza" column="idPlaza"/>
+    	<result property="plaza" resultMap="archivosAplicacionCargados.plazaResultMap"/>
+    </resultMap>
+    
+    
+    <resultMap class="resultadoCalculoBonoPolizaAgente" id="resultadoCalculoBonoPolizaAgente">
+    	<result property="idCalculoBonoPolizaAgente" column="idCalculoBonoPolizaAgente"/>
+    	<result property="numPoliza" column="numPoliza"/>
+    	<result property="numConsignatario" column="numConsignatario"/>
+    	<result property="cveAgente" column="cveAgente"/>
+    	<result property="tarifa" column="tarifa"/>
+    	<result property="porcentaje" column="porcentaje"/>
+    	<result property="numeroQuincenas" column="numeroQuincenas"/>
+    	<result property="numeroQuincenaBase" column="numeroQuincenaBase"/>
+    	<result property="quincenaInicial" column="quincenaInicial"/>
+    	<result property="quincenaFinal" column="quincenaFinal"/>
+    	<result property="montoBono" column="montoBono"/>
+    	<result property="fechaCalculo" column="fechaCalculo"/>    
+    
+     	<result property="folioSolicitud" column="folioSolicitud"/>
+    	<result property="RFCsolicitante" column="RFCsolicitante"/>
+    	
+    	
+    	<result property="nombre1Solicitante" column="nombre1Solicitante"/>
+    	<result property="apPaternoSolicitante" column="apPaternoSolicitante"/>
+    	<result property="apMaternoSolicitante" column="apMaternoSolicitante"/>
+    	       
+    
+    </resultMap>    
+    
+    <select id="bonosPorCalcular" parameterClass="Map" resultMap="bonoPolizaPorCalcularResultMap">
+    	<![CDATA[
+        select pol.numPoliza, pol.numConsignatario, sol.cveAgente,
+		(SELECT count(*)-12 FROM DescuentosAplicados  da
+		where da.numPoliza = pol.numPoliza and da.numConsignatario = pol.numConsignatario and da.fechaInicioCobertura is not null and da.numQuincenaArchivo > 0 )
+		descuentosAplicados ,
+		(IF( (select sum(cbpa.numeroQuincenas) from CalculoBonoPolizaAgente cbpa where 
+		cbpa.numPoliza = pol.numPoliza and cbpa.numConsignatario = pol.numConsignatario) is not null,
+		(select sum(cbpa.numeroQuincenas) from CalculoBonoPolizaAgente cbpa where 
+		cbpa.numPoliza = pol.numPoliza and cbpa.numConsignatario = pol.numConsignatario)
+		,0)) 
+		numQuincenasPagadas
+		from polizaIndividual pol 
+		join Solicitud sol on pol.folioSolicitud = sol.folioSolicitud and pol.formatoSolicitud = sol.formatoSolicitud 
+		join Empresa empresa on sol.cveEmpresa = empresa.cveEmpresa
+		join GrupoAsegurado grupoAsegurado on empresa.cveGrupoAsegurado = grupoAsegurado.cveGrupoAsegurado
+		where
+		pol.idEstatusPagosPoliza not in (4,6,1)
+		and
+		(SELECT count(*) FROM DescuentosAplicados  da
+		where da.numPoliza = pol.numPoliza and da.numConsignatario = pol.numConsignatario and fechaInicioCobertura is not null and da.numQuincenaArchivo > 0) > 12
+		and
+		IF( (select sum(cbpa.numeroQuincenas) from CalculoBonoPolizaAgente cbpa where 
+		cbpa.numPoliza = pol.numPoliza and cbpa.numConsignatario = pol.numConsignatario) is not null,
+		(select sum(cbpa.numeroQuincenas) from CalculoBonoPolizaAgente cbpa where 
+		cbpa.numPoliza = pol.numPoliza and cbpa.numConsignatario = pol.numConsignatario)
+		,0) <24
+		and
+		IF( (select sum(cbpa.numeroQuincenas) from CalculoBonoPolizaAgente cbpa where 
+		cbpa.numPoliza = pol.numPoliza and cbpa.numConsignatario = pol.numConsignatario) is not null,
+		(select sum(cbpa.numeroQuincenas) from CalculoBonoPolizaAgente cbpa where 
+		cbpa.numPoliza = pol.numPoliza and cbpa.numConsignatario = pol.numConsignatario)
+		,0) < 
+		(SELECT count(*)-12 FROM DescuentosAplicados  da
+		where da.numPoliza = pol.numPoliza and da.numConsignatario = pol.numConsignatario and fechaInicioCobertura is not null and da.numQuincenaArchivo > 0)
+        	
+        ]]>
+        <isNotNull prepend="and" property="idPlaza">
+                  <![CDATA[   grupoAsegurado.idPlaza = #idPlaza# ]]>
+        </isNotNull>
+        order by sol.cveAgente, pol.numPoliza, pol.numConsignatario
+    </select>
+    
+    <insert id="insertarCalculoBonoPolizaAgente" parameterClass="calculoBonoPolizaAgente">
+    	INSERT INTO CalculoBonoPolizaAgente 
+    	(numPoliza,numConsignatario,cveAgente,tarifa,porcentaje,numeroQuincenas,numeroQuincenaBase,quincenaInicial,quincenaFinal,montoBono,fechaCalculo,idResumenCalculoBonoPolizaAgente)
+    	values
+    	(#numPoliza#,#numConsignatario#,#cveAgente#,#tarifa#,#porcentaje#,#numeroQuincenas#,#numeroQuincenaBase#,#quincenaInicial#,#quincenaFinal#,#montoBono#,#fechaCalculo#,#idResumenCalculoBonoPolizaAgente#)
+    	<selectKey keyProperty="idCalculoBonoPolizaAgente" resultClass="int">  
+            SELECT LAST_INSERT_ID() AS idCalculoBonoPolizaAgente  
+         </selectKey>  
+    </insert>
+    
+    <insert id="insertarResumenCalculoBonoPolizaAgente" parameterClass="resumenCalculoBonoPolizaAgente">
+    	INSERT INTO ResumenCalculoBonoPolizaAgente 
+    	(cveAgente,montoBono,fechaCalculo,idResumenProcesoCalculoBono)
+    	values
+    	(#cveAgente#,#montoBono#,#fechaCalculo#,#idResumenProcesoCalculoBono#)
+    	<selectKey keyProperty="idResumenCalculoBonoPolizaAgente" resultClass="int">  
+            SELECT LAST_INSERT_ID() AS idResumenCalculoBonoPolizaAgente  
+         </selectKey>  
+    </insert>
+    
+     <insert id="insertarResumenProcesoCalculoBono" parameterClass="resumenProcesoCalculoBono">
+    	INSERT INTO ResumenProcesoCalculoBono 
+    	(cveUsuario,montoTotal,fechaCalculo,idPlaza)
+    	values
+    	(#cveUsuario#,#montoTotal#,#fechaCalculo#,#idPlaza#)
+    	<selectKey keyProperty="idResumenProcesoCalculoBono" resultClass="int">  
+            SELECT LAST_INSERT_ID() AS idResumenProcesoCalculoBono  
+         </selectKey>  
+    </insert>
+    <select id="consultarResumenProcesosCalculoBono" resultMap="CalculoBonoPolizaAgente.resumenProcesoCalculoBonoResultMap">
+		SELECT * FROM ResumenProcesoCalculoBono resumen
+		left outer join Plaza plaza on resumen.idPlaza = plaza.idPlaza  
+		order by resumen.fechaCalculo desc
+	</select>
+	<select id="consultarResumenProcesosCalculoBonoPorId" resultMap="CalculoBonoPolizaAgente.resumenProcesoCalculoBonoResultMap" parameterClass="Integer">
+		SELECT * FROM ResumenProcesoCalculoBono resumen 
+		left outer join Plaza plaza on resumen.idPlaza = plaza.idPlaza 
+		where idResumenProcesoCalculoBono = #value#
+	</select>
+	
+    <select id="consultarResumenCalculoBonoPolizaAgentePorIdResumenCalculo" resultClass="resumenCalculoBonoPolizaAgente" parameterClass="Integer">
+		SELECT * FROM ResumenCalculoBonoPolizaAgente where idResumenProcesoCalculoBono = #value# order by
+		cveAgente asc
+	</select>
+	<select id="consultarDetalleCalculoBonoPolizaAgentePorIdResumenProcesoCalculoBono" resultMap="resultadoCalculoBonoPolizaAgente" parameterClass="Integer">
+		SELECT calculo.* , sol.folioSolicitud, sol.RFCsolicitante, solte.apPaternoSolicitante, solte.apMaternoSolicitante, solte.nombre1Solicitante 
+		FROM ResumenCalculoBonoPolizaAgente resumen 		
+		join CalculoBonoPolizaAgente calculo on calculo.idResumenCalculoBonoPolizaAgente = resumen.idResumenCalculoBonoPolizaAgente
+		join PolizaIndividual pol on pol.numPoliza = calculo.numPoliza and pol.numConsignatario = calculo.numConsignatario 
+		join Solicitud sol on pol.folioSolicitud = sol.folioSolicitud and pol.formatoSolicitud = sol.formatoSolicitud 
+		join Solicitante solte on sol.RFCsolicitante = solte.RFCsolicitante 
+		where
+		resumen.idResumenProcesoCalculoBono = #value# order by cveAgente asc
+	</select>
+	
+
+</sqlMap>

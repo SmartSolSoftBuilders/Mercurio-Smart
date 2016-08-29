@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap
+PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
+"http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<!--
+    Document   : Reporte.xml
+    Created on : 13 de febrero de 2011, 09:49 PM
+    Author     : Cesar
+    Description:
+        Purpose of the document follows.
+-->
+        <!--result property="numCertificado" column="numCertificado"/>
+        <result property="estatusPolizaPagos.descripcionEstatusPagosPoliza" column="descripcionEstatusPagosPoliza"/-->
+
+<sqlMap namespace="Reporte">
+    <resultMap id="parametrosReporteCartaResumenPolizaResult" class="java.util.HashMap">
+        <result property="cvePlaza"/>
+    </resultMap>
+
+<!--
+
+       	slc.apPaternoSolicitante, slc.apMaternoSolicitante, slc.nombre1Solicitante,
+        	slc.nombre2Solicitante, slc.fechaNacimientoSolicitante,
+	pol.numPoliza, pol.numConsignatario, pol.sumaAseguradaIndividual,
+	paq.nombrePaquete,
+        	tar.importeTarifa, tar.importePrimaInd,
+	baf.sumaAseguradaBAF,
+	pol.sumaGastosFunerarios,pol.sumaSEVI,
+        	pla.cvePlaza, pla.domicilioPlaza, pla.lada, pla.telefono, pla.horarioAtencion,
+        	agt.cveAgente, agt.cveSupervisor, agt.cveGerente,ret.cveDescuento
+-->
+
+    <select id="seleccionarParametrosReporteCartaResumenPoliza"
+            resultMap="parametrosReporteCartaResumenPolizaResult"
+            parameterClass="poliza">
+    <![CDATA[
+    SELECT
+       	slc.apPaternoSolicitante, slc.apMaternoSolicitante, slc.nombre1Solicitante,
+       	slc.nombre2Solicitante, slc.fechaNacimientoSolicitante,
+	pol.numConsignatario, pol.sumaAseguradaIndividual,
+	paq.nombrePaquete,
+        tar.importeTarifa, tar.importePrimaInd,
+	baf.sumaAseguradaBAF,
+	pol.sumaGastosFunerarios,pol.sumaSEVI,
+        pla.cvePlaza, pla.domicilioPlaza, pla.lada, pla.telefono, pla.horarioAtencion,
+        agt.cveAgente, agt.cveSupervisor, agt.cveGerente,ret.cveDescuento
+    FROM
+	CertificadoIndividual cer,
+	Solicitante slc,
+	PolizaIndividual pol,
+	PaqueteVidaDxN paq,
+     	TarifaAportMensual tar,
+     	Solicitud sol, Plaza pla, Agente agt,
+	BAF baf,
+        Retenedor ret,
+        Empresa epr,
+        GrupoAsegurado gpo
+    WHERE cer.numCertificado = #numCertificado#
+    AND pol.numPoliza = #numPoliza#
+    AND cer.folioSolicitud = pol.folioSolicitud
+    AND sol.folioSolicitud=pol.folioSolicitud
+    AND slc.RFCsolicitante=sol.RFCsolicitante
+    AND tar.cveTarifa=sol.cveTarifa
+    AND agt.cveAgente=sol.cveAgente
+    AND pla.idPlaza=cer.idPlaza
+    AND paq.idPaqueteVidaDxN=pol.tipoSeguro
+    AND baf.importePrimaBAF=tar.importePrimaBAF
+    AND baf.idPaqueteVidaDxN=paq.idPaqueteVidaDxN
+    AND epr.cveEmpresa = sol.cveEmpresa
+    AND gpo.cveGrupoAsegurado = epr.cveGrupoAsegurado
+    AND ret.cveRetenedor=gpo.cveRetenedor
+    ]]>
+    </select>
+
+
+</sqlMap>

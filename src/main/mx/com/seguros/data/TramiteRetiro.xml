@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8" ?> 
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap namespace="tramiteRetiro">
+	<typeAlias alias="tramiteRetiro" type="mx.com.seguros.model.TramiteRetiro"/>
+	   
+    <select id="obtenerTramitesRetiroDePoliza" resultClass="tramiteRetiro" parameterClass="Map">
+    	SELECT * from TramiteRetiro where numPoliza = #numPoliza# and numConsignatario = #numConsignatario# 
+    	order by fechaTramite desc    
+    </select>
+        
+    <insert id="insertarTramiteRetiro" parameterClass="tramiteRetiro">
+    	INSERT INTO TramiteRetiro
+		(numNominaContratante,
+		fechaTramite,
+		importeOriginal,
+		importeAplicado,
+		observacionConcepto,
+		nombreOperador,
+		nombreSucursal,
+		transaccionId,
+		idArchivoRetirosCargado,
+		username,
+		numPoliza,
+		numConsignatario)
+		VALUES
+		(
+		#numNominaContratante#,
+		#fechaTramite#,
+		#importeOriginal#,
+		#importeAplicado#,
+		#observacionConcepto#,
+		#nombreOperador#,
+		#nombreSucursal#,
+		#transaccionId#,
+		#idArchivoRetirosCargado#,
+		#username#,
+		#numPoliza#,
+		#numConsignatario#
+		)
+    	<selectKey keyProperty="idTramiteRetiro" resultClass="int">  
+            SELECT LAST_INSERT_ID() AS idTramiteRetiro  
+         </selectKey>  
+    </insert>
+   
+       
+    
+</sqlMap>	

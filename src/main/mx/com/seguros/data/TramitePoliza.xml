@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap
+PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
+"http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap namespace="TramitePoliza">
+    <typeAlias alias="oficina" type="mx.com.seguros.model.Oficina"/>
+    <typeAlias alias="tipoTramite" type="mx.com.seguros.model.TipoTramite"/>
+    <typeAlias alias="tramitePoliza" type="mx.com.seguros.model.TramitePoliza"/>
+    
+    <resultMap class="tipoTramite" id="tipoTramiteInicialResultMap">
+    	<result property="idTipoTramite" column="idTipoTramite"/>
+    	<result property="nombre" column="nombre"/>
+    </resultMap>
+    <resultMap class="tipoTramite" id="tipoTramiteFinalResultMap">
+    	<result property="idTipoTramite" column="idTipoTramiteFinal"/>
+    	<result property="nombre" column="nombreFinal"/>
+    </resultMap>
+    
+     <resultMap class="oficina" id="oficinaResultMap">
+    	<result property="idOficina" column="idOficina"/>
+    	<result property="nombre" column="nombreOficina"/>
+    </resultMap>
+    
+    <resultMap class="tramitePoliza" id="tramitePolizaResultMap">
+    	<result property="idTramitePoliza" column="idTramitePoliza"/>
+    	<result property="idTipoTramiteInicial" column="idTipoTramiteInicial"/>
+    	<result property="idTipoTramiteFinal" column="idTipoTramiteFinal"/>
+    	<result property="idOficina" column="idOficina"/>
+    	<result property="numPoliza" column="numPoliza"/>
+    	<result property="numConsignatario" column="numConsignatario"/>
+    	<result property="fecha" column="fecha"/>
+    	<result property="usuario" column="usuario"/>
+    	<result property="telefono" column="telefono"/>
+    	<result property="comentariosAsegurado" column="comentariosAsegurado"/>
+    	<result property="comentariosAsesor" column="comentariosAsesor"/>
+    	<result property="observaciones" column="observaciones"/>
+    	<result property="tipoTramiteInicial" resultMap="TramitePoliza.tipoTramiteInicialResultMap"/>
+    	<result property="tipoTramiteFinal" resultMap="TramitePoliza.tipoTramiteFinalResultMap"/>
+    	<result property="oficina" resultMap="TramitePoliza.oficinaResultMap"/>
+    </resultMap>
+	<select id="obtenerTiposTramite" resultClass="tipoTramite">
+	    SELECT * FROM TipoTramite order by idTipoTramite
+	</select>
+	
+	<select id="obtenerOficinas" resultClass="oficina">
+	    SELECT * FROM Oficina order by idOficina
+	</select>
+	
+	<select id="obtenerOficinaPorId" resultClass="oficina">
+	    SELECT * FROM Oficina where idOficina = #value#
+	</select>
+	
+	<select id="obtenerTipoTramitePorId" resultClass="tipoTramite" >
+	    SELECT * FROM TipoTramite where idTipoTramite = #value#
+	</select>
+	
+	<select id="obtenerTramitesPorPoliza" resultMap="TramitePoliza.tramitePolizaResultMap" parameterClass="map">
+		select tp.*, tti.*, ttf.nombre nombreFinal, 
+		of.nombre nombreOficina
+		from TramitePoliza tp join TipoTramite tti on tp.idTipoTramiteInicial = tti.idTipoTramite
+		join TipoTramite ttf on tp.idTipoTramiteFinal = ttf.idTipoTramite
+		join Oficina of on tp.idOficina = of.idOficina
+		 where
+		tp.numPoliza = #numPoliza# and tp.numConsignatario = #numConsignatario# order by tp.fecha asc
+	</select>
+	
+	<insert id="insertarTramitePoliza" parameterClass="tramitePoliza">
+		
+		INSERT INTO TramitePoliza
+		(idTipoTramiteInicial,
+		idTipoTramiteFinal,
+		idOficina,
+		numPoliza,
+		numConsignatario,
+		fecha,
+		usuario,
+		telefono,
+		comentariosAsegurado,
+		comentariosAsesor,
+		observaciones)
+		values
+		(#idTipoTramiteInicial#,
+		#idTipoTramiteFinal#,
+		#idOficina#,
+		#numPoliza#,
+		#numConsignatario#,
+		#fecha#,
+		#usuario#,
+		#telefono#,
+		#comentariosAsegurado#,
+		#comentariosAsesor#,
+		#observaciones#)
+		<selectKey keyProperty="idTramitePoliza" resultClass="int">  
+            SELECT LAST_INSERT_ID() AS idTramitePoliza  
+        </selectKey>  
+	</insert>
+	
+	<!-- JLVO: Nueva consulta para reporte de pólizas -->
+	<select id="obtenerTramitesPorFechaOficina" resultMap="TramitePoliza.tramitePolizaResultMap" parameterClass="map">
+		select tp.*, tti.*, ttf.nombre nombreFinal, 
+		of.nombre nombreOficina
+		from TramitePoliza tp 
+		join TipoTramite tti on tp.idTipoTramiteInicial = tti.idTipoTramite
+		join TipoTramite ttf on tp.idTipoTramiteFinal = ttf.idTipoTramite
+		join Oficina of on tp.idOficina = of.idOficina
+		where		
+		tp.fecha &gt; #fechaInicial# and tp.fecha &lt; #fechaFinal# 
+	
+          <dynamic prepend="" >
+			<isNotNull prepend="and" property="idOficina">
+				tp.idOficina = #idOficina#
+			</isNotNull>
+		</dynamic>
+		order by tp.fecha asc 
+		
+	</select>
+	
+	
+</sqlMap>

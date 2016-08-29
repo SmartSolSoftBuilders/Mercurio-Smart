@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap
+PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
+"http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<!--
+    Document   : Asegurado.xml
+    Created on : 8 de octubre de 2007, 01:55 PM
+    Author     : Cesar
+    Description:
+        Purpose of the document follows.
+-->
+
+<sqlMap namespace="Asegurado">
+    <typeAlias alias="asegurado" type="mx.com.seguros.model.Asegurado"/>
+
+    <insert id="insertarAsegurado" parameterClass="asegurado">
+        INSERT INTO Asegurado (
+        numNominaAsegurado,
+        RFCasegurado,
+        apMaternoAsegurado,
+        apPaternoAsegurado,
+        nombre1Asegurado,
+        nombre2Asegurado,
+        fechaNacimientoAsegurado,
+        puestoAsegurado,
+        sexoAseguradoMasculino,
+        estadoCivilAsegurado,
+        ingresoMensualAsegurado,
+        calle,
+        edificio,
+        numExtInt,
+        colonia,
+        codPostal,
+        delegacionMpio,
+        ciudadPoblacion,
+        entidadFederativa,
+        lada,
+        telefono,
+        numPoliza,
+        email,
+        numConsignatario
+        )
+        VALUES(
+        #numNominaAsegurado#,
+        #RFCasegurado#,
+        #apMaternoAsegurado#,
+        #apPaternoAsegurado#,
+        #nombre1Asegurado#,
+        #nombre2Asegurado#,
+        #fechaNacimientoAsegurado#,
+        #puestoAsegurado#,
+        #sexoAseguradoMasculino#,
+        #estadoCivilAsegurado#,
+        #ingresoMensualAsegurado#,
+        #calle#,
+        #edificio#,
+        #numExtInt#,
+        #colonia#,
+        #codPostal#,
+        #delegacionMpio#,
+        #ciudadPoblacion#,
+        #entidadFederativa#,
+        #lada#,
+        #telefono#,
+        #numPoliza#,
+        #email#,
+        #numConsignatario#
+        )
+    </insert>
+    
+    <update id="actualizarAsegurado" parameterClass="asegurado">
+    	update Asegurado set 
+    	numNominaAsegurado=#numNominaAsegurado#,
+        RFCasegurado=#RFCasegurado#,
+        apMaternoAsegurado=#apMaternoAsegurado#,
+        apPaternoAsegurado=#apPaternoAsegurado#,
+        nombre1Asegurado=#nombre1Asegurado#,
+        nombre2Asegurado=#nombre2Asegurado#,
+        fechaNacimientoAsegurado=#fechaNacimientoAsegurado#,
+        puestoAsegurado=#puestoAsegurado#,
+        sexoAseguradoMasculino=#sexoAseguradoMasculino#,
+        estadoCivilAsegurado=#estadoCivilAsegurado#,
+        ingresoMensualAsegurado=#ingresoMensualAsegurado#,
+        calle=#calle#,
+        edificio=#edificio#,
+        numExtInt=#numExtInt#,
+        colonia=#colonia#,
+        codPostal=#codPostal#,
+        delegacionMpio=#delegacionMpio#,
+        ciudadPoblacion=#ciudadPoblacion#,
+        entidadFederativa=#entidadFederativa#,
+        lada=#lada#,
+        telefono=#telefono#,
+        numPoliza=#numPoliza#,
+        email=#email#,
+        numConsignatario = #numConsignatario#
+        where idAsegurado = #idAsegurado#
+    </update>
+</sqlMap>

@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap
+PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
+"http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<!--
+    Document   : PrestamoEmpleado.xml
+    Created on : 22 de mayo de 2008, 12:27 PM
+    Author     : QTX
+    Description:
+        Purpose of the document follows.
+-->
+<sqlMap namespace="PrestamoEmpleado">
+    <typeAlias alias="prestamo" type="mx.com.seguros.model.PrestamoEmpleado"/>
+    <typeAlias alias="empleado" type="mx.com.seguros.model.Empleado"/>
+    <typeAlias alias="bonoEmp" type="mx.com.seguros.model.BonoExtraEmpleado"/>
+    <typeAlias alias="pagoprestamoempleado" type="mx.com.seguros.model.PagoPrestamoEmpleado"/>
+    <typeAlias alias="puesto" type="mx.com.seguros.model.Puesto"/>
+    
+    <resultMap id="empleadoResult" class="empleado">
+        <result property="cveEmpleado" column="cveEmpleado"/>
+        <result property="puesto.nombrePuesto" column="nombrePuesto"/>
+        <result property="apPaternoEmpleado" column="apPaternoEmpleado"/>
+        <result property="apMaternoEmpleado" column="apMaternoEmpleado"/>
+        <result property="nombre1Empleado" column="nombre1Empleado"/>
+        <result property="nombre2Empleado" column="nombre2Empleado"/>
+     </resultMap>
+    
+     <insert id="insertarNuevoPagoPrestamoEmpleado" parameterClass="pagoprestamoempleado">
+        Insert into PagoPrestamoEmpleado 
+        (cveEmpleado,
+        idPrestamo,
+        idPago,
+        montoPagado,
+        fechaPago)
+        values(
+        #cveEmpleado#,
+        #idPrestamo#,
+        #idPago#,
+        #montoPagado#,
+        #fechaPago#
+        )
+    </insert>
+    
+    <update id="actualizaPrestamoEmpleado" parameterClass="prestamo">
+        update PrestamoEmpleado set
+        marcaPrestamoLiquidado=true
+        where cveEmpleado=#cveEmpleado#
+        and idPrestamo=#idPrestamo#
+    </update>
+    
+    <insert id="insertarPrestamo" parameterClass="prestamo">
+        Insert into PrestamoEmpleado
+        (cveEmpleado,
+        idPrestamo,
+        cvePrestamo,
+        condicionPrestamo,
+        totalPrestamo,
+        numPagosTotales,
+        importePagosRegular,
+        numQuincenaAplicacion,
+        anioQuincenaAplicacion,
+        marcaPrestamoLiquidado)
+        values(
+        #cveEmpleado#,
+        #idPrestamo#,
+        #cvePrestamo#,
+        #condicionPrestamo#,
+        #totalPrestamo#,
+        #numPagosTotales#,
+        #importePagosRegular#,
+        #numQuincenaAplicacion#,
+        #anioQuincenaAplicacion#,
+        #marcaPrestamoLiquidado#
+        )
+    </insert>
+    
+    <insert id="insertarBonoEmpleado" parameterClass="bonoEmp">
+        Insert into BonoExtraEmpleado
+        (cveEmpleado,
+        idBonoExtra,
+        conceptoBonoExtra,
+        importeBonoExtra,
+        numQuincenaAplicacion,
+        anioQuincenaAplicacion)
+        values(
+        #cveEmpleado#,
+        #idBonoExtra#,
+        #conceptoBonoExtra#,
+        #importeBonoExtra#,
+        #numQuincenaAplicacion#,
+        #anioQuincenaAplicacion#
+        )
+    </insert>
+    
+    <select id="mostrarEmpleados" resultMap="empleadoResult" parameterClass="java.util.HashMap">
+        select emp.cveEmpleado,pue.nombrePuesto,emp.apPaternoEmpleado,emp.apMaternoEmpleado,emp.nombre1Empleado,emp.nombre2Empleado from Empleado emp, Puesto pue where not exists (select pres.cveEmpleado from PrestamoEmpleado pres where pres.cveEmpleado = emp.cveEmpleado and pres.marcaPrestamoLiquidado=0) and emp.marcaEmpleadoActivo=1 and pue.cvePuesto=emp.cvePuesto order by emp.apPaternoEmpleado
+    </select>
+    
+    <select id="mostrarEmpleadosBonos" resultMap="empleadoResult" parameterClass="java.util.HashMap">
+        select emp.cveEmpleado,pue.nombrePuesto,emp.apPaternoEmpleado,emp.apMaternoEmpleado,emp.nombre1Empleado,emp.nombre2Empleado from Empleado emp, Puesto pue where emp.marcaEmpleadoActivo=1 and pue.cvePuesto=emp.cvePuesto order by emp.apPaternoEmpleado
+    </select>
+    
+    <select id="verificarPagoPrestamo" resultClass="prestamo">
+        select condicionPrestamo,marcaPrestamoLiquidado,totalPrestamo from PrestamoEmpleado where cveEmpleado=#cveEmpleado#
+    </select>
+   
+    <select id="obtenerUltimoPagoPrestamoEmpleado" resultClass="pagoprestamoempleado">
+           select MAX(idPago)as idPago  from PagoPrestamoEmpleado where cveEmpleado=#cveEmpleado# and idPrestamo=#idPrestamo#   
+    </select>
+    
+    
+    <!--Pago Prestamo Empleado-->
+    
+    
+    
+    
+  
+  
+    
+</sqlMap>

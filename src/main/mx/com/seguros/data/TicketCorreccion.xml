@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+    Document   : TicketCorreccion.xml
+    Created on : 15/02/20120
+    Author     : Emigdio Hernández
+    Description:
+        Mapeo SQL de las tablas del proceso de corrección de datos de solicitud
+-->
+
+<!DOCTYPE sqlMap
+PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
+"http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap namespace="TicketCorreccion">
+	<typeAlias alias="ticketCorreccion" type="mx.com.seguros.model.TicketCorreccion"/>
+    <typeAlias alias="estadoTicketCorreccion" type="mx.com.seguros.model.EstadoTicketCorreccion"/>
+    <typeAlias alias="comentarioTicket" type="mx.com.seguros.model.ComentarioTicket"/>
+    <resultMap id="estadoTicketCorreccionResult" class="estadoTicketCorreccion">
+        <result property="idEstadoTicketCorreccion" column="idEstadoTicketCorreccion" />
+        <result property="descripcionEstadoTicketCorreccion" column="descripcionEstadoTicketCorreccion"/>
+
+    </resultMap>
+     <resultMap id="ticketCorreccionResult" class="ticketCorreccion">
+        <result property="idTicketCorreccion" column="idTicketCorreccion"/>
+        <result property="usuarioSolicitante" column="usuarioSolicitante"/>
+        <result property="motivoSolicitud" column="motivoSolicitud"/>
+        <result property="fechaSolicitud" column="fechaSolicitud"/>
+        <result property="datosOriginales" column="datosOriginales"/>
+        <result property="datosNuevos" column="datosNuevos"/>
+        <result property="folioSolicitud" column="folioSolicitud"/>
+        <result property="formatoSolicitud" column="formatoSolicitud"/>
+        <result property="numPoliza" column="numPoliza"/>
+        <result property="numConsignatario" column="numConsignatario"/>
+        <result property="usuarioAutoriza" column="usuarioAutoriza"/>
+ 		<result property="fechaAutorizacion" column="fechaAutorizacion"/>        
+        <result property="idEstadoTicketCorreccion" column="idEstadoTicketCorreccion"/>
+        <result property="estadoTicketCorreccion" resultMap="TicketCorreccion.estadoTicketCorreccionResult"/>
+    </resultMap>
+    <resultMap id="comentarioTicketResult" class="comentarioTicket">
+        <result property="idComentarioTicket" column="idComentarioTicket" />
+        <result property="usuario" column="usuario"/>
+		<result property="fecha" column="fecha"/>
+		<result property="comentario" column="comentario"/>
+		<result property="idTicketCorreccion" column="idTicketCorreccion"/>
+    </resultMap>
+    
+    <select id="consultarTicketsCorreccion" resultMap="ticketCorreccionResult" parameterClass="java.util.Map">
+    
+    	select * from TicketCorreccion tk 
+    	join EstadoTicketCorreccion es on tk.idEstadoTicketCorreccion = es.idEstadoTicketCorreccion 
+    	<dynamic prepend="where"  >
+    		
+    		<isNotNull prepend="and" property="fechaInicial">
+            	 <![CDATA[   tk.fechaSolicitud >= #fechaInicial# ]]>
+            </isNotNull>
+            <isNotNull prepend="and" property="fechaFinal">
+             	<![CDATA[   tk.fechaSolicitud <= #fechaFinal# ]]>
+            </isNotNull>
+            <isNotNull prepend="and" property="idEstadoTicketCorreccion">
+             <![CDATA[   tk.idEstadoTicketCorreccion = #idEstadoTicketCorreccion# ]]>
+            </isNotNull>
+            <isNotNull prepend="and" property="usuario">
+             <![CDATA[   tk.usuarioSolicitante = #usuario# ]]>
+            </isNotNull>
+                      
+    	</dynamic>
+    	order by fechaSolicitud desc     
+    </select>
+    
+    <select id="consultarDetalleTicketCorreccion" resultMap="ticketCorreccionResult" parameterClass="Integer">
+    	select * from TicketCorreccion tk 
+    	join EstadoTicketCorreccion es on tk.idEstadoTicketCorreccion = es.idEstadoTicketCorreccion
+    	where tk.idTicketCorreccion = #value#
+    </select>
+  
+  	<select id="consultarComentariosTicketCorreccion" resultMap="comentarioTicketResult" parameterClass="Integer">
+  		select * from ComentarioTicket where idTicketCorreccion = #value# order by
+  		fecha desc
+  	</select>
+  	
+  	<insert id="guardarTicketCorreccion" parameterClass="ticketCorreccion">
+  		INSERT INTO TicketCorreccion 
+  		(
+  		usuarioSolicitante, 
+  		motivoSolicitud, 
+  		fechaSolicitud, 
+  		datosOriginales, 
+  		datosNuevos, 
+  		folioSolicitud, 
+  		formatoSolicitud, 
+  		numPoliza, 
+  		numConsignatario, 
+  		usuarioAutoriza,
+  		fechaAutorizacion,
+  		idEstadoTicketCorreccion) 
+  		VALUES 
+  		(
+  		#usuarioSolicitante#, 
+  		#motivoSolicitud#, 
+  		#fechaSolicitud#, 
+  		#datosOriginales#, 
+  		#datosNuevos#, 
+  		#folioSolicitud#, 
+  		#formatoSolicitud#, 
+  		#numPoliza#, 
+  		#numConsignatario#, 
+  		#usuarioAutoriza#,
+  		#fechaAutorizacion#,
+  		#idEstadoTicketCorreccion#);
+  		 <selectKey keyProperty="idTicketCorreccion" resultClass="int">  
+            SELECT LAST_INSERT_ID() AS idTicketCorreccion  
+          </selectKey>  
+  	</insert>
+
+	<update id="actualizarTicketCorreccion" parameterClass="ticketCorreccion">
+		update TicketCorreccion set
+		usuarioSolicitante =  #usuarioSolicitante#, 
+  		motivoSolicitud =  #motivoSolicitud#,
+  		fechaSolicitud =  #fechaSolicitud#,
+  		datosOriginales =  #datosOriginales#,
+  		datosNuevos =  #datosNuevos#,
+  		folioSolicitud =  #folioSolicitud#,
+  		formatoSolicitud =  #formatoSolicitud#,
+  		numPoliza = #numPoliza#, 
+  		numConsignatario = #numConsignatario#, 
+  		idEstadoTicketCorreccion = #idEstadoTicketCorreccion#,
+  		usuarioAutoriza = #usuarioAutoriza#,
+  		fechaAutorizacion = #fechaAutorizacion#
+  		where
+  		idTicketCorreccion = #idTicketCorreccion#
+	</update>
+	
+	<insert id="agregarComentarioTicket" parameterClass="comentarioTicket">
+		INSERT INTO ComentarioTicket (
+		usuario, 
+		fecha, 
+		comentario, 
+		idTicketCorreccion) 
+		VALUES 
+		(#usuario#, 
+		#fecha#, 
+		#comentario#, 
+		#idTicketCorreccion#);
+		<selectKey keyProperty="idComentarioTicket" resultClass="int">  
+            SELECT LAST_INSERT_ID() AS idComentarioTicket  
+         </selectKey>  
+	</insert>
+	
+	<update id="actualizarEstadoTicketCorreccion" parameterClass="java.util.Map">
+		update TicketCorreccion set idEstadoTicketCorreccion = #idEstadoTicketCorreccion# where
+		idTicketCorreccion = #idTicketCorreccion#
+	</update>
+    
+    
+    <select id="consultarEstadosTicketCorreccion" resultMap="estadoTicketCorreccionResult">
+    	Select * from EstadoTicketCorreccion
+    </select>
+
+</sqlMap>

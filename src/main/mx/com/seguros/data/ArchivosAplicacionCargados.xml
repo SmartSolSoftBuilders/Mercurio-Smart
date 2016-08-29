@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8" ?> 
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap namespace="archivosAplicacionCargados">
+	<typeAlias alias="archivoAplicacion" type="mx.com.seguros.model.ArchivosAplicacionCargados"/>
+	<typeAlias alias="criteriosArchivoAplicacion" type="mx.com.seguros.dto.CriteriosConsultaArchivosAplicacionCargadosDTO"/>
+	<resultMap id="archivoAplicadoResultMap" class="archivoAplicacion">
+        <result property="idArchivosAplicacionCargados" column="idArchivosAplicacionCargados"/>
+        <result property="numQuincena" column="numQuincena"/>
+        <result property="consecutivoArchivo" column="consecutivoArchivo"/>
+        <result property="idPlaza" column="idPlaza"/>
+        <result property="username" column="username"/>
+        <result property="fechaCarga" column="fechaCarga"/>
+        <result property="numeroRegistros" column="numeroRegistros"/>
+        <result property="plaza" resultMap="archivosAplicacionCargados.plazaResultMap"/>
+        <result property="nombreArchivo" column="nombreArchivo"/>
+        <result property="fechaHoraInicio" column="fechaHoraInicio"/>
+        <result property="fechaHoraFin" column="fechaHoraFin"/>
+        <result property="log" column="log"/>
+    </resultMap>
+    
+    <resultMap id="archivoAplicadoResultMapCompleto" class="archivoAplicacion">
+        <result property="idArchivosAplicacionCargados" column="idArchivosAplicacionCargados"/>
+        <result property="numQuincena" column="numQuincena"/>
+        <result property="consecutivoArchivo" column="consecutivoArchivo"/>
+        <result property="idPlaza" column="idPlaza"/>
+        <result property="username" column="username"/>
+        <result property="fechaCarga" column="fechaCarga"/>
+        <result property="plaza" resultMap="archivosAplicacionCargados.plazaResultMap"/>
+        <result property="numeroRegistros" column="numeroRegistros"/>
+        <result property="archivo" column="archivo" jdbcType="BLOB"/>
+         <result property="nombreArchivo" column="nombreArchivo"/>
+         <result property="fechaHoraInicio" column="fechaHoraInicio"/>
+        <result property="fechaHoraFin" column="fechaHoraFin"/>
+        <result property="log" column="log"/>
+    </resultMap>
+    <resultMap class="mx.com.seguros.model.Plaza" id="plazaResultMap">
+    	<result property="idPlaza" column="idPlaza"/>
+    	<result property="cvePlaza" column="cvePlaza"/>
+    	<result property="nombrePlaza" column="nombrePlaza"/>
+    </resultMap>
+    
+    
+    <select id="findArchivosAplicacionCargados" resultMap="archivoAplicadoResultMap" parameterClass="criteriosArchivoAplicacion">
+    	SELECT idArchivosAplicacionCargados,numQuincena,consecutivoArchivo,username,fechaCarga,
+    	numeroRegistros,nombreArchivo,fechaHoraInicio,fechaHoraFin, log, plaza.idPlaza, plaza.cvePlaza, plaza.nombrePlaza 
+    	 FROM ArchivosAplicacionCargados archivo 
+    	left outer join Plaza plaza on archivo.idPlaza = plaza.idPlaza
+    	<dynamic prepend="where" >
+    		<isNotNull prepend="and" property="fechaCargaInicial">
+                  <![CDATA[   archivo.fechaCarga >= #fechaCargaInicial# ]]>
+            </isNotNull>
+            <isNotNull prepend="and" property="fechaCargaFinal">
+                  <![CDATA[   archivo.fechaCarga >= #fechaCargaFinal# ]]>
+            </isNotNull>
+            <isNotEmpty prepend="and" property="claveUsuario">
+            	archivo.username = #claveUsuaro#
+            </isNotEmpty>
+            <isNotNull prepend="and" property="idPlaza">
+                archivo.idPlaza = #idPlaza#
+            </isNotNull>
+            <isNotEmpty prepend="and" property="cvePlaza">
+            	plaza.cvePlaza = #cvePlaza#
+            </isNotEmpty>
+            <isNotNull prepend="and" property="numQuincena">
+                archivo.numQuincena = #numQuincena#
+            </isNotNull>
+    	</dynamic>
+    	order by archivo.fechaCarga desc    
+    </select>
+    <select id="findArchivosAplicacionCargadosPorId" resultMap="archivoAplicadoResultMapCompleto">
+    	SELECT * FROM ArchivosAplicacionCargados archivo 
+    	left outer join Plaza plaza on archivo.idPlaza = plaza.idPlaza
+    	WHERE
+    	archivo.idArchivosAplicacionCargados = #value#
+    </select>
+    
+    <insert id="insertarArchivoAplicacion" parameterClass="archivoAplicacion">
+    	INSERT INTO ArchivosAplicacionCargados 
+    	(numQuincena,consecutivoArchivo,fechaCarga,idPlaza,username,archivo,numeroRegistros,nombreArchivo,fechaHoraInicio,fechaHoraFin,log)
+    	values
+    	(#numQuincena#,#consecutivoArchivo#,#fechaCarga#,#idPlaza#,#username#,#archivo#,#numeroRegistros#,#nombreArchivo#,#fechaHoraInicio#,#fechaHoraFin#,#log#)
+    	<selectKey keyProperty="idArchivosAplicacionCargados" resultClass="int">  
+            SELECT LAST_INSERT_ID() AS idArchivosAplicacionCargados  
+         </selectKey>  
+    </insert>
+    <update id="actualizarArchivoAplicacion" parameterClass="archivoAplicacion">
+    update ArchivosAplicacionCargados set
+    	nombreArchivo = #nombreArchivo#,
+    	fechaHoraInicio = #fechaHoraInicio#,
+    	fechaHoraFin = #fechaHoraFin#,
+    	log = #log#
+    where idArchivosAplicacionCargados = #idArchivosAplicacionCargados#
+    </update>
+    
+    <select id="existenCalculosDeBonoDeArchivoDeaplicacionDePagos" resultClass="Integer">
+    	select count(*) from descuentosAplicados descuento, calculobonopolizaAgente bono where descuento.identificadorArchivo = #value#
+		and descuento.numQuincenaPagada between bono.quincenaInicial and bono.quincenaFinal
+    </select>
+    
+    <delete id="eliminarArchivoAplicacion">
+    	delete from ArchivosAplicacionCargados where idArchivosAplicacionCargados = #value#
+    </delete>
+    
+    
+</sqlMap>	

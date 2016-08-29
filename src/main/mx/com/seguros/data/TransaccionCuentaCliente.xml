@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8" ?> 
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
+"http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap namespace="TransaccionCuentaCliente">
+	<typeAlias alias="TransaccionCuentaCliente"
+		type="mx.com.seguros.model.TransaccionCuentaCliente" />
+
+	<!--
+		insert id="insertTransaccionCuentaCliente"
+		parameterClass="TransaccionCuentaCliente"> insert into
+		TransaccionCuentaCliente values( #fechaTransaccion#,
+		#tipoTransaccionCuentaCliente.cveTipoTransaccion#,
+		#importeTransaccion#) </insert
+	-->
+
+	<insert id="insertTransaccionCuentaCliente" parameterClass="TransaccionCuentaCliente">
+		insert into TransaccionCuentaCliente(
+			transaccionId
+			, fechaTransaccion
+			, cveTipoTransaccion
+			, importeTransaccion
+			, numPoliza
+			, numConsignatario
+		) values(
+			transaccionId
+			, #fechaTransaccion#
+			, #tipoTransaccionCuentaCliente.cveTipoTransaccion#
+			, #importeTransaccion#
+			, #numPoliza#
+			, #numConsignatario#
+		)
+        <selectKey
+            resultClass="long"
+            keyProperty="transaccionId"
+        >
+            select LAST_INSERT_ID()
+        </selectKey>
+	</insert>
+
+</sqlMap>

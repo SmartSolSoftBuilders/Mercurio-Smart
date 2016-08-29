@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap
+PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
+"http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap namespace="CuentaCliente">
+    <typeAlias alias="cuentaCliente" type="mx.com.seguros.model.CuentaCliente"/>
+
+    <select id="obtenerCuentaClienteByPoliza" resultClass="cuentaCliente" parameterClass="cuentaCliente">
+        SELECT *
+        FROM CuentaCliente 
+        where 
+		numPoliza = #numPoliza# and
+    	numConsignatario = #numConsignatario#
+    </select>
+    
+    <select id="obtenerCuentaClienteByNumNominaContratante" resultClass="cuentaCliente" parameterClass="String">
+        SELECT *
+        FROM CuentaCliente 
+        where 
+		numNominaContratante = #value#
+    </select>
+    
+    
+    <update id="updateCuentaCliente" parameterClass="cuentaCliente">
+    	UPDATE CuentaCliente
+    	SET saldoCuenta = #saldoCuenta#
+    	, fechaCalculoSaldo = #fechaCalculoSaldo#
+    	WHERE
+    	numPoliza = #numPoliza# and
+    	numConsignatario = #numConsignatario#
+    </update>
+
+	<insert id="insert" parameterClass="cuentaCliente">
+		INSERT INTO CuentaCliente(numPoliza,numConsignatario, saldoCuenta, fechaCalculoSaldo)
+                VALUES(#numPoliza#, #numConsignatario#,#saldoCuenta#, #fechaCalculoSaldo#)
+	</insert>
+	
+	 <select id="obtenerCuentaClienteSaldoNegativo" resultClass="cuentaCliente">
+        <![CDATA[
+         SELECT *
+        FROM CuentaCliente 
+        where saldoCuenta < 0
+        ]]>
+       
+    </select>
+    <select id="obtenerCuentasPositivasDeContratante" resultClass="cuentaCliente" parameterClass="String">
+        <![CDATA[
+         SELECT *
+        FROM CuentaCliente 
+        where saldoCuenta > 0 and numNominaContratante = #value# order by saldoCuenta desc
+        ]]>
+       
+    </select>
+    
+	
+</sqlMap>

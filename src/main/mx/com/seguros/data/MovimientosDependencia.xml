@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap
+PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
+"http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap namespace="MovimientosDependencia">
+    <typeAlias alias="movDependencia" type="mx.com.seguros.model.MovimientosDependencia"/>    
+    <typeAlias alias="solicitud" type="mx.com.seguros.model.Solicitud"/>    
+    <typeAlias alias="poliza" type="mx.com.seguros.model.PolizaIndividual"/>
+    <typeAlias alias="retenedor" type="mx.com.seguros.model.Retenedor"/>
+    <typeAlias alias="layout" type="mx.com.seguros.model.LayoutMovimientosRecibidos"/>
+    <typeAlias alias="historial" type="mx.com.seguros.model.HistorialMovimientosContratante"/>
+    
+    <resultMap id="movimientosResult" class="movDependencia">
+        <result property="historial.numNominaContratante" column="numNominaContratante"/>
+        <result property="historial.qnaProgramadaEnvioMovimientoHistorial" column="qnaProgramadaEnvioMovimientoHistorial"/>
+        <result property="historial.tipoMovimientoEnvio" column="tipoMovimientoEnvio"/>
+        <result property="historial.totalImporteMovimiento" column="totalImporteMovimiento"/>        
+        <result property="historial.cveDescuento" column="cveDescuento"/>
+        <result property="solicitud.contratante.apPaternoContratante" column="apPaternoContratante"/>
+        <result property="solicitud.contratante.apMaternoContratante" column="apMaternoContratante"/>
+        <result property="solicitud.contratante.nombre1Contratante" column="nombre1Contratante"/>
+        <result property="solicitud.contratante.nombre2Contratante" column="nombre2Contratante"/>        
+    </resultMap>
+    
+    <select id="buscarRetenedoresMovDep" resultClass="retenedor">
+        SELECT * FROM Retenedor WHERE cveRetenedor in (2,3)
+    </select>
+    
+    <select id="obtenerDatosArchivo"  resultMap="movimientosResult" parameterClass="movDependencia">
+        SELECT
+            his.numNominaContratante, his.qnaProgramadaEnvioMovimientoHistorial,
+            his.tipoMovimientoEnvio, his.totalImporteMovimiento, his.cveDescuento,
+            con.apPaternoContratante, con.apMaternoContratante,
+            con.nombre1Contratante, con.nombre2Contratante
+        FROM HistorialMovimientosContratante his, Retenedor ret, Contratante con
+        WHERE his.qnaProgramadaEnvioMovimientoHistorial=#anioQuincena#
+        AND ret.cveRetenedor = #cveRetenedor#
+        AND ret.cveDescuento = his.cveDescuento
+        AND his.numNominaContratante = con.numNominaContratante
+        AND his.indicadorEnvioArchivo = 1
+    </select>
+    
+    <insert id="insertarLayoutMovimientosRecibidos" parameterClass="layout">
+        INSERT INTO ListaColumnas(        
+        anioQuincena,
+        RFC,
+        nombre,
+        cveDescuento,
+        importeDescuento
+        )
+        VALUES(
+        #anioQuincena#,
+        #RFC#,
+        #nombre#,
+        #cveDescuento#,
+        #importeDescuento#
+        )
+    </insert>
+    
+    <select id="obtenerDatosLista" resultClass="layout">
+        SELECT
+            lc.anioQuincena, lc.cveDescuento,
+            ret.siglasRetenedor
+        FROM ListaColumnas lc, Retenedor ret
+        WHERE lc.cveDescuento = ret.cveDescuento
+    </select>
+    
+    <delete id="eliminarRegistrosListaColumnas">
+        DELETE FROM ListaColumnas
+    </delete>
+    
+    <select id="obtenerContadorPolizaConIndicadorEnvioArchivo" resultClass="java.lang.Integer" parameterClass="historial">
+        SELECT count(*) FROM HistorialMovimientosContratante 
+        WHERE numNominaContratante LIKE #numNominaContratante#
+        AND qnaProgramadaEnvioMovimientoHistorial = #qnaProgramadaEnvioMovimientoHistorial#
+        AND indicadorEnvioArchivo = 1
+    </select>
+    
+    <select id="obtenerPolizaConIndicadorEnvioArchivo" resultClass="historial" parameterClass="historial">
+        SELECT * FROM HistorialMovimientosContratante 
+        WHERE numNominaContratante LIKE #numNominaContratante#
+        AND qnaProgramadaEnvioMovimientoHistorial = #qnaProgramadaEnvioMovimientoHistorial#
+        AND indicadorEnvioArchivo = 1
+    </select>
+    
+    <update id="actualizarIndicadorEnvioArchivo" parameterClass="historial">
+        UPDATE HistorialMovimientosContratante SET indicadorEnvioArchivo = 0
+        WHERE numNominaContratante LIKE #numNominaContratante#
+        AND qnaProgramadaEnvioMovimientoHistorial = #qnaProgramadaEnvioMovimientoHistorial#
+        AND idMovimientoContratante = #idMovimientoContratante#
+        AND indicadorEnvioArchivo = 1
+    </update>
+    
+    <select id="obtenerSiglasRetenedor" resultClass="java.lang.String" parameterClass="java.lang.String">
+        SELECT siglasRetenedor FROM Retenedor WHERE cveDescuento = #cveDescuento#
+    </select>
+    
+</sqlMap>

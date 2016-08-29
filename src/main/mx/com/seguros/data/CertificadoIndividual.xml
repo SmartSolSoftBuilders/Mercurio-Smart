@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+    Document   : CertificadoIndividual.xml
+    Created on : 3 de octubre de 2007, 15:28
+    Author     : Pedro
+    Description:
+        Purpose of the document follows.
+-->
+
+<!DOCTYPE sqlMap
+PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
+"http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap namespace="CertificadoIndividual">
+    <typeAlias alias="certificadoIndividual" 
+               type="mx.com.seguros.model.CertificadoIndividual"/>
+    
+    <resultMap class="certificadoIndividual" id="certificadoIndividualResult">
+    	<result property="numCertificado" column="numCertificado"/>
+    	<result property="idPlaza" column="idPlaza"/>
+    	<result property="fechaExpedicion" column="fechaExpedicion"/>
+    	<result property="folioSolicitud" column="folioSolicitud"/>
+    	<result property="formatoSolicitud" column="formatoSolicitud"/>
+    </resultMap>
+    <select id="recuperarCvePlaza" parameterClass="mx.com.seguros.dto.SolicitudPKParamDTO" resultClass="int">
+        SELECT idPlaza
+        FROM GrupoAsegurado, Solicitud, Empresa
+        WHERE Solicitud.cveEmpresa = Empresa.cveEmpresa
+        AND Empresa.cveGrupoAsegurado = GrupoAsegurado.cveGrupoAsegurado
+	AND folioSolicitud = #folioSolicitud# and formatoSolicitud = #formatoSolicitud#
+    </select>
+    
+    <select id="recuperarUltimoCertificadoPorPlaza" parameterClass="int" resultClass="int">
+        SELECT numCertificado FROM CertificadoIndividual 
+        WHERE idPlaza = #value#
+        ORDER BY numCertificado DESC LIMIT 1;
+    </select>
+    <select id="buscarCertificadoPorFolioSolicitud" parameterClass="mx.com.seguros.dto.SolicitudPKParamDTO" resultMap="certificadoIndividualResult">
+        SELECT * FROM CertificadoIndividual 
+        WHERE folioSolicitud = #folioSolicitud# and formatoSolicitud = #formatoSolicitud# limit 1       
+    </select>
+    
+    <select id="buscarCertificadoPorCertificadoYPlaza" parameterClass="java.util.Map" resultMap="certificadoIndividualResult">
+        SELECT * FROM CertificadoIndividual ci, Plaza pl
+        WHERE numCertificado = #numCertificado# and cvePlaza = #cvePlaza#
+        and   ci.idPlaza = pl.idPlaza  limit 1
+    </select>
+    
+    <insert id="insertarCertificadoIndividual" 
+            parameterClass="certificadoIndividual">
+        INSERT INTO CertificadoIndividual (
+        numCertificado,
+        idPlaza,
+        fechaExpedicion,
+        folioSolicitud,
+        formatoSolicitud
+        )VALUES(
+        #numCertificado#,
+        #idPlaza#,
+        #fechaExpedicion#,
+        #folioSolicitud#,
+        #formatoSolicitud#
+        )
+       
+    </insert>
+    
+</sqlMap>

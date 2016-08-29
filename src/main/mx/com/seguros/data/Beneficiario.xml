@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap
+PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
+"http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap namespace="Beneficiario">
+    <typeAlias alias="beneficiario" type="mx.com.seguros.model.Beneficiario"/>
+    
+    <resultMap class="beneficiario" id="beneficiarioResult">
+    	<result property="cveBeneficiario" column="cveBeneficiario"/>
+    	<result property="tipoBeneficiario" column="tipoBeneficiario"/>
+    	<result property="apPaternoBeneficiario" column="apPaternoBeneficiario"/>
+    	<result property="apMaternoBeneficiario" column="apMaternoBeneficiario"/>
+    	<result property="nombre1Beneficiario" column="nombre1Beneficiario"/>
+    	<result property="nombre2Beneficiario" column="nombre2Beneficiario"/>
+    	<result property="fechaNacimientoBeneficiario" column="fechaNacimiento"/>
+    	<result property="parentesco" column="parentesco"/>
+    	<result property="porcentajeAsignado" column="porcentajeAsignado"/>
+    	<result property="folioSolicitud" column="folioSolicitud"/>
+    	<result property="formatoSolicitud" column="formatoSolicitud"/>
+    	
+    </resultMap>
+    <insert id="insertarBeneficiario" parameterClass="beneficiario">
+        <!--selectKey resultClass="long" keyProperty="cveBeficiario">
+                   IDENTITY_VAL_LOCAL()
+        </selectKey-->
+        INSERT INTO Beneficiario (
+        cveBeneficiario,
+        tipoBeneficiario,
+        apPaternoBeneficiario,
+        apMaternoBeneficiario,
+        nombre1Beneficiario,
+        nombre2Beneficiario,
+        fechaNacimiento,
+        parentesco,
+        porcentajeAsignado,
+        folioSolicitud,
+        formatoSolicitud
+        )
+        
+        VALUES(
+        #cveBeneficiario#,
+        #tipoBeneficiario#,
+        #apPaternoBeneficiario#,
+        #apMaternoBeneficiario#,
+        #nombre1Beneficiario#,
+        #nombre2Beneficiario#,
+        #fechaNacimientoBeneficiario#,
+        #parentesco#,
+        #porcentajeAsignado#,
+        #folioSolicitud#,
+        #formatoSolicitud#
+        )
+    </insert>
+    
+    <select id="consultarBeneficiarios" resultMap="beneficiarioResult" parameterClass="java.util.Map">
+    	select * from Beneficiario where folioSolicitud = #folioSolicitud# and formatoSolicitud = #formatoSolicitud#
+    	order by cveBeneficiario asc;
+    </select>
+    
+    <delete id="eliminarBeneficiariosSolicitud" parameterClass="java.util.Map">
+    	delete from Beneficiario where folioSolicitud = #folioSolicitud# and formatoSolicitud = #formatoSolicitud#
+    </delete>
+    
+</sqlMap>

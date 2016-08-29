@@ -1,0 +1,260 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+    Document   : RegistroArchivoPolizas.xml
+    Created on : 07/06/2011
+    Author     : Emigdio Hernández
+    Description:
+        Mapeo SQL de la tabla RegistroArchivoPolizas
+-->
+
+<!DOCTYPE sqlMap
+PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
+"http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap namespace="RegistroArchivoPolizas">
+    <typeAlias alias="registroArchivoPolizas" type="mx.com.seguros.model.RegistroArchivoPolizas"/>
+    <typeAlias alias="resumenCargaArchivoPolizas" type="mx.com.seguros.model.ResumenCargaArchivoPolizas"/>
+    <typeAlias alias="estadoRegistroPoliza" type="mx.com.seguros.model.EstadoRegistroPoliza"/>
+
+     <resultMap id="estadoRegistroPolizaResult" class="estadoRegistroPoliza">
+        <result property="idEstadoRegistroPoliza" column="idEstadoRegistroPoliza"  />
+        <result property="descripcion" column="descripcion"/>
+
+    </resultMap>
+     <resultMap id="resumenCargaArchivoPolizasResult" class="resumenCargaArchivoPolizas">
+        <result property="idResumenCargaArchivoPolizas" column="idResumenCargaArchivoPolizas" />
+        <result property="fechaCarga" column="fechaCarga" javaType="java.util.Date" jdbcType="DATETIME" />
+        <result property="usuario" column="usuario"/>
+        <result property="totalRegistros" column="totalRegistros"/>
+        <result property="nombreArchivo" column="nombreArchivo"/>
+        <result property="registrosValidos" column="registrosValidos"/>
+    </resultMap>
+  
+
+    <resultMap id="registroArchivoPolizasResult" class="registroArchivoPolizas">
+        <result property="idRegistroArchivoPolizas" column="idRegistroArchivoPolizas" />
+        <result property="idResumenCargaArchivoPolizas" column="idResumenCargaArchivoPolizas" />
+        <result property="resumenCargaArchivoPolizas"  resultMap="RegistroArchivoPolizas.resumenCargaArchivoPolizasResult"/>
+        <result property="idEstadoRegistroPoliza" column="idEstadoRegistroPoliza"  />
+        <result property="estadoRegistroPoliza" resultMap="RegistroArchivoPolizas.estadoRegistroPolizaResult"/>
+        <result property="nombreGrupoAsegurado" column="nombreGrupoAsegurado"/>
+        <result property="apPaternoAsegurado" column="apPaternoAsegurado"/>
+        <result property="apMaternoAsegurado" column="apMaternoAsegurado"/>
+        <result property="nombre1Asegurado" column="nombre1Asegurado"/>
+        <result property="nombre2Asegurado" column="nombre2Asegurado"/>
+
+		<result property="capturada" column="capturada" nullValue="false" />
+
+        <result property="RFCasegurado" column="RFCasegurado"/>
+        <result property="numNominaAsegurado" column="numNominaAsegurado"/>
+        <result property="fechaNacimientoAsegurado" column="fechaNacimientoAsegurado" javaType="java.util.Date" jdbcType="DATE"/>
+        <result property="cveSexoAsegurado" column="cveSexoAsegurado"/>
+        <result property="esFumadorAsegurado" column="esFumadorAsegurado"/>
+        <result property="cveEstadoCivilAsegurado" column="cveEstadoCivilAsegurado"/>
+        <result property="calle" column="calle"/>
+        <result property="numExterior" column="numExterior"/>
+        <result property="numInterior" column="numInterior"/>
+        <result property="codPostal" column="codPostal"/>
+        <result property="colonia" column="colonia"/>
+        <result property="entidadFederativa" column="entidadFederativa"/>
+        <result property="delegacionMpio" column="delegacionMpio"/>
+        <result property="apPaternoContratante" column="apPaternoContratante"/>
+        <result property="apMaternoContratante" column="apMaternoContratante"/>
+        <result property="nombre1Contratante" column="nombre1Contratante"/>
+        <result property="nombre2Contratante" column="nombre2Contratante"/>
+        <result property="numConsignatario" column="numConsignatario"/>
+        <result property="numPoliza" column="numPoliza"/>
+        <result property="agrupacionCIS" column="agrupacionCIS"/>
+		<result property="agrupacion" column="agrupacion"/>
+        <result property="fechaInicioVigencia" column="fechaInicioVigencia" javaType="java.util.Date" jdbcType="DATE"/>
+        <result property="fechaSolicitud" column="fechaSolicitud" javaType="java.util.Date" jdbcType="DATE"/>
+        <result property="sumaAseguradaIndividual" column="sumaAseguradaIndividual"/>
+        <result property="sumaBAF" column="sumaBAF"/>
+        <result property="sumaDI" column="sumaDI"/>
+        <result property="sumaPM" column="sumaPM"/>
+        <result property="sumaBITP" column="sumaBITP"/>
+        <result property="sumaSEVI" column="sumaSEVI"/>
+        <result property="sumaGastosFunerarios" column="sumaGastosFunerarios"/>
+        <result property="sumaCPF" column="sumaCPF"/>
+        <result property="nombrePaquete" column="nombrePaquete"/>
+        <result property="plazoSeguro" column="plazoSeguro"/>
+        <result property="importeTarifa" column="importeTarifa"/>
+        <result property="cvePromotor" column="cvePromotor"/>
+        <result property="folioSolicitud" column="folioSolicitud"/>
+     </resultMap>
+	
+	<select id="obtenerRegistrosCargadosPendientes"  parameterClass="java.lang.Integer"
+	        resultMap="registroArchivoPolizasResult">
+	    SELECT RegistroArchivoPolizas.*,ResumenCargaArchivoPolizas.*,EstadoRegistroPoliza.*, 0 as 
+	    capturada FROM RegistroArchivoPolizas,ResumenCargaArchivoPolizas,EstadoRegistroPoliza where 
+	    RegistroArchivoPolizas.idEstadoRegistroPoliza = #value# and
+	    RegistroArchivoPolizas.idResumenCargaArchivoPolizas = ResumenCargaArchivoPolizas.idResumenCargaArchivoPolizas and
+	    RegistroArchivoPolizas.idEstadoRegistroPoliza = EstadoRegistroPoliza.idEstadoRegistroPoliza and
+	    not exists (select pol.numPoliza from PolizaIndividual pol where 
+	    pol.numPoliza = RegistroArchivoPolizas.numPoliza and pol.numConsignatario = RegistroArchivoPolizas.numConsignatario)
+	    order by RegistroArchivoPolizas.idRegistroArchivoPolizas asc
+	</select>
+	<select id="obtenerRegistroArchivoPolizas"  parameterClass="java.lang.Long"
+	        resultMap="registroArchivoPolizasResult">
+	    SELECT RegistroArchivoPolizas.*,ResumenCargaArchivoPolizas.*,EstadoRegistroPoliza.*, 0 as capturada FROM RegistroArchivoPolizas,ResumenCargaArchivoPolizas,EstadoRegistroPoliza where RegistroArchivoPolizas.idRegistroArchivoPolizas = #value# and
+	    RegistroArchivoPolizas.idResumenCargaArchivoPolizas = ResumenCargaArchivoPolizas.idResumenCargaArchivoPolizas and
+	    RegistroArchivoPolizas.idEstadoRegistroPoliza = EstadoRegistroPoliza.idEstadoRegistroPoliza
+	</select>
+	<select id="countRegistrosCargadosPendientes" resultClass="java.lang.Integer" parameterClass="java.lang.Integer"
+	        >
+	    SELECT count(*) FROM RegistroArchivoPolizas where RegistroArchivoPolizas.idEstadoRegistroPoliza = #value#
+	    and
+	    not exists (select pol.numPoliza from PolizaIndividual pol where 
+	    pol.numPoliza = RegistroArchivoPolizas.numPoliza and pol.numConsignatario = RegistroArchivoPolizas.numConsignatario)
+	</select>
+
+
+    <update id="actualizarEstatusRegistroArchivoPolizas" parameterClass="registroArchivoPolizas">
+        update RegistroArchivoPolizas set
+        idEstadoRegistroPoliza = #idEstadoRegistroPoliza#
+        where idRegistroArchivoPolizas = #idRegistroArchivoPolizas#
+    </update>
+    
+    <insert id="insertarResumenCargaArchivoPolizas" parameterClass="resumenCargaArchivoPolizas">
+    	INSERT INTO ResumenCargaArchivoPolizas
+		(fechaCarga, 
+		 usuario, 
+		 totalRegistros, 
+		 nombreArchivo, 
+		 registrosValidos) 
+		 VALUES 
+		 (#fechaCarga#, 
+		 #usuario#, 
+		 #totalRegistros#, 
+		 #nombreArchivo#, 
+		 #registrosValidos#)
+    	<selectKey keyProperty="idResumenCargaArchivoPolizas" resultClass="int">  
+            SELECT LAST_INSERT_ID() AS idResumenCargaArchivoPolizas  
+        </selectKey>  
+    	
+    </insert>
+    
+    <select id="consultarArchivosCargados" resultMap="resumenCargaArchivoPolizasResult">
+    	select * from ResumenCargaArchivoPolizas order by fechaCarga desc
+    </select>
+    <select id="consultarArchivoPolizasPorId" resultMap="resumenCargaArchivoPolizasResult" parameterClass="int">
+    	select * from ResumenCargaArchivoPolizas where idResumenCargaArchivoPolizas = #value#
+    </select>
+    
+    <select id="consultarRegistrosArchivoPolizaPorArchivoCargado" parameterClass="java.util.Map" resultMap="registroArchivoPolizasResult" >
+    	SELECT RegistroArchivoPolizas.*,ResumenCargaArchivoPolizas.*,EstadoRegistroPoliza.*,
+    	(select 1=1 from PolizaIndividual pol where pol.numPoliza = RegistroArchivoPolizas.numPoliza 
+    	and pol.numConsignatario = RegistroArchivoPolizas.numConsignatario ) as capturada
+    	 FROM RegistroArchivoPolizas,ResumenCargaArchivoPolizas,
+    	EstadoRegistroPoliza      	
+    	where
+    	ResumenCargaArchivoPolizas.idResumenCargaArchivoPolizas = #idResumenCargaArchivoPolizas#
+    	and RegistroArchivoPolizas.idResumenCargaArchivoPolizas = ResumenCargaArchivoPolizas.idResumenCargaArchivoPolizas and
+	    RegistroArchivoPolizas.idEstadoRegistroPoliza = EstadoRegistroPoliza.idEstadoRegistroPoliza
+	    <dynamic prepend="and" >
+                            
+                            <isNotNull prepend="" property="idEstadoRegistroPoliza">
+                             	<![CDATA[   RegistroArchivoPolizas.idEstadoRegistroPoliza = #idEstadoRegistroPoliza#  ]]>
+                            </isNotNull>
+        </dynamic>
+	    order by RegistroArchivoPolizas.idRegistroArchivoPolizas asc
+    </select>
+    <insert id="insertarRegistroArchivoPolizas" parameterClass="registroArchivoPolizas">
+    INSERT INTO RegistroArchivoPolizas 
+    (idResumenCargaArchivoPolizas,
+    idEstadoRegistroPoliza,
+    nombreGrupoAsegurado,
+    apPaternoAsegurado,
+	apMaternoAsegurado,
+	nombre1Asegurado,
+	nombre2Asegurado,
+	RFCasegurado,
+	numNominaAsegurado,
+	fechaNacimientoAsegurado,
+	cveSexoAsegurado,
+	esFumadorAsegurado,
+	cveEstadoCivilAsegurado,
+	calle,
+	numExterior,
+	numInterior,
+	codPostal,
+	colonia,
+	entidadFederativa,
+	delegacionMpio,
+	apPaternoContratante,
+	apMaternoContratante,
+	nombre1Contratante,
+	nombre2Contratante,
+	numConsignatario,
+	numPoliza,
+	agrupacionCIS,
+	agrupacion,
+	fechaInicioVigencia,
+	fechaSolicitud,
+	sumaAseguradaIndividual,
+	sumaBAF,
+	sumaDI,
+	sumaPM,
+	sumaBITP,
+	sumaSEVI,
+	sumaGastosFunerarios,
+	sumaCPF,
+	nombrePaquete,
+	plazoSeguro,
+	importeTarifa,
+	cvePromotor,
+	folioSolicitud) 
+	VALUES (
+	#idResumenCargaArchivoPolizas#,
+	#idEstadoRegistroPoliza#,
+	#nombreGrupoAsegurado#,
+	#apPaternoAsegurado#,
+	#apMaternoAsegurado#,
+	#nombre1Asegurado#,
+	#nombre2Asegurado#,
+	#RFCasegurado#,
+	#numNominaAsegurado#,
+	#fechaNacimientoAsegurado#,
+	#cveSexoAsegurado#,
+	#esFumadorAsegurado#,
+	#cveEstadoCivilAsegurado#,
+	#calle#,
+	#numExterior#,
+	#numInterior#,
+	#codPostal#,
+	#colonia#,
+	#entidadFederativa#,
+	#delegacionMpio#,
+	#apPaternoContratante#,
+	#apMaternoContratante#,
+	#nombre1Contratante#,
+	#nombre2Contratante#,
+	#numConsignatario#,
+	#numPoliza#,
+	#agrupacionCIS#,
+	#agrupacion#,
+	#fechaInicioVigencia#,
+	#fechaSolicitud#,
+	#sumaAseguradaIndividual#,
+	#sumaBAF#,
+	#sumaDI#,
+	#sumaPM#,
+	#sumaBITP#,
+	#sumaSEVI#,
+	#sumaGastosFunerarios#,
+	#sumaCPF#,
+	#nombrePaquete#,
+	#plazoSeguro#,
+	#importeTarifa#,
+	#cvePromotor#,
+	#folioSolicitud#)
+    	<selectKey keyProperty="idRegistroArchivoPolizas" resultClass="int">  
+            SELECT LAST_INSERT_ID() AS idRegistroArchivoPolizas  
+        </selectKey>
+    </insert>
+    
+    <delete id="eliminarRegistroArchivoPolizas" parameterClass="int">
+    	delete from RegistroArchivoPolizas where idRegistroArchivoPolizas = #value#
+    </delete>
+
+</sqlMap>

@@ -1,0 +1,376 @@
+<?xml version="1.0" encoding="UTF-8" ?> 
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap namespace="Descuento">
+    <typeAlias alias="poliza" type="mx.com.seguros.model.PolizaIndividual"/>
+    <typeAlias alias="descuento" type="mx.com.seguros.model.DescuentosAplicados"/>
+    <typeAlias alias="archivo" type="mx.com.seguros.model.ArchivosDescuentosCargados"/>
+        
+    <resultMap id="descuentoMap" class="descuento">
+        <result property="numPoliza" column="numPoliza"/>
+        <result property="numQuincenaArchivo" column="numQuincenaArchivo"/>
+        <result property="impRealPagoPrima" column="impRealPagoPrima"/>
+        <result property="impRealAhorro" column="impRealAhorro"/>
+        <result property="numQuincenaPagada" column="numQuincenaPagada"/>
+    </resultMap>
+    <resultMap id="obtenUltimoArchivo" class="mx.com.seguros.model.ArchivosDescuentosCargados">
+        <result property="consecutivoArchivo" column="consecutivoArchivo"/>
+    </resultMap>
+    
+    <resultMap id="parametrosReporteDescuentosResultMap" class="java.util.HashMap">
+        <result property="apPaternoContratante" />
+        <result property="apMaternoContratante" />
+        <result property="nombre1Contratante" />
+        <result property="nombre2Contratante" />
+        <result property="importeTarifa" />
+        <result property="numPoliza" />
+        <result property="fechaInicioVigencia"/>
+        <result property="numCertificado"/>
+        <result property="cvePlaza"/>
+    </resultMap>
+    
+    <select id="findParametrosReporteDescuentos" resultMap="parametrosReporteDescuentosResultMap">
+		SELECT
+			ctr.apPaternoContratante,
+			ctr.apMaternoContratante,
+			ctr.nombre1Contratante,
+			ctr.nombre2Contratante,
+			tar.importeTarifa,
+			pol.numPoliza,
+			pol.fechaInicioVigencia,
+			cer.numCertificado,
+			pla.cvePlaza
+		FROM
+			Contratante ctr,
+			TarifaAportMensual tar,
+			PolizaIndividual pol,
+			Plaza pla,
+			CertificadoIndividual cer,
+			Solicitud sol
+		WHERE
+		    pol.numPoliza = #numPoliza#
+		AND pol.numConsignatario = #numConsignatario#
+		AND cer.folioSolicitud = pol.folioSolicitud
+		AND sol.folioSolicitud = cer.folioSolicitud
+		AND pla.idPlaza = cer.idPlaza
+		AND tar.cveTarifa = sol.cveTarifa
+		AND ctr.numNominaContratante = sol.numNominaContratante
+    </select>
+    
+    <select id="obtenerUltimoImporteRealPagoPrima" resultClass="descuento" parameterClass="descuento">
+        select impRealPagoPrima 
+        from DescuentosAplicados 
+        where numPoliza=#numPoliza#
+        and numQuincenaPagada=#numQuincenaPagada#
+    </select>
+    
+    <select id="obtenerUltimaQuincenaPagadaPoliza" resultClass="int" parameterClass="poliza">
+        SELECT
+        	MAX(numQuincenaPagada)
+        FROM DescuentosAplicados 
+        WHERE
+	        numPoliza = #numPoliza#
+	        AND numConsignatario = #numConsignatario# 
+    </select>
+	<!--
+		Esta se modificó debido a eliminación de campo
+		'impDescuentoAplicadoPoliza' de base de datos el 16/04/2010 TODO
+		revisar el código que la usa a fin de modificar consistentemente
+	-->
+    <select id="buscarDescuentosPorPoliza" resultClass="descuento" parameterClass="poliza">
+        select 
+            *
+        from DescuentosAplicados 
+        where numPoliza=#numPoliza#
+        and numConsignatario=#numConsignatario#
+        order by numQuincenaPagada asc
+    </select>
+    
+    <select id="buscarUltimoDescuentoConVigenciaPorPoliza" resultClass="descuento" parameterClass="poliza">
+        select 
+            *
+        from DescuentosAplicados 
+        where numPoliza=#numPoliza#
+        and numConsignatario=#numConsignatario# and
+        fechaFinalCobertura is not null
+        order by numQuincenaPagada desc limit 1
+    </select>
+    
+    
+    <select id="obtenUltimoArchivoCargado" resultMap="obtenUltimoArchivo">
+        select ifnull((select max(consecutivoArchivo) from ArchivosDescuentosCargados 
+        where numQuincena = #numQuincena#),1)as consecutivoArchivo
+    </select>
+    
+    <select id="obtenArchivosCargados" resultClass="archivo">
+        select * from ArchivosDescuentosCargados
+    </select>
+    
+    <!-- Datos para pruebas: 
+			and pol.numPoliza = 90029044
+			and pol.numConsignatario = 52000
+     -->
+    <select id="obtenerMontoTotalFondoAhorro" resultClass="double">
+		select
+			sum(impRealAhorro) as montoTotalFondoAhorro
+		from
+			DescuentosAplicados des
+			, PolizaIndividual pol
+		where
+			pol.numPoliza = des.numPoliza
+			and pol.numConsignatario = des.numConsignatario
+			and pol.numPoliza = #numPoliza#
+			and pol.numConsignatario = #numConsignatario#
+    </select>
+    
+    <!--Insert-->
+    <insert id="insertarDescuentoAplicado" parameterClass="descuento">
+        insert into DescuentosAplicados (
+	        numPoliza
+	        , numConsignatario
+	        , numQuincenaArchivo
+	        , numQuincenaPagada
+	        , impRealPagoPrima
+	        , impRealAhorro
+	        , fechaCalculo
+	        , impDescReportado
+	        , transaccionId
+	        , identificadorArchivo
+	        , fechaDepositoDependencia
+	        , fechaInicioCobertura
+	        , fechaFinalCobertura
+	        , saldoCuenta
+        ) values (
+	        #numPoliza#
+	        , #numConsignatario#
+	        , #numQuincenaArchivo#
+	        , #numQuincenaPagada#
+	        , #impRealPagoPrima#
+	        , #impRealAhorro#
+	        , #fechaCalculo#
+	        , #impDescReportado#
+	        , #transaccionId#
+	        , #identificadorArchivo#
+	        , #fechaDepositoDep#
+	        , #fechaInicioCobertura#
+	        , #fechaFinalCobertura#
+	        , #saldoCuenta#
+		)
+    </insert>
+    
+    <insert id="insertaDatosArchivo" parameterClass="archivo">
+        insert into ArchivosDescuentosCargados
+        (numQuincena,
+        consecutivoArchivo,
+        fechaCarga,
+        cveRetenedor)        
+        values
+        (#numQuincena#,
+        #consecutivoArchivo#,
+        #fechaCarga#,
+        #cveRetenedor#)
+    </insert>
+
+	<!--
+		TODO - Revisar con César si esta consulta es correcta para el cálculo
+		en cuestión.
+	-->
+    <select id="obtenerNumeroPagosAplicadosPoliza" resultClass="int">
+		SELECT
+			COUNT(*) AS numPagosAplicados
+		FROM
+			DescuentosAplicados des
+			, PolizaIndividual pol
+		WHERE
+			pol.numPoliza = des.numPoliza
+			AND pol.numConsignatario = des.numConsignatario
+			AND pol.numPoliza = #numPoliza#
+			AND pol.numConsignatario = #numConsignatario#
+			AND impRealPagoPrima > 0
+    </select>
+   
+   	<select id="findFechaPrimerPago" resultClass="int" parameterClass="poliza">
+		SELECT 
+			MIN(numQuincenaPagada)
+		FROM
+			DescuentosAplicados descuento
+		WHERE
+            descuento.numPoliza = #numPoliza#
+            AND descuento.numConsignatario = #numConsignatario#
+ 	</select>
+
+	 <parameterMap class="java.util.Map" id="consultaDescuentosByPolizaQnaParameterMap">
+	 	<parameter property="numPoliza"/>
+	 	<parameter property="numConsignatario"/>
+	 	<parameter property="numQnaArchivo"/>
+	 </parameterMap>
+
+    <select id="consultaDescuentosByPolizaQnaArchivo" resultClass="descuento" parameterMap="consultaDescuentosByPolizaQnaParameterMap">
+    <![CDATA[
+		SELECT fechaInicioCobertura
+			, fechaFinalCobertura
+		FROM DescuentosAplicados 
+		WHERE numPoliza = ?
+		AND numConsignatario = ?
+		AND numQuincenaArchivo = ?
+		AND fechaInicioCobertura IS NOT NULL
+    ]]>
+    </select>
+
+	 <parameterMap class="java.util.Map" id="consultaDescuentosByPolizaQuincenaReportadaParameterMap">
+	 	<parameter property="numQnaArchivo"/>
+	 	<parameter property="numPoliza"/>
+	 	<parameter property="numConsignatario"/>
+	 	<parameter property="numQnaArchivo"/>
+	 	<parameter property="numPoliza"/>
+	 	<parameter property="numConsignatario"/>
+	 	<parameter property="numPoliza"/>
+	 	<parameter property="numConsignatario"/>
+	 	<parameter property="numQnaPagada"/>
+	 </parameterMap>
+	 
+	<select id="consultaDescuentoByPolizaQuincenaReportada"
+		resultClass="descuento" parameterMap="consultaDescuentosByPolizaQuincenaReportadaParameterMap">
+    <![CDATA[
+		SELECT numQuincenaArchivo
+			, numQuincenaPagada
+			, impDescReportado
+			, (
+				SELECT SUM(impRealPagoPrima) FROM `DescuentosAplicados` 
+				WHERE numQuincenaArchivo = ?
+				AND numPoliza = ?
+				AND numConsignatario = ?
+			) AS impRealPagoPrima
+			, (
+				SELECT SUM(impRealAhorro) FROM `DescuentosAplicados` 
+				WHERE numQuincenaArchivo = ?
+				AND numPoliza = ?
+				AND numConsignatario = ?
+			) AS  impRealAhorro
+			, saldoCuenta
+		FROM `DescuentosAplicados` 
+		WHERE numQuincenaArchivo = numQuincenaPagada
+		AND numPoliza = ?
+		AND numConsignatario = ?
+		AND numQuincenaPagada = ?
+    ]]>
+	</select>
+
+	 <parameterMap class="java.util.Map" id="consultaDescuentosByPolizaQuincenaReportadaParameterMap2">
+	 	<parameter property="numQnaArchivo"/>
+	 	<parameter property="numPoliza"/>
+	 	<parameter property="numConsignatario"/>
+	 	<parameter property="numQnaArchivo"/>
+	 	<parameter property="numPoliza"/>
+	 	<parameter property="numConsignatario"/>
+	 	<parameter property="numPoliza"/>
+	 	<parameter property="numConsignatario"/>
+	 	<parameter property="numQnaArchivo"/>
+	 </parameterMap>
+	 
+	<select id="consultaDescuentoByPolizaQuincenaReportada2"
+		resultClass="descuento" parameterMap="consultaDescuentosByPolizaQuincenaReportadaParameterMap2">
+    <![CDATA[
+		SELECT DISTINCT numQuincenaArchivo
+			, impDescReportado
+			, (
+				SELECT SUM(impRealPagoPrima) FROM `DescuentosAplicados` 
+				WHERE numQuincenaArchivo = ?
+				AND numPoliza = ?
+				AND numConsignatario = ?
+			) AS impRealPagoPrima
+			, (
+				SELECT SUM(impRealAhorro) FROM `DescuentosAplicados` 
+				WHERE numQuincenaArchivo = ?
+				AND numPoliza = ?
+				AND numConsignatario = ?
+			) AS  impRealAhorro
+			, saldoCuenta
+		FROM `DescuentosAplicados` 
+		WHERE 
+		    numPoliza = ?
+		AND numConsignatario = ?
+		AND numQuincenaArchivo = ?
+    ]]>
+	</select>
+
+	<select id="quincenasPagoReportado" parameterClass="poliza" resultClass="integer">
+		SELECT DISTINCT numQuincenaArchivo 
+		FROM DescuentosAplicados
+		WHERE numPoliza = #numPoliza#
+		AND numConsignatario = #numConsignatario#
+	</select>
+
+    <select id="buscarDescuentosPorNumPoliza" resultMap="descuentoMap" parameterClass="descuento">
+        select
+            numPoliza,
+            numQuincenaArchivo,
+            impRealPagoPrima,
+            impRealAhorro,
+            numQuincenaPagada
+        from DescuentosAplicados
+        where numPoliza=#numPoliza#
+        and numConsignatario=#numConsignatario#
+        order by numQuincenaPagada desc
+    </select>
+    
+     <select id="buscarDescuentosPorNumPolizaYQuincenaArchivo" resultMap="descuentoMap" parameterClass="descuento">
+        select
+            numPoliza,
+            numQuincenaArchivo,
+            impRealPagoPrima,
+            impRealAhorro,
+            numQuincenaPagada
+        from DescuentosAplicados
+        where numPoliza=#numPoliza#
+        and numConsignatario=#numConsignatario#
+        and numQuincenaArchivo=#numQuincenaArchivo#
+        order by numQuincenaPagada desc
+    </select>
+
+	<select id="buscarNumeroDescuentosPorNumPolizaYQuincenaArchivo" resultClass="int" parameterClass="descuento">
+        select
+            count(*)
+        from DescuentosAplicados
+        where numPoliza=#numPoliza#
+        and numConsignatario=#numConsignatario#
+        and numQuincenaArchivo=#numQuincenaArchivo#
+        order by numQuincenaPagada desc
+    </select>
+    
+    <select id="buscarDescuentosPagoPrimaPorNumPoliza" resultMap="descuentoMap" parameterClass="Map">
+        select
+            numPoliza,
+            numQuincenaArchivo,
+            impRealPagoPrima,
+            impRealAhorro,
+            numQuincenaPagada
+        from DescuentosAplicados
+        where numPoliza=#numPoliza#
+        and numConsignatario=#numConsignatario#
+        and fechaInicioCobertura is not null
+        order by numQuincenaPagada asc
+    </select>
+    
+    <select id="obtenerDescuentosAplicadosDeArchivoDeAplicacion" resultClass="descuento">
+    	select descuento.*, sol.numNominaContratante from DescuentosAplicados descuento, PolizaIndividual pol, Solicitud sol
+		where descuento.identificadorArchivo = #value# and
+    	descuento.numPoliza = pol.numPoliza and descuento.numConsignatario = pol.numConsignatario and
+    	pol.folioSolicitud = sol.folioSolicitud and pol.formatoSolicitud = sol.formatoSolicitud
+    </select>
+    
+    <delete id="eliminarDescuentosAplicados" parameterClass="descuento">
+    	delete from DescuentosAplicados where numPoliza = #numPoliza# and numConsignatario = #numConsignatario# and numQuincenaPagada = #numQuincenaPagada#
+    </delete>
+
+	<select id="obtenerPolizasDescuentosAplicados" resultClass="String">
+		select distinct (concat(concat(numPoliza,"-"),numConsignatario)) from descuentosAplicados	
+	</select>
+
+	<update id="actualizarSaldoDescuentoAplicado" parameterClass="descuento">
+	update DescuentosAplicados set saldoCuenta = #saldoCuenta# where
+	 numPoliza=#numPoliza#
+     and numConsignatario=#numConsignatario#
+     and numQuincenaPagada = #numQuincenaPagada#
+	</update>
+
+</sqlMap>

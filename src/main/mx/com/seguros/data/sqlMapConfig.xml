@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMapConfig
+PUBLIC "-//ibatis.apache.org//DTD SQL Map Config 2.0//EN"
+"http://ibatis.apache.org/dtd/sql-map-config-2.dtd">
+<!-- Always ensure to use the correct XML header as above! -->
+<sqlMapConfig>
+    <!-- Identify all SQL Map XML files to be loaded by this SQL map. 
+    Notice the paths are relative to the classpath. -->
+    <sqlMap resource="mx/com/seguros/data/Agente.xml"/>
+    <sqlMap resource="mx/com/seguros/data/Beneficiario.xml"/>
+    <sqlMap resource="mx/com/seguros/data/BitacoraEmisionReporte.xml"/>
+    <sqlMap resource="mx/com/seguros/data/CertificadoIndividual.xml"/>
+    <sqlMap resource="mx/com/seguros/data/Contratante.xml"/>
+    <sqlMap resource="mx/com/seguros/data/CuentaCliente.xml"/>
+    <sqlMap resource="mx/com/seguros/data/Empresa.xml"/>
+    <sqlMap resource="mx/com/seguros/data/EstatusPolizaPagos.xml"/>
+    <sqlMap resource="mx/com/seguros/data/EstatusPolizaSeguimiento.xml"/>
+    <sqlMap resource="mx/com/seguros/data/GrupoAsegurado.xml"/>
+    <sqlMap resource="mx/com/seguros/data/Promotor.xml"/>
+    <sqlMap resource="mx/com/seguros/data/RegistroArchivoPolizas.xml"/>
+    <sqlMap resource="mx/com/seguros/data/Reporte.xml"/>
+
+    <sqlMap resource="mx/com/seguros/data/Solicitante.xml"/>
+    <sqlMap resource="mx/com/seguros/data/Solicitud.xml"/>
+    <sqlMap resource="mx/com/seguros/data/Tarifa.xml"/>
+    <sqlMap resource="mx/com/seguros/data/Poliza.xml"/>
+    <sqlMap resource="mx/com/seguros/data/Asegurado.xml"/>
+    <sqlMap resource="mx/com/seguros/data/DescuentoAplicado.xml"/>
+    <sqlMap resource="mx/com/seguros/data/PrestamoEmpleado.xml"/>
+    <sqlMap resource="mx/com/seguros/data/EsquemaRetencionImpuestos.xml"/>
+    <sqlMap resource="mx/com/seguros/data/MovimientosDependencia.xml"/>
+    <sqlMap resource="mx/com/seguros/data/TipoSeguro.xml"/>
+    <sqlMap resource="mx/com/seguros/data/TransaccionCuentaCliente.xml"/>
+    <sqlMap resource="mx/com/seguros/data/TicketCorreccion.xml"/>
+    <sqlMap resource="mx/com/seguros/data/ArchivosAplicacionCargados.xml"/>
+    <sqlMap resource="mx/com/seguros/data/CifrasControlProcesoAutofinanciar.xml"/>
+    <sqlMap resource="mx/com/seguros/data/CalculoBonoPolizaAgente.xml"/>
+
+	<sqlMap resource="mx/com/seguros/data/TramitePoliza.xml"/>
+	<sqlMap resource="mx/com/seguros/data/ArchivoTramitePoliza.xml"/>
+	
+	<sqlMap resource="mx/com/seguros/data/ArchivoTramiteRetiros.xml"/>
+	<sqlMap resource="mx/com/seguros/data/TramiteRetiro.xml"/>
+	
+	
+	<sqlMap resource="mx/com/seguros/data/ArchivoCambioEstatusPagosPoliza.xml"/>
+	
+	<sqlMap resource="mx/com/seguros/data/ProductosInburnomina.xml"/>
+	
+</sqlMapConfig>

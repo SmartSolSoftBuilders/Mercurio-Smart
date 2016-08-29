@@ -1,0 +1,307 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap
+PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
+"http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap namespace="Agente">
+    <typeAlias alias="agente" type="mx.com.seguros.model.Agente"/>
+    <typeAlias alias="comisionbruta" type="mx.com.seguros.model.ComisionBrutaAgente"/>
+    <typeAlias alias="tipoagente" type="mx.com.seguros.model.TipoAgente"/>
+    <typeAlias alias="produccionquincena" type="mx.com.seguros.model.ProduccionQuincenaPuntosAgente"/>
+    <typeAlias alias="empleado" type="mx.com.seguros.model.Empleado"/>
+    <typeAlias alias="prestamoempleado" type="mx.com.seguros.model.PrestamoEmpleado"/>
+    <typeAlias alias="pagoprestamoempleado" type="mx.com.seguros.model.PagoPrestamoEmpleado"/>
+    <typeAlias alias="plaza" type="mx.com.seguros.model.Plaza"/>
+    <!--parameterMap id="all-parameter-test" class="mx.com.seguros.model.test.TestModel">
+        <parameter property="idTelefonica"/>
+        <parameter property="enviaSMS"/> 
+        <parameter property="clavePortal"/>
+        <parameter property="estatusClavePortal"/>
+        <parameter property="fechaRegistroPortal"/>
+        <parameter property="fechaUltimaActualizacionPortal"/>
+        <parameter property="intentosPortal"/>
+        <parameter property="numeroCelular"/>
+        <parameter property="ultimaActualizacionRadar"/>
+    </parameterMap-->
+    
+    <resultMap id="agenteResult" class="agente">
+        <result property="idEsquema" column="idEsquema"/>
+        <!--result property="opcionesMenu" column="PERFIL" select="Menu.getOpsMenuByPerfil"/-->
+        <!-- Para utilizar el join -->
+        <!-- Para manejar una llave compuesta -->
+        <!--result property="opcionesMenu" column="{userId=USER_ID,perfil=PERFIL}"-->
+    </resultMap>
+    
+    <!--resultMap id="esquemaRetencionAgenteMap" class="agente">
+        <result property="cveAgente" column="cveAgente" javaType="java.lang.Long" jdbcType="INTEGER"/>
+        <result property="cveEmpleado" column="cveEmpleado"/>
+        <result property="empleado.idEsquema" column="idEsquema"/>
+   </resultMap-->
+    <resultMap id="plazaResult" class="plaza">
+        <result property="idPlaza" column="idPlaza"/>
+        <result property="cvePlaza" column="cvePlaza"/>
+        <result property="nombrePlaza" column="nombrePlaza"/>
+     
+       
+    </resultMap>
+    <!--SELECTS-->
+    <select id="obtenerListaGerentesPorProduccion" resultClass="agente" parameterClass="int">
+        SELECT distinct agt.cveGerente 
+        FROM ProduccionQuincenaPuntosAgente prod,Agente agt 
+        where numQuincenaComision=#numQuincenaReporte#
+        and prod.cveAgente=agt.cveAgente
+    </select>
+    
+     <select id="obtenerListaSupervisoresPorProduccion" resultClass="agente" parameterClass="int">
+        SELECT distinct agt.cveSupervisor 
+        FROM ProduccionQuincenaPuntosAgente prod,Agente agt 
+        where numQuincenaComision=#numQuincenaComision#
+        and prod.cveAgente=agt.cveAgente
+    </select>
+    
+    <select id="obtenerEsquemaGerente" resultClass="empleado" parameterClass="int">
+        select idEsquema from Empleado where cveEmpleado=#cveGerente#
+    </select>
+    
+    <select id="obtenerEmpleadoPorClave" resultClass="empleado" parameterClass="int">
+    	select * from Empleado where cveEmpleado = #value#
+    </select>
+    <select id="obtenerAgentePorClaveEmpleado" resultClass="agente" parameterClass="int">
+    	select * from Agente where cveEmpleado = #value#
+    </select>
+    <select id="obtenerAgentePorClaveAgente" resultClass="agente" parameterClass="int">
+    	select * from Agente where cveAgente = #value#
+    </select>
+    
+   
+    
+    <select id="obtenerEsquemaSupervisor" resultClass="empleado" parameterClass="int">
+        select idEsquema from Empleado where cveEmpleado=#cveSupervisor#
+    </select>
+    
+    
+    <select id="obtenerClaveSupervisoryGerente" resultClass="agente" parameterClass="int">
+        select cveGerente,cveSupervisor from Agente where cveAgente=#cveAgente#
+    </select>
+    
+    <select id="obtenerClaveAgentePorProduccionQuincenal" resultClass="produccionquincena" parameterClass="produccionquincena">
+        select cveAgente from ProduccionQuincenaPuntosAgente where numQuincenaComision=#numQuincenaComision# and anoQuincenaComision=#anoQuincenaComision#
+    </select>
+    
+    <select id="obtenerIndicadorEsquemaEmpleado" resultMap="agenteResult" parameterClass="int">
+        select emp.idEsquema from Empleado emp,Agente agt where emp.cveEmpleado=agt.cveEmpleado and agt.cveAgente=#cveAgente#
+    </select>
+    
+    <select id="obtenPrimerPagoPrestamoEmpleado" resultClass="pagoprestamoempleado" >
+        select * from PagoPrestamoEmpleado where cveEmpleado=#cveEmpleado# and idPrestamo=#idPrestamo# and idPago=1
+    </select>
+    <select id="obtenListaPrestamoEmpleadoNoLiquidado" resultClass="prestamoempleado" parameterClass="int">
+    select * from PrestamoEmpleado where cveEmpleado=#cveEmpleado# and marcaPrestamoLiquidado=0 
+    </select>
+    
+    <select id="obtenListaEmpleadoAgente" resultClass="empleado">
+    select * from Empleado where cvePuesto=1
+    </select>
+    
+    <select id="buscarAgentes" resultClass="mx.com.seguros.model.Agente">
+        SELECT
+            ag.cveAgente, ag.cveEmpleado,
+            em.apPaternoEmpleado, em.apMaternoEmpleado,
+            em.nombre1Empleado, em.nombre2Empleado, em.RFCempleado
+        FROM Agente ag, Empleado em
+        WHERE em.cveEmpleado = ag.cveEmpleado
+        AND em.marcaEmpleadoActivo = 1
+    </select>
+
+    <select id="obtenTodosAgentes" resultClass="mx.com.seguros.model.Agente">
+        select * from Agente
+    </select>
+    
+    <select id="obtenListaBonoTrimestralAgente" resultClass="mx.com.seguros.model.BonoTrimestralAgente">
+        select * from BonoTrimestralAgente
+    </select>
+    
+    <select id="obtenerComisionBrutaAgente" resultClass="comisionbruta" parameterClass="int">
+        select cveAgente,totalComisionFijaAgente,totalComisionFijaSupervisor,totalComisionFijaGerente from ComisionBrutaAgente 
+        where cveAgente=#cveAgente#
+    </select>
+    
+    <select id="obtenerTipoAgente" resultClass="tipoagente" parameterClass="int">
+        select * from TipoAgente where tipoAgente=#tipoAgente#
+    </select>
+    
+    <select id="obtenerListaProduccionesQuincenalesPuntosAgente" resultClass="produccionquincena" parameterClass="int">
+        select * from ProduccionQuincenaPuntosAgente where cveAgente=#cveAgente# and indicadorCalculoAsignacionBonoTrim=0
+    </select>
+    
+    <!--INSERTS-->
+    
+    <!--ComisionBrutaAgente-->
+    <select id="obtenComisionBrutaAgente" resultClass="mx.com.seguros.model.ComisionBrutaAgente" parameterClass="int">
+        select * from ComisionBrutaAgente where cveAgente= #cveAgente#
+    </select>
+    
+    <update id="actualizaComisionBrutaAgente" parameterClass="mx.com.seguros.model.ComisionBrutaAgente">
+        update ComisionBrutaAgente set 
+        cveAgente= #cveAgente#,
+        totalComisionFijaAgente= #totalComisionFijaAgente#,
+        totalComisionFijaSupervisor= #totalComisionFijaSupervisor#,
+        totalComisionFijaGerente= #totalComisionFijaGerente#,
+        fechaInicioPeriodoComisiones= #fechaInicioPeriodoComisiones#,
+        fechaFinPeriodoComisiones= #fechaFinPeriodoComisiones#,
+        reservaBonoTrim= #reservaBonoTrim#
+        where cveAgente=#cveAgente#
+    </update>
+    
+        
+    <insert id="insertaComisionBrutaAgente" parameterClass="mx.com.seguros.model.ComisionBrutaAgente">
+        insert into ComisionBrutaAgente values(
+        #cveAgente#,
+        #totalComisionFijaAgente#,
+        #totalComisionFijaSupervisor#,
+        #totalComisionFijaGerente#,
+        #fechaInicioPeriodoComisiones#,
+        #fechaFinPeriodoComisiones#,
+        #reservaBonoTrim#
+        )
+    </insert>
+    <!--ComisionBrutaAgente-->
+    
+    <!--ProduccionQuincenaPuntosAgente-->
+    <select id="obtenProduccionQuincenaPuntosAgente" resultClass="mx.com.seguros.model.ProduccionQuincenaPuntosAgente" parameterClass="int">
+        select * from ProduccionQuincenaPuntosAgente where cveAgente= #cveAgente#
+    </select>
+    
+    <update id="actualizaProduccionQuincenaPuntosAgente" parameterClass="mx.com.seguros.model.ProduccionQuincenaPuntosAgente">
+        update ProduccionQuincenaPuntosAgente set 
+        cveAgente= #cveAgente#,
+        anoQuincenaComision= #anoQuincenaComision#,
+        numQuincenaComision= #numQuincenaComision#,
+        totalProduccionPuntos= #totalProduccionPuntos#,
+        reservaBonoTrim= #reservaBonoTrim#,
+        indicadorCalculoAsignacionBonoTrim= #indicadorCalculoAsignacionBonoTrim#
+        where cveAgente=#cveAgente#
+    </update>
+    
+    <insert id="insertaProduccionQuincenaPuntosAgente" parameterClass="mx.com.seguros.model.ProduccionQuincenaPuntosAgente">
+        insert into ProduccionQuincenaPuntosAgente values(
+        #cveAgente#,
+        #anoQuincenaComision#,
+        #numQuincenaComision#,
+        #totalProduccionPuntos#,
+        #reservaBonoTrim#,
+        #indicadorCalculoAsignacionBonoTrim#
+        )
+    </insert>
+    <!--ProduccionQuincenaPuntosAgente-->
+    
+    <!--DescuentoComisionAgente-->
+    <select id="obtenDescuentoComisionAgente"  resultClass="mx.com.seguros.model.DescuentoComisionAgente" parameterClass="int">
+        select * from DescuentoComisionAgente where cveAgente= #cveAgente#
+    </select>
+    
+    <update id="actualizaDescuentoComisionAgente" parameterClass="mx.com.seguros.model.DescuentoComisionAgente">
+        update DescuentoComisionAgente set 
+        totalDescuentoComisionAgente= #totalDescuentoComisionAgente#,
+        totalDescuentoComisionSupervisor= #totalDescuentoComisionSupervisor#,
+        totalDescuentoComisionGerente= #totalDescuentoComisionGerente#
+        where cveAgente=#cveAgente#
+    </update>
+    
+    <insert id="insertaDescuentoComisionAgente" parameterClass="mx.com.seguros.model.DescuentoComisionAgente">
+        insert into DescuentoComisionAgente values(
+        #cveAgente#,
+        #totalDescuentoComisionAgente#,
+        #totalDescuentoComisionSupervisor#,
+        #totalDescuentoComisionGerente#
+        )        
+    </insert>
+    <!--DescuentoComisionAgente-->
+    
+    
+    <!--BonoTrimestralAgente-->
+    <select id="obtenBonoTrimestralAgente" resultClass="mx.com.seguros.model.BonoTrimestralAgente">
+        select * from BonoTrimestralAgente 
+    </select>
+    
+    <update id="actualizaBonoTrimestralAgente" parameterClass="mx.com.seguros.model.BonoTrimestralAgente">
+        update BonoTrimestralAgente set
+        cveAgente= #cveAgente#,
+        importeBonoAgente= #importeBonoAgente#,
+        importeBonoSupervisor= #importeBonoSupervisor#,
+        importeBonoGerente= #importeBonoGerente#
+        where cveAgente=#cveAgente#
+    </update>
+    
+    <delete id="borraBonoTrimestralAgente">
+    
+    delete  from BonoTrimestralAgente
+ 
+    </delete>
+    
+    <insert id="insertaBonoTrimestralAgente" parameterClass="mx.com.seguros.model.BonoTrimestralAgente">
+        insert into BonoTrimestralAgente values(
+        #cveAgente#,
+        #importeBonoAgente#,
+        #importeBonoSupervisor#,
+        #importeBonoGerente#
+        )
+    </insert>
+    <!--BonoTrimestralAgente-->
+    
+    
+    <!--Detalle Comision Solicitud-->
+    <select id="obtenDetalleComisionSolicitud" resultClass="mx.com.seguros.model.DetalleComisionSolicitud" parameterClass="mx.com.seguros.dto.SolicitudPKParamDTO">
+        select * from DetalleComisionSolicitud where folioSolicitud=#folioSolicitud# and formatoSolicitud=#formatoSolicitud#
+    </select>
+    
+    <update id="actualizaDetalleComisionSolicitud" parameterClass="mx.com.seguros.model.DetalleComisionSolicitud">
+        update DetalleComisionSolicitud set
+        comisionSolicitudAgente= #comisionSolicitudAgente#,
+        comisionSolicitudSupervisor= #comisionSolicitudSupervisor#,
+        comisionSolicitudGerente= #comisionSolicitudGerente#,
+        comisionPolizaAgente= #comisionPolizaAgente#,
+        comisionPolizaSupervisor= #comisionPolizaSupervisor#,
+        comisionPolizaGerente= #comisionPolizaGerente#
+        where folioSolicitud= #folioSolicitud# and formatoSolicitud=#formatoSolicitud#
+    </update>   
+    
+    <insert id="insertaDetalleComisionSolicitud" parameterClass="mx.com.seguros.model.DetalleComisionSolicitud">
+        insert into DetalleComisionSolicitud (
+        folioSolicitud,
+        formatoSolicitud,
+        comisionSolicitudAgente,
+        comisionSolicitudSupervisor,
+        comisionSolicitudGerente,
+        comisionPolizaAgente,
+        comisionPolizaSupervisor,
+        comisionPolizaGerente
+        ) values(
+        #folioSolicitud#,
+        #formatoSolicitud#,
+        #comisionSolicitudAgente#,
+        #comisionSolicitudSupervisor#,
+        #comisionSolicitudGerente#,
+        #comisionPolizaAgente#,
+        #comisionPolizaSupervisor#,
+        #comisionPolizaGerente#
+        )
+    </insert>
+    <!--Detalle Comision Solicitud-->
+    
+    <!--UPDATES-->
+    <update id="actualizaProduccionesQuincenalesPuntosAgente" parameterClass="produccionquincena">
+         update ProduccionQuincenaPuntosAgente set  indicadorCalculoAsignacionBonoTrim=1         
+         where cveAgente=#cveAgente#   
+         and numQuincenaComision=#numQuincenaComision# 
+         and anoQuincenaComision=#anoQuincenaComision#
+    </update>   
+    
+    <select id="obtenCveAgentePorEsquema" resultClass="agente" parameterClass="int">
+        select agt.cveAgente from Agente agt,Empleado emp where agt.cveEmpleado=emp.cveEmpleado and emp.idEsquema=#idEsquema#
+    </select>
+
+    <select id="buscarPlazas" resultMap="plazaResult" >
+        select idPlaza, cvePlaza, nombrePlaza from Plaza order by idPlaza asc
+    </select>
+    
+</sqlMap>

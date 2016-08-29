@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+    Document   : TipoSeguro.xml
+    Created on : 27 de abril de 2010, 14:53
+    Author     : root
+    Description:
+        Purpose of the document follows.
+-->
+
+<!DOCTYPE sqlMap
+PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
+"http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap namespace="TipoSeguro">
+    <typeAlias alias="paqueteVidaDxN" type="mx.com.seguros.model.PaqueteVidaDxN"/>
+    
+<select id="obtenerTipoSeguro" resultClass="mx.com.seguros.model.PaqueteVidaDxN">
+    SELECT * FROM PaqueteVidaDxN
+</select>
+
+<select id="obtenerTipoSeguroPorNombre" resultClass="mx.com.seguros.model.PaqueteVidaDxN" parameterClass="java.lang.String">
+    SELECT * FROM PaqueteVidaDxN where nombrePaquete = #value#
+</select>
+</sqlMap>

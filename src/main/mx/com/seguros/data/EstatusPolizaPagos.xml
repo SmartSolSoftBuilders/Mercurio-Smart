@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap
+PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
+"http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<!-- Creado Martes 30 de Marzo de 2010 -->
+<sqlMap namespace="EstatusPolizaPagos">
+    <typeAlias alias="estatusPolizaPagos" type="mx.com.seguros.model.EstatusPolizaPagos"/>
+    <typeAlias alias="poliza" type="mx.com.seguros.model.PolizaIndividual"/>
+    
+    <!-- CGM Campos de tabla EstatusPolizaPagos-->
+    <resultMap id="tablaEstatusPolizaPagosResultMap" class="estatusPolizaPagos">
+        <result property="idEstatusPagosPoliza" column="idEstatusPagosPoliza"/>
+        <result property="descripcionEstatusPagosPoliza" column="descripcionEstatusPagosPoliza"/>
+    </resultMap>
+    
+    <select id="obtenEstatusPolizaPagosPorId" resultClass="estatusPolizaPagos">
+        SELECT idEstatusPagosPoliza, descripcionEstatusPagosPoliza
+		FROM EstatusPolizaPagos 
+		WHERE idEstatusPagosPoliza=#statusId#
+    </select>
+    
+    <select id="obtenEstatusPolizaPagosPorDescripcion" resultClass="estatusPolizaPagos">
+        SELECT idEstatusPagosPoliza, descripcionEstatusPagosPoliza
+		FROM EstatusPolizaPagos 
+		WHERE descripcionEstatusPagosPoliza=#descripcion#
+    </select>
+    
+    <!--CGM-->
+
+
+    <select id="obtenerEstatusPolizaPagosByPoliza" resultClass="int" parameterClass="poliza">
+        SELECT idEstatusPagosPoliza
+	FROM PolizaIndividual
+	WHERE numPoliza = #numPoliza#
+	AND numConsignatario = #numConsignatario#
+    </select>
+
+	<select id="consultarEstatusPolizaPagos" resultClass="estatusPolizaPagos">
+		SELECT idEstatusPagosPoliza, descripcionEstatusPagosPoliza
+		FROM EstatusPolizaPagos 
+	</select>
+
+
+
+</sqlMap>

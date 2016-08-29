@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8" ?> 
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap namespace="archivoCambioEstatusPagosPoliza">
+	
+	<typeAlias alias="archivoCambioEstatusPagosPoliza" type="mx.com.seguros.model.ArchivoCambioEstatusPagosPoliza"/>
+	   
+	<resultMap class="archivoCambioEstatusPagosPoliza" id="archivoCambioEstatusPagosPolizaResultMap">
+		<result property="idArchivoCambioEstatusPagosPoliza" column="idArchivoCambioEstatusPagosPoliza"/>
+		<result property="fechaCarga" column="fechaCarga"/>
+		<result property="usuario" column="usuario"/>
+		<result property="fechaHoraInicio" column="fechaHoraInicio"/>
+		<result property="fechaHoraFin" column="fechaHoraFin"/>
+		<result property="log" column="log"/>
+		<result property="numeroRegistros" column="numeroRegistros"/>
+		<result property="nombreArchivo" column="nombreArchivo"/>
+	</resultMap>
+    
+    <select id="obtenerArchivosCambioEstatusPagosPoliza" resultMap="archivoCambioEstatusPagosPoliza.archivoCambioEstatusPagosPolizaResultMap">
+    	SELECT idArchivoCambioEstatusPagosPoliza, fechaCarga,usuario,fechaHoraInicio,
+    	fechaHoraFin,log,numeroRegistros,nombreArchivo from ArchivoCambioEstatusPagosPoliza 
+    	order by fechaHoraInicio desc    
+    </select>
+    <select id="obtenerArchivoCambioEstatusPagosPolizaPorId" resultClass="archivoCambioEstatusPagosPoliza"> 
+    	SELECT * from ArchivoCambioEstatusPagosPoliza 
+    	WHERE
+    	idArchivoCambioEstatusPagosPoliza = #value#
+    </select>
+    
+    <insert id="insertarArchivoCambioEstatusPagosPoliza" parameterClass="archivoCambioEstatusPagosPoliza">
+    	INSERT INTO ArchivoCambioEstatusPagosPoliza 
+    	(fechaCarga,usuario,fechaHoraInicio,fechaHoraFin,log,archivo,numeroRegistros,nombreArchivo)
+    	values
+    	(#fechaCarga#,#usuario#,#fechaHoraInicio#,#fechaHoraFin#,#log#,#archivo#,#numeroRegistros#,#nombreArchivo#)
+    	<selectKey keyProperty="idArchivoCambioEstatusPagosPoliza" resultClass="int">  
+            SELECT LAST_INSERT_ID() AS idArchivoCambioEstatusPagosPoliza  
+         </selectKey>  
+    </insert>
+    <update id="actualizarArchivoCambioEstatusPagosPoliza" parameterClass="archivoCambioEstatusPagosPoliza">
+    update ArchivoCambioEstatusPagosPoliza set
+    	fechaCarga = #fechaCarga#,
+    	usuario = #usuario#,
+    	fechaHoraInicio = #fechaHoraInicio#,
+    	fechaHoraFin = #fechaHoraFin#,
+    	log = #log#,
+    	archivo = #archivo#,
+    	numeroRegistros = #numeroRegistros#,
+    	nombreArchivo = #nombreArchivo#
+    	where idArchivoCambioEstatusPagosPoliza = #idArchivoCambioEstatusPagosPoliza#
+    </update>
+    
+    <delete id="eliminarArchivoCambioEstatusPagosPoliza">
+    	delete from ArchivoCambioEstatusPagosPoliza where idArchivoCambioEstatusPagosPoliza = #value#
+    </delete>
+    
+    
+</sqlMap>	
