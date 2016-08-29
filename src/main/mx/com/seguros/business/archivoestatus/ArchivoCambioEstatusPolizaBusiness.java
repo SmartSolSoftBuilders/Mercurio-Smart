@@ -8,6 +8,7 @@ import java.util.List;
 import mx.com.seguros.model.ArchivoCambioEstatusPagosPoliza;
 import mx.com.seguros.model.ArchivoTramitePoliza;
 
+//Test git
 /**
  * Interfase de negocio para las operaciones sobre el archivo de carga en el sistema
  * para cambios de estaus de póliza
