@@ -5,6 +5,9 @@
 
 package mx.com.seguros.web.consulta;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
@@ -13,6 +16,8 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import mx.com.seguros.business.consulta.GeneraArchivoConsultaGeneralExcel;
+import mx.com.seguros.business.consulta.GeneraArchivoConsultaGeneralExcelImpl;
 import mx.com.seguros.business.consulta.IConsultaGeneralSolicitudesBusiness;
 import mx.com.seguros.dto.CriteriosConsultaSolicitudesDTO;
 import mx.com.seguros.dto.ResultadoConsultaSolicitudDTO;
@@ -23,6 +28,7 @@ import mx.com.seguros.web.seguridad.util.Usuario;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.math.NumberUtils;
 import org.apache.commons.lang.time.DateUtils;
+import org.apache.poi.util.IOUtils;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.validation.BindException;
 import org.springframework.validation.Errors;
@@ -38,6 +44,7 @@ public class ConsultaGeneralSolicitudesController extends SimpleFormController{
     private Integer registrosPorPagina;
 
     private IConsultaGeneralSolicitudesBusiness consultaGeneralSolicitudesBusiness;
+    private GeneraArchivoConsultaGeneralExcel generaArchivoConsultaGeneralExcel;
 
     private SeguridadUtil seguridadUtil;
     @Override
@@ -130,16 +137,20 @@ public class ConsultaGeneralSolicitudesController extends SimpleFormController{
         
         
         //Verificar si se desea exportar en Excel La consulta
-        
-        if(request.getParameter("formato") != null && "xls".equals(request.getParameter("formato"))){
+        System.out.println(request.getParameter("formato"));
+        if(request.getParameter("formato") != null && "xlsx".equals(request.getParameter("formato"))){
         	resultado.setPaginaActual(1);
         	resultado.setRegistrosPorPagina(65525);
-        	mav.setViewName("/consulta/consultaExcel");
-        	response.setContentType("application/ms-excel");
+        	System.out.println(resultado);
+        	File archivo= this.generaArchivoConsultaGeneralExcel.generaArchivoExcel(resultado);
+        	System.out.println(archivo);
+        	InputStream inputstream = new FileInputStream(archivo);
+        	//-no va-mav.setViewName("/consulta/consultaExcel");
+        	response.setContentType("application/force-download");
             response.setHeader("Content-Disposition",
-            		"attachment; filename=" +  "consultaGeneral.xls");
-            response.setHeader("Cache-Control","no-cache");
-            response.setHeader("pragma","no-cache");
+            		"attachment; filename= " +  "consultaGeneral.xlsx");
+            IOUtils.copy(inputstream, response.getOutputStream());
+            response.flushBuffer();
         }
         
         consultaGeneralSolicitudesBusiness.consultarSolicitudes(criterios, resultado);
@@ -201,4 +212,12 @@ public class ConsultaGeneralSolicitudesController extends SimpleFormController{
 	public void setSeguridadUtil(SeguridadUtil seguridadUtil) {
 		this.seguridadUtil = seguridadUtil;
 	}
+	public GeneraArchivoConsultaGeneralExcel getGeneraArchivoConsultaGeneralExcel() {
+		return generaArchivoConsultaGeneralExcel;
+	}
+	public void setGeneraArchivoConsultaGeneralExcel(GeneraArchivoConsultaGeneralExcel generaArchivoConsultaGeneralExcel) {
+		this.generaArchivoConsultaGeneralExcel = generaArchivoConsultaGeneralExcel;
+	}
+	
+	
 }

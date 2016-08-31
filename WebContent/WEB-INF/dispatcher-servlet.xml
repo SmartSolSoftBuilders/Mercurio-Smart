@@ -396,6 +396,7 @@
         <property name="commandName" value="criteriosBusqueda"/>
         <property name="bindOnNewForm" value="true"/>
         <property name="consultaGeneralSolicitudesBusiness" ref="consultaGeneralSolicitudesBusiness"/>
+        <property name="generaArchivoConsultaGeneralExcel" ref="generaArchivoConsultaGeneralExcel"/>
         <property name="seguridadUtil" ref="seguridadUtil"></property>
         <property name="sessionForm" value="true"></property>
     </bean>
