@@ -138,10 +138,14 @@ public class ConsultaGeneralSolicitudesController extends SimpleFormController{
         
         //Verificar si se desea exportar en Excel La consulta
         System.out.println(request.getParameter("formato"));
+        System.out.println(resultado.getResultados());
+
+        consultaGeneralSolicitudesBusiness.consultarSolicitudes(criterios, resultado);
+
         if(request.getParameter("formato") != null && "xlsx".equals(request.getParameter("formato"))){
         	resultado.setPaginaActual(1);
         	resultado.setRegistrosPorPagina(65525);
-        	System.out.println(resultado);
+        	//System.out.println(resultado);
         	File archivo= this.generaArchivoConsultaGeneralExcel.generaArchivoExcel(resultado);
         	System.out.println(archivo);
         	InputStream inputstream = new FileInputStream(archivo);
@@ -153,7 +157,7 @@ public class ConsultaGeneralSolicitudesController extends SimpleFormController{
             response.flushBuffer();
         }
         
-        consultaGeneralSolicitudesBusiness.consultarSolicitudes(criterios, resultado);
+       // consultaGeneralSolicitudesBusiness.consultarSolicitudes(criterios, resultado);
         
         
         mav.addObject("resultado", resultado);
