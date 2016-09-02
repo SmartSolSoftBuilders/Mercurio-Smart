@@ -141,9 +141,14 @@ public class CapturaSolicitudController extends AbstractWizardFormController {
 	               //Carga de los beneficios adicionales
 	               
 	               List <BeneficioAdicional> beneficios = polizaBusiness.consultarCatalogoBeneficiosAdicionales();
+
+
 	               List <BeneficioAdicionalPoliza> beneficiosPoliza = polizaBusiness.consultarBeneficiosAdicionalesDePoliza(cmd.getPolizaIndividual().getNumPoliza(), cmd.getPolizaIndividual().getNumConsignatario());
 	               cmd.setBeneficiosPoliza(new BeneficioAdicionalPoliza[beneficios.size()]);
+
+
 	               int i=0;
+
 	               for(BeneficioAdicionalPoliza beneficio:beneficiosPoliza){
 	            	   cmd.getBeneficiosPoliza()[i] = new BeneficioAdicionalPoliza();
 	            	   cmd.getBeneficiosPoliza()[i].setIdBeneficioAdicional(beneficio.getIdBeneficioAdicional());
@@ -152,8 +157,8 @@ public class CapturaSolicitudController extends AbstractWizardFormController {
 	            	   cmd.getBeneficiosPoliza()[i].setSumaBeneficio(obtenerSumaDeBeneficio(beneficiosPoliza,beneficio.getIdBeneficioAdicional()));
 	            	   cmd.getBeneficiosPoliza()[i].setMontoCobertura(obtenerMontoCobertura(beneficiosPoliza,beneficio.getIdBeneficioAdicional()));
 	            	   cmd.getBeneficiosPoliza()[i].setDescripcionBeneficio(beneficio.getDescripcionBeneficio());
+	            	   i++;
 	               }
-	               
 	               
 	               cmd.setModificacion(false);
 	               
