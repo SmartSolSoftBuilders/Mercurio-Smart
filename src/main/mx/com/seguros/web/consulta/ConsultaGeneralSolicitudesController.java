@@ -155,6 +155,7 @@ public class ConsultaGeneralSolicitudesController extends SimpleFormController{
             		"attachment; filename= " +  "consultaGeneral.xlsx");
             IOUtils.copy(inputstream, response.getOutputStream());
             response.flushBuffer();
+            return null;
         }
         
        // consultaGeneralSolicitudesBusiness.consultarSolicitudes(criterios, resultado);
