@@ -138,27 +138,40 @@ public class CapturaSolicitudController extends AbstractWizardFormController {
 	               cmd.setPolizaIndividual(archivoPolizaBusiness.copiarRegistroArchivoPolizaASistema(idRegistro.longValue()));
 	               cmd.setSolicitud(cmd.getPolizaIndividual().getSolicitud());
 	               cmd.setRegistroArchivoPolizaOrigen(idRegistro);
-	               //Carga de los beneficios adicionales
-	               
+	               //Carga de los beneficios adicionale 	
 	               List <BeneficioAdicional> beneficios = polizaBusiness.consultarCatalogoBeneficiosAdicionales();
-
-
+	               System.out.println("beneficios desde el controller");
+	               System.out.println(beneficios.size());
 	               List <BeneficioAdicionalPoliza> beneficiosPoliza = polizaBusiness.consultarBeneficiosAdicionalesDePoliza(cmd.getPolizaIndividual().getNumPoliza(), cmd.getPolizaIndividual().getNumConsignatario());
 	               cmd.setBeneficiosPoliza(new BeneficioAdicionalPoliza[beneficios.size()]);
-
+	               System.out.println(beneficiosPoliza.size());
 
 	               int i=0;
-
-	               for(BeneficioAdicionalPoliza beneficio:beneficiosPoliza){
-	            	   cmd.getBeneficiosPoliza()[i] = new BeneficioAdicionalPoliza();
-	            	   cmd.getBeneficiosPoliza()[i].setIdBeneficioAdicional(beneficio.getIdBeneficioAdicional());
-	            	   cmd.getBeneficiosPoliza()[i].setNumPoliza(beneficio.getNumPoliza());
-	            	   cmd.getBeneficiosPoliza()[i].setNumConsignatario(beneficio.getNumConsignatario());
-	            	   cmd.getBeneficiosPoliza()[i].setSumaBeneficio(obtenerSumaDeBeneficio(beneficiosPoliza,beneficio.getIdBeneficioAdicional()));
-	            	   cmd.getBeneficiosPoliza()[i].setMontoCobertura(obtenerMontoCobertura(beneficiosPoliza,beneficio.getIdBeneficioAdicional()));
-	            	   cmd.getBeneficiosPoliza()[i].setDescripcionBeneficio(beneficio.getDescripcionBeneficio());
-	            	   i++;
+	               if (beneficiosPoliza.size()>0){
+		               for(BeneficioAdicionalPoliza beneficio:beneficiosPoliza){
+		            	   cmd.getBeneficiosPoliza()[i] = new BeneficioAdicionalPoliza();
+		            	   cmd.getBeneficiosPoliza()[i].setIdBeneficioAdicional(beneficio.getIdBeneficioAdicional());
+		            	   cmd.getBeneficiosPoliza()[i].setNumPoliza(beneficio.getNumPoliza());
+		            	   cmd.getBeneficiosPoliza()[i].setNumConsignatario(beneficio.getNumConsignatario());
+		            	   cmd.getBeneficiosPoliza()[i].setSumaBeneficio(obtenerSumaDeBeneficio(beneficiosPoliza,beneficio.getIdBeneficioAdicional()));
+		            	   cmd.getBeneficiosPoliza()[i].setMontoCobertura(obtenerMontoCobertura(beneficiosPoliza,beneficio.getIdBeneficioAdicional()));
+		            	   cmd.getBeneficiosPoliza()[i].setDescripcionBeneficio(beneficio.getDescripcionBeneficio());
+		               i++;
+		               }
 	               }
+	               else{
+	            	   for(BeneficioAdicional beneficio:beneficios){
+		            	   cmd.getBeneficiosPoliza()[i] = new BeneficioAdicionalPoliza();
+		            	   cmd.getBeneficiosPoliza()[i].setIdBeneficioAdicional(beneficio.getIdBeneficioAdicional());
+		            	   cmd.getBeneficiosPoliza()[i].setNumPoliza(numPoliza);
+		            	   cmd.getBeneficiosPoliza()[i].setNumConsignatario(numConsignatario);
+		            	   cmd.getBeneficiosPoliza()[i].setSumaBeneficio(obtenerSumaDeBeneficio(beneficiosPoliza,beneficio.getIdBeneficioAdicional()));
+		            	   cmd.getBeneficiosPoliza()[i].setMontoCobertura(obtenerMontoCobertura(beneficiosPoliza,beneficio.getIdBeneficioAdicional()));
+		            	   cmd.getBeneficiosPoliza()[i].setDescripcionBeneficio(beneficio.getDescripcionBeneficioAdicional());
+		            	   i++;
+		               }
+	               }
+	            	   
 	               
 	               cmd.setModificacion(false);
 	               

@@ -1,8 +1,6 @@
 	<%@page contentType="text/html"%>
 	<%@page pageEncoding="ISO-8859-1"%>
 	<%@page import="java.util.Map, java.util.HashMap"%>
-	<%@page import="mx.com.seguros.web.solicitud.DatosSolicitudCommand"%>
-	
 	
 	<%@ taglib uri="http://www.springframework.org/tags" prefix="spring" %>
 	<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%> 
@@ -211,45 +209,39 @@
 	                <input type="hidden" id="sumabitphid" name="sumabitphid" value="${datosSolicitud.polizaIndividual.sumaBITP}"/>
 	                <input type="hidden" id="sumadihid" name="sumadihid" value="${datosSolicitud.polizaIndividual.sumaDI}"/>
 	                <input type="hidden" id="sumapmhid" name="sumapmhid" value="${datosSolicitud.polizaIndividual.sumaPM}"/>
-	                <input type="hidden" id="datosBeneficiosPoliza" name="datosBeneficiosPoliza" value="${datosSolicitud.beneficiosPoliza}"/>
+	
+	                <c:forEach items="${datosSolicitud.beneficiosPoliza}" var="beneficio" varStatus="iStatus">
+	                	<div class="row660">
+		                  	<label class="label330">${beneficio.descripcionBeneficio}:</label>
+		                    <span class="field330">
+		                            <spring:bind path="datosSolicitud.beneficiosPoliza[${iStatus.index}].sumaBeneficio">
+		                           	 <input type="text" name="${status.expression}"
+		                           	 size="13"
+		                           	 id="${status.expression}" value="${status.value  }" class="input"/>
+		                           	 </spring:bind>
+		                           	 &nbsp;&nbsp;
+		                    		<spring:bind path="datosSolicitud.beneficiosPoliza[${iStatus.index}].montoCobertura">
+				                           	 <input type="text" name="${status.expression}" 
+				                           	 size="13"
+				                           	 id="${status.expression}" value="${status.value}" class="input"/>
+				                         </spring:bind>
+		                       		 
+		                    </span>
+		                    
+		               		 </div>
+		               		
 	                
-	                <%System.out.println(((DatosSolicitudCommand)request.getAttribute("datosSolicitud")).getBeneficiosPoliza());%>
-	                <%for(int i=0;i<((DatosSolicitudCommand)request.getAttribute("datosSolicitud")).getBeneficiosPoliza().length;i++)
-	                	System.out.println(((DatosSolicitudCommand)request.getAttribute("datosSolicitud")).getBeneficiosPoliza()[i]);%>
-	                
-	                
-						<c:if test="${datosSolicitud.beneficiosPoliza != null}">
-						
-							   <c:forEach items="${datosSolicitud.beneficiosPoliza}" var="beneficio" varStatus="iStatus">
-						
-				                	<div class="row660">
-						                <label class="label330">${beneficio.descripcionBeneficio}:</label>
-						                <span class="field330">
-						                <spring:bind path="datosSolicitud.beneficiosPoliza[${iStatus.index}].sumaBeneficio">
-						                	<input type="text" name="${status.expression}"
-						                   	size="13"
-						                    id="${status.expression}" value="${status.value  }" class="input"/>
-						               	</spring:bind>
-						                &nbsp;&nbsp;
-						                <spring:bind path="datosSolicitud.beneficiosPoliza[${iStatus.index}].montoCobertura">
-								        	<input type="text" name="${status.expression}" 
-								            size="13"
-								            id="${status.expression}" value="${status.value}" class="input"/>
-								        </spring:bind>
-						                       		 
-						                </span>
-					                    
-					               	</div>
-					               		
-				                
-				                <span>&nbsp;</span>
-				                <script type="text/javascript">
-							 		document.getElementById("beneficiosPoliza[6].montoCobertura").value = document.getElementById("sumabitphid").value;	            	    
-				        		    document.getElementById("beneficiosPoliza[3].montoCobertura").value = document.getElementById("sumadihid").value;	            	    
-				        		    document.getElementById("beneficiosPoliza[4].montoCobertura").value = document.getElementById("sumapmhid").value;	            	    
-				        		</script>
-					</c:forEach>
-					</c:if>
+	                </c:forEach>
+	                <span>&nbsp;</span>
+	                   <script type="text/javascript">
+				 		document.getElementById("beneficiosPoliza[5].montoCobertura").value = document.getElementById("sumabitphid").value;	            	    
+	        		    document.getElementById("beneficiosPoliza[3].montoCobertura").value = document.getElementById("sumadihid").value;	            	    
+	        		    document.getElementById("beneficiosPoliza[2].montoCobertura").value = document.getElementById("sumapmhid").value;	            	    
+				 		document.getElementById("beneficiosPoliza[5].sumaBeneficio").value = document.getElementById("sumabitphid").value;	            	    
+	        		    document.getElementById("beneficiosPoliza[3].sumaBeneficio").value = document.getElementById("sumadihid").value;	            	    
+	        		    document.getElementById("beneficiosPoliza[2].sumaBeneficio").value = document.getElementById("sumapmhid").value;	            	    
+	        		    
+	        		    </script>
 	                <div align="center" class="submit664">
 	                    <input type="reset" value="Limpiar." class="input" tabindex="15"/>
 	                    <input type="submit" value="Registrar." class="input" name="_finish"  tabindex="16"/>
