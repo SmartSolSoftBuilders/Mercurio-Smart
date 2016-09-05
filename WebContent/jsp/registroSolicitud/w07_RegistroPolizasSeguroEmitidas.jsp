@@ -237,9 +237,9 @@
 				 		document.getElementById("beneficiosPoliza[5].montoCobertura").value = document.getElementById("sumabitphid").value;	            	    
 	        		    document.getElementById("beneficiosPoliza[3].montoCobertura").value = document.getElementById("sumadihid").value;	            	    
 	        		    document.getElementById("beneficiosPoliza[2].montoCobertura").value = document.getElementById("sumapmhid").value;	            	    
-				 		document.getElementById("beneficiosPoliza[5].sumaBeneficio").value = document.getElementById("sumabitphid").value;	            	    
+				 		/*document.getElementById("beneficiosPoliza[5].sumaBeneficio").value = document.getElementById("sumabitphid").value;	            	    
 	        		    document.getElementById("beneficiosPoliza[3].sumaBeneficio").value = document.getElementById("sumadihid").value;	            	    
-	        		    document.getElementById("beneficiosPoliza[2].sumaBeneficio").value = document.getElementById("sumapmhid").value;	            	    
+	        		    document.getElementById("beneficiosPoliza[2].sumaBeneficio").value = document.getElementById("sumapmhid").value;*/	            	    
 	        		    
 	        		    </script>
 	                <div align="center" class="submit664">
