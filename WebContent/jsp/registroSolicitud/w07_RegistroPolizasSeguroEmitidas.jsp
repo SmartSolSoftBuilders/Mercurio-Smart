@@ -204,7 +204,7 @@
 	            	<div id="titleg664x16">Registro de beneficios adicionales de p&oacute;liza.</div>
 	                <div class="row660">
 	                	<label class="label330">&nbsp;</label>
-	                	<span class="field330">&nbsp;&nbsp;Costo del Beneficio &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Monto de la Cobertura</span>
+	                	<span class="field330">&nbsp;&nbsp;Monto de la Cobertura &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span>
 	                </div>
 	                <input type="hidden" id="sumabitphid" name="sumabitphid" value="${datosSolicitud.polizaIndividual.sumaBITP}"/>
 	                <input type="hidden" id="sumadihid" name="sumadihid" value="${datosSolicitud.polizaIndividual.sumaDI}"/>
@@ -237,9 +237,30 @@
 				 		document.getElementById("beneficiosPoliza[5].montoCobertura").value = document.getElementById("sumabitphid").value;	            	    
 	        		    document.getElementById("beneficiosPoliza[3].montoCobertura").value = document.getElementById("sumadihid").value;	            	    
 	        		    document.getElementById("beneficiosPoliza[2].montoCobertura").value = document.getElementById("sumapmhid").value;	            	    
-				 		/*document.getElementById("beneficiosPoliza[5].sumaBeneficio").value = document.getElementById("sumabitphid").value;	            	    
+				 		document.getElementById("beneficiosPoliza[5].sumaBeneficio").value = document.getElementById("sumabitphid").value;	            	    
 	        		    document.getElementById("beneficiosPoliza[3].sumaBeneficio").value = document.getElementById("sumadihid").value;	            	    
-	        		    document.getElementById("beneficiosPoliza[2].sumaBeneficio").value = document.getElementById("sumapmhid").value;*/	            	    
+	        		    document.getElementById("beneficiosPoliza[2].sumaBeneficio").value = document.getElementById("sumapmhid").value;
+	        		    
+	        		    document.getElementById("beneficiosPoliza[0].sumaBeneficio").style = "display: none;";
+	        		    document.getElementById("beneficiosPoliza[1].sumaBeneficio").style = "display: none;";
+	        		    document.getElementById("beneficiosPoliza[2].sumaBeneficio").style = "display: none;";
+	        		    document.getElementById("beneficiosPoliza[3].sumaBeneficio").style = "display: none;";
+	        		    document.getElementById("beneficiosPoliza[4].sumaBeneficio").style = "display: none;";
+	        		    document.getElementById("beneficiosPoliza[5].sumaBeneficio").style = "display: none;";
+	        		    document.getElementById("beneficiosPoliza[6].sumaBeneficio").style = "display: none;";
+	        		    document.getElementById("beneficiosPoliza[7].sumaBeneficio").style = "display: none;";
+	        		    document.getElementById("beneficiosPoliza[8].sumaBeneficio").style = "display: none;";
+	        		    
+	        		    document.getElementById("beneficiosPoliza[0].sumaBeneficio").value = document.getElementById("beneficiosPoliza[0].montoCobertura").value;
+	        		    document.getElementById("beneficiosPoliza[1].sumaBeneficio").value = document.getElementById("beneficiosPoliza[1].montoCobertura").value;
+	        		    document.getElementById("beneficiosPoliza[2].sumaBeneficio").value = document.getElementById("beneficiosPoliza[2].montoCobertura").value;
+	        		    document.getElementById("beneficiosPoliza[3].sumaBeneficio").value = document.getElementById("beneficiosPoliza[3].montoCobertura").value;
+	        		    document.getElementById("beneficiosPoliza[4].sumaBeneficio").value = document.getElementById("beneficiosPoliza[4].montoCobertura").value;
+	        		    document.getElementById("beneficiosPoliza[5].sumaBeneficio").value = document.getElementById("beneficiosPoliza[5].montoCobertura").value;
+	        		    document.getElementById("beneficiosPoliza[6].sumaBeneficio").value = document.getElementById("beneficiosPoliza[6].montoCobertura").value;
+	        		    document.getElementById("beneficiosPoliza[7].sumaBeneficio").value = document.getElementById("beneficiosPoliza[7].montoCobertura").value;
+	        		    document.getElementById("beneficiosPoliza[8].sumaBeneficio").value = document.getElementById("beneficiosPoliza[8].montoCobertura").value;
+	        		    
 	        		    
 	        		    </script>
 	                <div align="center" class="submit664">

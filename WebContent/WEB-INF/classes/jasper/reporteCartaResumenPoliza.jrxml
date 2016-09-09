@@ -48,34 +48,49 @@
 	productosInburnomina.primaMensualInburmedic,
 	productosInburnomina.primaMensualSeguCancer
 FROM
-	CertificadoIndividual cer join
-  	PolizaIndividual pol on
-  	cer.folioSolicitud = pol.folioSolicitud and cer.formatoSolicitud = pol.formatoSolicitud
-  	join Solicitud sol on
-  	sol.folioSolicitud=pol.folioSolicitud and sol.formatoSolicitud = pol.formatoSolicitud
-  	join Solicitante slc on
-  	slc.RFCsolicitante=sol.RFCsolicitante left outer join
-	PaqueteVidaDxN paq on
-  	paq.idPaqueteVidaDxN=pol.tipoSeguro left outer join
-  	TarifaAportMensual tar on
-  	tar.cveTarifa=sol.cveTarifa join
-  	Plaza pla on
-  	pla.idPlaza=cer.idPlaza join
-  	Agente agt on
-  	agt.cveAgente=sol.cveAgente join
-  	Empresa epr on
-  	epr.cveEmpresa = sol.cveEmpresa join
-	GrupoAsegurado gpo on
-  	gpo.cveGrupoAsegurado = epr.cveGrupoAsegurado left outer join
-  	Retenedor ret on
-  	ret.cveRetenedor=gpo.cveRetenedor left outer join
-  	BAF baf on
+	CertificadoIndividual cer JOIN
+  	PolizaIndividual pol ON
+  	cer.folioSolicitud = pol.folioSolicitud AND cer.formatoSolicitud = pol.formatoSolicitud
+  	JOIN Solicitud sol ON
+  	sol.folioSolicitud=pol.folioSolicitud AND sol.formatoSolicitud = pol.formatoSolicitud
+  	JOIN Solicitante slc ON
+  	slc.RFCsolicitante=sol.RFCsolicitante LEFT OUTER JOIN
+	PaqueteVidaDxN paq ON
+  	paq.idPaqueteVidaDxN=pol.tipoSeguro LEFT OUTER JOIN
+  	TarifaAportMensual tar ON
+  	tar.cveTarifa=sol.cveTarifa JOIN
+  	Plaza pla ON
+  	pla.idPlaza=cer.idPlaza JOIN
+  	Agente agt ON
+  	agt.cveAgente=sol.cveAgente JOIN
+  	Empresa epr ON
+  	epr.cveEmpresa = sol.cveEmpresa JOIN
+	GrupoAsegurado gpo ON
+  	gpo.cveGrupoAsegurado = epr.cveGrupoAsegurado LEFT OUTER JOIN
+  	Retenedor ret ON
+  	ret.cveRetenedor=gpo.cveRetenedor LEFT OUTER JOIN
+  	BAF baf ON
   	baf.idPaqueteVidaDxN = paq.idPaqueteVidaDxN AND baf.importePrimaBAF = tar.cveTarifa
-	left outer join ProductosInburnomina  productosInburnomina on
+	LEFT OUTER JOIN ProductosInburnomina  productosInburnomina ON
 	productosInburnomina.numPoliza = pol.numPoliza
-	and productosInburnomina.numConsignatario = pol.numConsignatario
-left outer join registroarchivopolizas reg on reg.numPoliza = pol.numPoliza and
-	reg.numConsignatario = pol.numConsignatario
+	AND productosInburnomina.numConsignatario = pol.numConsignatario
+,(SELECT sumaDI,sumaPM,sumaBITP FROM (
+
+SELECT IFNULL((SELECT montoCobertura AS sumaDI FROM beneficioadicionalpoliza WHERE numPoliza=$P{numPolizaParam} AND idBeneficioAdicional=3),0) AS sumaPM
+
+) AS t1,
+
+(
+
+SELECT IFNULL((SELECT montoCobertura AS sumaDI FROM beneficioadicionalpoliza WHERE numPoliza=$P{numPolizaParam} AND idBeneficioAdicional=4),0) AS sumaDI
+) AS t2,
+
+(
+
+SELECT IFNULL((SELECT montoCobertura AS sumaDI FROM beneficioadicionalpoliza WHERE numPoliza=$P{numPolizaParam} AND idBeneficioAdicional=6),0) AS sumaBITP
+) AS t3
+) AS reg
+
 WHERE
 	cer.numCertificado=$P{numCertificadoParam}
 AND
@@ -432,7 +447,7 @@ $V{formatoMoneda}.format($F{sumaGastosFunerarios}.doubleValue()):0.0) + "\n" +
     $V{formatoMoneda}.format($F{sumaBITP}.doubleValue()):0.0) + "\n" +
 
     (($F{sumaDI}!= null) ?
-    $V{formatoMoneda}.format($F{sumaDI}.doubleValue()):0.0) + "\n" +
+    $V{formatoMoneda}.format($F{sumaDI}.doubleValue()):2.0) + "\n" +
 
     (($F{sumaPM}!= null) ?
     $V{formatoMoneda}.format($F{sumaPM}.doubleValue()):0.0) + "\n" :""

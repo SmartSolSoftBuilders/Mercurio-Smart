@@ -2,16 +2,16 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="ReporteCartaResumenPoliza" pageWidth="612" pageHeight="792" whenNoDataType="AllSectionsNoDetail" columnWidth="552" leftMargin="30" rightMargin="30" topMargin="10" bottomMargin="15" resourceBundle="reporteCartaResumenPoliza">
 	<property name="ireport.zoom" value="1.5"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="144"/>
+	<property name="ireport.y" value="695"/>
 	<property name="ireport.scriptlethandling" value="0"/>
 	<property name="ireport.encoding" value="UTF-8"/>
-	<import value="net.sf.jasperreports.engine.*"/>
 	<import value="java.util.*"/>
+	<import value="net.sf.jasperreports.engine.*"/>
 	<import value="net.sf.jasperreports.engine.data.*"/>
-	<style name="table" lineSpacing="Single"/>
-	<style name="table_TH" mode="Opaque" backcolor="#000080" lineSpacing="Single"/>
-	<style name="table_CH" mode="Opaque" backcolor="#BFBFFF" lineSpacing="Single"/>
-	<style name="table_TD" mode="Opaque" backcolor="#FFFFFF" lineSpacing="Single"/>
+	<style name="table"/>
+	<style name="table_TH" mode="Opaque" backcolor="#000080"/>
+	<style name="table_CH" mode="Opaque" backcolor="#BFBFFF"/>
+	<style name="table_TD" mode="Opaque" backcolor="#FFFFFF"/>
 	<subDataset name="Table Dataset 1">
 		<queryString language="SQL">
 			<![CDATA[]]>
@@ -19,18 +19,18 @@
 	</subDataset>
 	<subDataset name="dataset1"/>
 	<subDataset name="Table Dataset 2"/>
-	<parameter name="numCertificadoParam" class="java.lang.Long" isForPrompting="false">
+	<parameter name="numCertificadoParam" class="java.lang.Integer" isForPrompting="false">
+		<defaultValueExpression><![CDATA[new Integer (1)]]></defaultValueExpression>
 	</parameter>
-	<parameter name="numPolizaParam" class="java.lang.Long" isForPrompting="false"/>
+	<parameter name="numPolizaParam" class="java.lang.Integer" isForPrompting="false"/>
 	<parameter name="SUBREPORT_DIR" class="java.lang.String" isForPrompting="false">
-		<defaultValueExpression><![CDATA["C:\\mercuriows\\seguros4\\WebContent\\WEB-INF\\classes\\jasper\\"]]></defaultValueExpression>
+		<defaultValueExpression><![CDATA["C:\\workspace_estrategas\\seguros2\\src\\java\\jasper\\"]]></defaultValueExpression>
 	</parameter>
-	<parameter name="numPolizaParam2" class="java.lang.Long" isForPrompting="false"/>
 	<queryString>
 		<![CDATA[SELECT
-	cer.numCertificado,
+	reg.sumaBITP, reg.sumaDI, reg.sumaPM, cer.numCertificado,
        	slc.apPaternoSolicitante, slc.apMaternoSolicitante, slc.nombre1Solicitante,
-        slc.nombre2Solicitante, slc.fechaNacimientoSolicitante,
+        	slc.nombre2Solicitante, slc.fechaNacimientoSolicitante,
 	pol.numPoliza, pol.numConsignatario, pol.sumaAseguradaIndividual,
 	paq.nombrePaquete,
         	tar.importeTarifa, tar.importePrimaInd,
@@ -38,8 +38,8 @@
           baf.sumaAseguradaBAF bafOriginal,
 	pol.sumaGastosFunerarios,pol.sumaSEVI,
 	pol.importeAhorroAdicionalMensual,
-        pla.cvePlaza, pla.domicilioPlaza, pla.lada, pla.telefono, pla.horarioAtencion,
-        agt.cveAgente, agt.cveSupervisor, agt.cveGerente,ret.cveDescuento,
+        	pla.cvePlaza, pla.domicilioPlaza, pla.lada, pla.telefono, pla.horarioAtencion,
+        	agt.cveAgente, agt.cveSupervisor, agt.cveGerente,ret.cveDescuento,
 	productosInburnomina.indRcLicencia,
 	productosInburnomina.indInburmedic,
 	productosInburnomina.indSeguCancer,
@@ -48,33 +48,53 @@
 	productosInburnomina.primaMensualInburmedic,
 	productosInburnomina.primaMensualSeguCancer
 FROM
-	CertificadoIndividual cer join
-  PolizaIndividual pol on
-  cer.folioSolicitud = pol.folioSolicitud and cer.formatoSolicitud = pol.formatoSolicitud
-  join Solicitud sol on
-  sol.folioSolicitud=pol.folioSolicitud and sol.formatoSolicitud = pol.formatoSolicitud
-  join Solicitante slc on
-  slc.RFCsolicitante=sol.RFCsolicitante left outer join
-	PaqueteVidaDxN paq on
-  paq.idPaqueteVidaDxN=pol.tipoSeguro left outer join
-  TarifaAportMensual tar on
-  tar.cveTarifa=sol.cveTarifa join
-  Plaza pla on
-  pla.idPlaza=cer.idPlaza join
-  Agente agt on
-  agt.cveAgente=sol.cveAgente join
-  Empresa epr on
-  epr.cveEmpresa = sol.cveEmpresa join
-	GrupoAsegurado gpo on
-  gpo.cveGrupoAsegurado = epr.cveGrupoAsegurado left outer join
-  Retenedor ret on
-  ret.cveRetenedor=gpo.cveRetenedor left outer join
-  BAF baf on
-  baf.idPaqueteVidaDxN = paq.idPaqueteVidaDxN AND baf.importePrimaBAF = tar.cveTarifa
-left outer join ProductosInburnomina  productosInburnomina on
-productosInburnomina.numPoliza = pol.numPoliza and productosInburnomina.numConsignatario = pol.numConsignatario
-WHERE cer.numCertificado=$P{numCertificadoParam}
-AND pol.numPoliza=$P{numPolizaParam}]]>
+	CertificadoIndividual cer JOIN
+  	PolizaIndividual pol ON
+  	cer.folioSolicitud = pol.folioSolicitud AND cer.formatoSolicitud = pol.formatoSolicitud
+  	JOIN Solicitud sol ON
+  	sol.folioSolicitud=pol.folioSolicitud AND sol.formatoSolicitud = pol.formatoSolicitud
+  	JOIN Solicitante slc ON
+  	slc.RFCsolicitante=sol.RFCsolicitante LEFT OUTER JOIN
+	PaqueteVidaDxN paq ON
+  	paq.idPaqueteVidaDxN=pol.tipoSeguro LEFT OUTER JOIN
+  	TarifaAportMensual tar ON
+  	tar.cveTarifa=sol.cveTarifa JOIN
+  	Plaza pla ON
+  	pla.idPlaza=cer.idPlaza JOIN
+  	Agente agt ON
+  	agt.cveAgente=sol.cveAgente JOIN
+  	Empresa epr ON
+  	epr.cveEmpresa = sol.cveEmpresa JOIN
+	GrupoAsegurado gpo ON
+  	gpo.cveGrupoAsegurado = epr.cveGrupoAsegurado LEFT OUTER JOIN
+  	Retenedor ret ON
+  	ret.cveRetenedor=gpo.cveRetenedor LEFT OUTER JOIN
+  	BAF baf ON
+  	baf.idPaqueteVidaDxN = paq.idPaqueteVidaDxN AND baf.importePrimaBAF = tar.cveTarifa
+	LEFT OUTER JOIN ProductosInburnomina  productosInburnomina ON
+	productosInburnomina.numPoliza = pol.numPoliza
+	AND productosInburnomina.numConsignatario = pol.numConsignatario
+,(SELECT sumaDI,sumaPM,sumaBITP FROM (
+
+SELECT IFNULL((SELECT montoCobertura AS sumaDI FROM beneficioadicionalpoliza WHERE numPoliza=$P{numPolizaParam} AND idBeneficioAdicional=3),0) AS sumaPM
+
+) AS t1,
+
+(
+
+SELECT IFNULL((SELECT montoCobertura AS sumaDI FROM beneficioadicionalpoliza WHERE numPoliza=$P{numPolizaParam} AND idBeneficioAdicional=4),0) AS sumaDI
+) AS t2,
+
+(
+
+SELECT IFNULL((SELECT montoCobertura AS sumaDI FROM beneficioadicionalpoliza WHERE numPoliza=$P{numPolizaParam} AND idBeneficioAdicional=6),0) AS sumaBITP
+) AS t3
+) AS reg
+
+WHERE
+	cer.numCertificado=$P{numCertificadoParam}
+AND
+	pol.numPoliza=$P{numPolizaParam}]]>
 	</queryString>
 	<field name="numCertificado" class="java.lang.Long"/>
 	<field name="apPaternoSolicitante" class="java.lang.String"/>
@@ -106,10 +126,14 @@ AND pol.numPoliza=$P{numPolizaParam}]]>
 	<field name="indInburmedic" class="java.lang.Long"/>
 	<field name="indSeguCancer" class="java.lang.Long"/>
 	<field name="numLicencia" class="java.lang.String"/>
-	<field name="primaMensualLicencia" class="java.lang.Double"/>
-	<field name="primaMensualInburmedic" class="java.lang.Double"/>
-	<field name="primaMensualSeguCancer" class="java.lang.Double"/>
-	<variable name="vidaYbaf" class="java.math.BigDecimal">
+	<field name="primaMensualLicencia" class="java.math.BigDecimal"/>
+	<field name="primaMensualInburmedic" class="java.math.BigDecimal"/>
+	<field name="primaMensualSeguCancer" class="java.math.BigDecimal"/>
+    <field name="sumaBITP" class="java.math.BigDecimal"/>
+    <field name="sumaDI" class="java.math.BigDecimal"/>
+    <field name="sumaPM" class="java.math.BigDecimal"/>
+
+<variable name="vidaYbaf" class="java.math.BigDecimal">
 		<variableExpression><![CDATA[$F{sumaAseguradaIndividual}.add(
     ($F{sumaAseguradaBAFPoliza}!=null && $F{sumaAseguradaBAFPoliza}.intValue()>0)?$F{sumaAseguradaBAFPoliza}:
     ($F{bafOriginal}!=null?$F{bafOriginal}:new BigDecimal(0))
@@ -364,7 +388,7 @@ $F{primaMensualSeguCancer}!=null ?
 				<textElement verticalAlignment="Middle" rotation="None" lineSpacing="Single">
 					<font fontName="Arial" size="16" isBold="true" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="Helvetica-Bold" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
 				</textElement>
-				<text><![CDATA[TOTAL DE PROTECCIÓN:]]></text>
+				<text><![CDATA[TOTAL DE PROTECCIÓN::]]></text>
 			</staticText>
 			<textField evaluationTime="Report" pattern="¤ #,##0" isBlankWhenNull="true">
 				<reportElement key="textField" mode="Transparent" x="332" y="63" width="145" height="21" forecolor="#000000" backcolor="#FFFFFF"/>
@@ -377,7 +401,7 @@ $F{primaMensualSeguCancer}!=null ?
 				<textElement textAlignment="Right" verticalAlignment="Middle" rotation="None" lineSpacing="Single">
 					<font fontName="Arial" size="15" isBold="true" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="Helvetica-Bold" pdfEncoding="Cp1250" isPdfEmbedded="false"/>
 				</textElement>
-				<textFieldExpression class="java.lang.String"><![CDATA[new BigDecimal(
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[new BigDecimal(
 ($V{vidaYbaf}!=null? $V{vidaYbaf}.doubleValue():0.0)+
 ($F{sumaGastosFunerarios}!=null?$F{sumaGastosFunerarios}.doubleValue():0.0)+
 ($F{sumaSEVI}!=null?$F{sumaSEVI}.doubleValue():0.0) +
@@ -385,7 +409,7 @@ $F{primaMensualSeguCancer}!=null ?
 )]]></textFieldExpression>
 			</textField>
 			<textField evaluationTime="Report">
-				<reportElement x="95" y="95" width="353" height="183"/>
+				<reportElement x="95" y="95" width="353" height="240"/>
 				<textElement verticalAlignment="Middle" lineSpacing="Double">
 					<font fontName="Arial" size="9" isItalic="true" pdfFontName="Helvetica-Oblique"/>
 				</textElement>
@@ -393,6 +417,12 @@ $F{primaMensualSeguCancer}!=null ?
 "VIDA Y BAF" + "\n" +
 "SEVI" + "\n"+
 "GASTOS FUNERARIOS FAMILIAR*" + "\n"+
+(
+(($F{nombrePaquete}.equals("VIINT092")) || ($F{nombrePaquete}.equals("VIINT093"))) ?
+"SUMA BITP" + "\n"+
+"SUMA DI" + "\n"+
+"SUMA PM" + "\n":""
+)+
 ($V{labelBeneficios}!=null?$V{labelBeneficios}:"")]]></textFieldExpression>
 			</textField>
 			<textField evaluationTime="Report">
@@ -401,10 +431,29 @@ $F{primaMensualSeguCancer}!=null ?
 					<font fontName="Arial" size="9" isItalic="true" pdfFontName="Helvetica-Oblique"/>
 				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA["----- MONTO -----\n"+
-$V{formatoMoneda}.format($V{vidaYbaf}.doubleValue()) + "\n" +
-$V{formatoMoneda}.format($F{sumaSEVI}.doubleValue()) + "\n" +
-$V{formatoMoneda}.format($F{sumaGastosFunerarios}.doubleValue()) + "\n" +
+(($F{sumaSEVI}!= null) ?
+$V{formatoMoneda}.format($F{sumaSEVI}.doubleValue()):0.0) + "\n" +
+
+(($F{sumaSEVI}!= null) ?
+$V{formatoMoneda}.format($F{sumaSEVI}.doubleValue()):0.0) + "\n" +
+
+(($F{sumaGastosFunerarios}!= null) ?
+$V{formatoMoneda}.format($F{sumaGastosFunerarios}.doubleValue()):0.0) + "\n" +
+
+(
+(($F{nombrePaquete}.equals("VIINT092")) || ($F{nombrePaquete}.equals("VIINT093"))) ?
+
+    (($F{sumaBITP}!= null) ?
+    $V{formatoMoneda}.format($F{sumaBITP}.doubleValue()):0.0) + "\n" +
+
+    (($F{sumaDI}!= null) ?
+    $V{formatoMoneda}.format($F{sumaDI}.doubleValue()):2.0) + "\n" +
+
+    (($F{sumaPM}!= null) ?
+    $V{formatoMoneda}.format($F{sumaPM}.doubleValue()):0.0) + "\n" :""
+)+
 ($V{montoBeneficios}!=null?$V{montoBeneficios}:"")]]></textFieldExpression>
+
 			</textField>
 			<textField evaluationTime="Report">
 				<reportElement x="390" y="95" width="20" height="240"/>
@@ -413,14 +462,6 @@ $V{formatoMoneda}.format($F{sumaGastosFunerarios}.doubleValue()) + "\n" +
 				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA["\n$\n$\n$\n" + ($V{signoPesos}!=null?$V{signoPesos}:"")]]></textFieldExpression>
 			</textField>
-			<subreport>
-				<reportElement x="95" y="278" width="261" height="57"/>
-				<subreportParameter name="numPolizaParam2">
-					<subreportParameterExpression><![CDATA[$F{numPoliza}]]></subreportParameterExpression>
-				</subreportParameter>
-				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
-				<subreportExpression class="java.lang.String"><![CDATA["jasper/subreporteCartaResumenPoliza.jasper"]]></subreportExpression>
-			</subreport>
 		</band>
 	</detail>
 	<lastPageFooter>
@@ -710,7 +751,7 @@ $V{formatoMoneda}.format($F{sumaGastosFunerarios}.doubleValue()) + "\n" +
 				<textElement textAlignment="Right" verticalAlignment="Middle" rotation="None" lineSpacing="Single">
 					<font fontName="Arial" size="11" isBold="true" isItalic="true" isUnderline="false" isStrikeThrough="false" pdfFontName="Helvetica-Oblique" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
 				</textElement>
-				<textFieldExpression class="java.lang.String"><![CDATA[new BigDecimal(
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[new BigDecimal(
 ($F{importeTarifa}.doubleValue()+
 (
     $V{sumaAportBeneficios}!=null?
@@ -773,7 +814,7 @@ $V{formatoMoneda}.format($F{sumaGastosFunerarios}.doubleValue()) + "\n" +
 				<textElement textAlignment="Right" verticalAlignment="Middle" rotation="None" lineSpacing="Single">
 					<font fontName="Arial" size="11" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="Helvetica" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
 				</textElement>
-				<textFieldExpression class="java.lang.String"><![CDATA[new BigDecimal(
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[new BigDecimal(
 $F{importeTarifa}.doubleValue()+
 (
     $V{sumaAportBeneficios}!=null?
@@ -792,7 +833,7 @@ $F{importeTarifa}.doubleValue()+
 				<textElement textAlignment="Right" verticalAlignment="Middle" rotation="None" lineSpacing="Single">
 					<font fontName="Arial" size="11" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="Helvetica" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
 				</textElement>
-				<textFieldExpression class="java.lang.String"><![CDATA[new BigDecimal(
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[new BigDecimal(
 $F{importeTarifa}.doubleValue()+
 (
     $V{sumaAportBeneficios}!=null?
@@ -867,7 +908,7 @@ $F{importeTarifa}.doubleValue()+
 				<textElement textAlignment="Right" verticalAlignment="Middle" rotation="None" lineSpacing="Single">
 					<font fontName="Arial" size="11" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="Helvetica" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
 				</textElement>
-				<textFieldExpression class="java.lang.String"><![CDATA[$F{importeAhorroAdicionalMensual}]]></textFieldExpression>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{importeAhorroAdicionalMensual}]]></textFieldExpression>
 			</textField>
 			<textField pattern="" isBlankWhenNull="false">
 				<reportElement key="textField-7" mode="Transparent" x="383" y="58" width="15" height="20" forecolor="#000000" backcolor="#FFFFFF">
@@ -942,7 +983,7 @@ $F{importeTarifa}.doubleValue()+
 				<textElement textAlignment="Right" verticalAlignment="Middle" rotation="None" lineSpacing="Single">
 					<font fontName="Arial" size="11" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="Helvetica" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
 				</textElement>
-				<textFieldExpression class="java.lang.String"><![CDATA[$F{primaMensualLicencia}]]></textFieldExpression>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{primaMensualLicencia}]]></textFieldExpression>
 			</textField>
 			<textField pattern="#,##0" isBlankWhenNull="false">
 				<reportElement key="textField-8" mode="Transparent" x="359" y="98" width="98" height="20" forecolor="#000000" backcolor="#FFFFFF">
@@ -957,7 +998,7 @@ $F{importeTarifa}.doubleValue()+
 				<textElement textAlignment="Right" verticalAlignment="Middle" rotation="None" lineSpacing="Single">
 					<font fontName="Arial" size="11" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="Helvetica" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
 				</textElement>
-				<textFieldExpression class="java.lang.String"><![CDATA[$F{primaMensualInburmedic}]]></textFieldExpression>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{primaMensualInburmedic}]]></textFieldExpression>
 			</textField>
 			<textField pattern="#,##0" isBlankWhenNull="false">
 				<reportElement key="textField-8" mode="Transparent" x="359" y="118" width="98" height="20" forecolor="#000000" backcolor="#FFFFFF">
@@ -972,7 +1013,7 @@ $F{importeTarifa}.doubleValue()+
 				<textElement textAlignment="Right" verticalAlignment="Middle" rotation="None" lineSpacing="Single">
 					<font fontName="Arial" size="11" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="Helvetica" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
 				</textElement>
-				<textFieldExpression class="java.lang.String"><![CDATA[$F{primaMensualSeguCancer}]]></textFieldExpression>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{primaMensualSeguCancer}]]></textFieldExpression>
 			</textField>
 			<textField pattern="" isBlankWhenNull="false">
 				<reportElement key="textField-7" mode="Transparent" x="385" y="78" width="15" height="20" forecolor="#000000" backcolor="#FFFFFF">
@@ -1043,7 +1084,7 @@ $F{importeTarifa}.doubleValue()+
 				<textElement textAlignment="Right" verticalAlignment="Middle" rotation="None" lineSpacing="Single">
 					<font fontName="Arial" size="11" isBold="true" isItalic="true" isUnderline="false" isStrikeThrough="false" pdfFontName="Helvetica-Oblique" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
 				</textElement>
-				<textFieldExpression class="java.lang.String"><![CDATA[new BigDecimal(
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[new BigDecimal(
 ($F{importeTarifa}.doubleValue()+
 (
     $V{sumaAportBeneficios}!=null?
