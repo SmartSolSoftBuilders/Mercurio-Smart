@@ -879,7 +879,8 @@ public class ReporteBusiness implements ApplicationContextAware{
                         + reporteResourcePathSrc);
             System.out.println("+++++++++++ReporteBusiness--Previo a Compilacion+++++++++++++++");
             System.out.println(reporteResourcePathSrc);
-                JasperCompileManager.compileReportToFile("C:\\mercuriows\\seguros4\\WebContent\\WEB-INF\\classes\\jasper\\" +reporteResourcePathSrc);
+            System.out.println("ruta:"+reporteResourcePath +reporteResourcePathSrc);
+                JasperCompileManager.compileReportToFile("C:\\desarrollo-mercurio\\.metadata\\.plugins\\org.eclipse.wst.server.core\\tmp0\\wtpwebapps\\seguros4\\WEB-INF\\classes\\jasper\\" +reporteResourcePathSrc);
                 jasperFile = obtenerUbicacionReporteEntrada(reporteResourcePath);
             }
             System.out.println("+++++++++++...--Previo a Carga+++++++++++++++");

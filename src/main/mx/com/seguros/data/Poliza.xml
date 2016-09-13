@@ -246,7 +246,7 @@ PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
 	</delete>
 	<insert id="guardarBeneficioAdicionalPoliza" parameterClass="beneficioAdicionalPoliza">
 		insert into BeneficioAdicionalPoliza (idBeneficioAdicional,numPoliza,numConsignatario,sumaBeneficio,montoCobertura)
-		values(#idBeneficioAdicional#,#numPoliza#,#numConsignatario#,#sumaBeneficio#,#montoCobertura#);
+		values(#idBeneficioAdicional#,#numPoliza#,#numConsignatario#,0,#montoCobertura#);
 	
 	</insert>
 
