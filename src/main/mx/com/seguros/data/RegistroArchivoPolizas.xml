@@ -70,8 +70,8 @@ PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
         <result property="fechaSolicitud" column="fechaSolicitud" javaType="java.util.Date" jdbcType="DATE"/>
         <result property="sumaAseguradaIndividual" column="sumaAseguradaIndividual"/>
         <result property="sumaBAF" column="sumaBAF"/>
-        <result property="sumaDI" column="sumaDI"/>
-        <result property="sumaPM" column="sumaPM"/>
+        <result property="sumaDIPM" column="sumaDIPM"/>
+        <result property="sumaDIPMC" column="sumaDIPMC"/>
         <result property="sumaBITP" column="sumaBITP"/>
         <result property="sumaSEVI" column="sumaSEVI"/>
         <result property="sumaGastosFunerarios" column="sumaGastosFunerarios"/>
@@ -193,8 +193,8 @@ PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
 	fechaSolicitud,
 	sumaAseguradaIndividual,
 	sumaBAF,
-	sumaDI,
-	sumaPM,
+	sumaDIPM,
+	sumaDIPMC,
 	sumaBITP,
 	sumaSEVI,
 	sumaGastosFunerarios,
@@ -237,8 +237,8 @@ PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
 	#fechaSolicitud#,
 	#sumaAseguradaIndividual#,
 	#sumaBAF#,
-	#sumaDI#,
-	#sumaPM#,
+	#sumaDIPM#,
+	#sumaDIPMC#,
 	#sumaBITP#,
 	#sumaSEVI#,
 	#sumaGastosFunerarios#,

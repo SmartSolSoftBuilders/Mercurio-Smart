@@ -44,8 +44,8 @@ public abstract class DistribucionCamposArchivoPolizasInbursa {
 	public static final int FECHA_SOLICITUD = 29;
 	public static final int SUMA_ASEGURADA_IND = 30;
 	public static final int SUMA_BAF = 31;
-	public static final int SUMA_DI = 32;
-	public static final int SUMA_PM = 33;
+	public static final int SUMA_DIPM = 32;
+	public static final int SUMA_DIPMC = 33;
 	public static final int SUMA_BITP = 36;
 	public static final int SUMA_SEVI = 38;
 	public static final int SUMA_GASTOS_FUNERARIOS = 39;

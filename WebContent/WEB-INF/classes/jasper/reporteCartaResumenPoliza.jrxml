@@ -28,7 +28,7 @@
 	</parameter>
 	<queryString>
 		<![CDATA[SELECT
-	reg.sumaBITP, reg.sumaDI, reg.sumaPM, cer.numCertificado,
+	reg.sumaBITP, reg.sumaDIPM, reg.sumaDIPMC, cer.numCertificado,
        	slc.apPaternoSolicitante, slc.apMaternoSolicitante, slc.nombre1Solicitante,
         	slc.nombre2Solicitante, slc.fechaNacimientoSolicitante,
 	pol.numPoliza, pol.numConsignatario, pol.sumaAseguradaIndividual,
@@ -74,20 +74,20 @@ FROM
 	LEFT OUTER JOIN ProductosInburnomina  productosInburnomina ON
 	productosInburnomina.numPoliza = pol.numPoliza
 	AND productosInburnomina.numConsignatario = pol.numConsignatario
-,(SELECT sumaDI,sumaPM,sumaBITP FROM (
+,(SELECT sumaDIPM,sumaDIPMC,sumaBITP FROM (
 
-SELECT IFNULL((SELECT montoCobertura AS sumaDI FROM beneficioadicionalpoliza WHERE numPoliza=$P{numPolizaParam} AND idBeneficioAdicional=3),0) AS sumaPM
+SELECT IFNULL((SELECT montoCobertura AS sumaDIPM FROM beneficioadicionalpoliza WHERE numPoliza=$P{numPolizaParam} AND idBeneficioAdicional=3),0) AS sumaDIPMC
 
 ) AS t1,
 
 (
 
-SELECT IFNULL((SELECT montoCobertura AS sumaDI FROM beneficioadicionalpoliza WHERE numPoliza=$P{numPolizaParam} AND idBeneficioAdicional=4),0) AS sumaDI
+SELECT IFNULL((SELECT montoCobertura AS sumaDIPM FROM beneficioadicionalpoliza WHERE numPoliza=$P{numPolizaParam} AND idBeneficioAdicional=4),0) AS sumaDIPM
 ) AS t2,
 
 (
 
-SELECT IFNULL((SELECT montoCobertura AS sumaDI FROM beneficioadicionalpoliza WHERE numPoliza=$P{numPolizaParam} AND idBeneficioAdicional=6),0) AS sumaBITP
+SELECT IFNULL((SELECT montoCobertura AS sumaDIPM FROM beneficioadicionalpoliza WHERE numPoliza=$P{numPolizaParam} AND idBeneficioAdicional=6),0) AS sumaBITP
 ) AS t3
 ) AS reg
 
@@ -130,8 +130,8 @@ AND
 	<field name="primaMensualInburmedic" class="java.math.BigDecimal"/>
 	<field name="primaMensualSeguCancer" class="java.math.BigDecimal"/>
 	<field name="sumaBITP" class="java.math.BigDecimal"/>
-	<field name="sumaDI" class="java.math.BigDecimal"/>
-	<field name="sumaPM" class="java.math.BigDecimal"/>
+	<field name="sumaDIPM" class="java.math.BigDecimal"/>
+	<field name="sumaDIPMC" class="java.math.BigDecimal"/>
 	<variable name="vidaYbaf" class="java.math.BigDecimal">
 		<variableExpression><![CDATA[$F{sumaAseguradaIndividual}.add(
     ($F{sumaAseguradaBAFPoliza}!=null && $F{sumaAseguradaBAFPoliza}.intValue()>0)?$F{sumaAseguradaBAFPoliza}:
@@ -430,9 +430,9 @@ $F{primaMensualSeguCancer}!=null ?
 "GASTOS FUNERARIOS FAMILIAR*" + "\n"+
 (
 (($F{nombrePaquete}.equals("VIINT092")) || ($F{nombrePaquete}.equals("VIINT093"))) ?
-"SUMA BITP" + "\n"+
-"SUMA DI" + "\n"+
-"SUMA PM" + "\n":""
+"SUMA BITP (Beneficio Incapacidad total y Permanente)" + "\n"+
+"SUMA DIPM (Pago de suma asegurada por muerte accidental " + "\n"+ "y Perdida de miembros)" + "\n"+
+"SUMA DIPMC (Pago de suma asegurada por muerte accidental " + "\n"+ "y Perdida de miembros colectiva)" + "\n":""
 
 )]]></textFieldExpression>
 			</textField>
@@ -458,11 +458,11 @@ $V{formatoMoneda}.format($F{sumaGastosFunerarios}.doubleValue()):0.0) + "\n" +
     (($F{sumaBITP}!= null) ?
     $V{formatoMoneda}.format($F{sumaBITP}.doubleValue()):0.0) + "\n" +
 
-    (($F{sumaDI}!= null) ?
-    $V{formatoMoneda}.format($F{sumaDI}.doubleValue()):0.0) + "\n" +
+    (($F{sumaDIPM}!= null) ?
+    $V{formatoMoneda}.format($F{sumaDIPM}.doubleValue()):0.0) + "\n" +
 
-    (($F{sumaPM}!= null) ?
-    $V{formatoMoneda}.format($F{sumaPM}.doubleValue()):0.0) + "\n" :""
+    (($F{sumaDIPMC}!= null) ?
+    $V{formatoMoneda}.format($F{sumaDIPMC}.doubleValue()):0.0) + "\n" :""
 
 )]]></textFieldExpression>
 			</textField>

@@ -229,8 +229,8 @@
                             <td  class="ContenTabla" nowrap><strong><fmt:formatDate pattern="dd/MM/yyyy" value="${registro.fechaSolicitud}" /></strong></td>
                             <td  class="ContenTabla" nowrap><strong><fmt:formatNumber pattern="$ #,##0.00" value="${registro.sumaAseguradaIndividual}"/></strong></td>
                             <td  class="ContenTabla" nowrap><strong><fmt:formatNumber pattern="$ #,##0.00" value="${registro.sumaBAF}"/></strong></td>
-                            <td  class="ContenTabla" nowrap><strong><fmt:formatNumber pattern="$ #,##0.00" value="${registro.sumaDI}"/></strong></td>
-                            <td  class="ContenTabla" nowrap><strong><fmt:formatNumber pattern="$ #,##0.00" value="${registro.sumaPM}"/></strong></td>
+                            <td  class="ContenTabla" nowrap><strong><fmt:formatNumber pattern="$ #,##0.00" value="${registro.sumaDIPM}"/></strong></td>
+                            <td  class="ContenTabla" nowrap><strong><fmt:formatNumber pattern="$ #,##0.00" value="${registro.sumaDIPMC}"/></strong></td>
                             <td  class="ContenTabla" nowrap><strong><fmt:formatNumber pattern="$ #,##0.00" value="${registro.sumaBITP}"/></strong></td>
                             <td  class="ContenTabla" nowrap><strong><fmt:formatNumber pattern="$ #,##0.00" value="${registro.sumaSEVI}"/></strong></td>
                             <td  class="ContenTabla" nowrap><strong><fmt:formatNumber pattern="$ #,##0.00" value="${registro.sumaGastosFunerarios}"/></strong></td>

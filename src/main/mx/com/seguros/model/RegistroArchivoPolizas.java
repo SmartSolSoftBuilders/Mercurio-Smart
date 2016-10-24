@@ -48,8 +48,8 @@ public class RegistroArchivoPolizas {
     private Date fechaSolicitud;
     private Double sumaAseguradaIndividual;
     private Double sumaBAF;
-    private Double sumaDI;
-    private Double sumaPM;
+    private Double sumaDIPM;
+    private Double sumaDIPMC;
     private Double sumaBITP;
     private Double sumaSEVI;
     private Double sumaGastosFunerarios;
@@ -539,22 +539,21 @@ public class RegistroArchivoPolizas {
     public void setSumaBAF(Double sumaBAF) {
         this.sumaBAF = sumaBAF;
     }
-    
 
-	public Double getSumaDI() {
-		return sumaDI;
+	public Double getSumaDIPMC() {
+		return sumaDIPMC;
 	}
 
-	public void setSumaDI(Double sumaDI) {
-		this.sumaDI = sumaDI;
+	public void setSumaDIPMC(Double sumaDIPMC) {
+		this.sumaDIPMC = sumaDIPMC;
 	}
 
-	public Double getSumaPM() {
-		return sumaPM;
+	public Double getSumaDIPM() {
+		return sumaDIPM;
 	}
 
-	public void setSumaPM(Double sumaPM) {
-		this.sumaPM = sumaPM;
+	public void setSumaDIPM(Double sumaDIPM) {
+		this.sumaDIPM = sumaDIPM;
 	}
 
 	public Double getSumaBITP() {
