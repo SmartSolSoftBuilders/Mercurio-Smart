@@ -3,6 +3,8 @@ package mx.com.seguros.business.consulta;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.Date;
+
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellStyle;
 import org.apache.poi.ss.usermodel.CreationHelper;
@@ -142,150 +144,330 @@ public class GeneraArchivoConsultaGeneralExcelImpl implements GeneraArchivoConsu
 	        }
 	        
 	        Row filaContenido = null;
-	        //System.out.println(resultado.getResultados());
+	        //System.out.println("resultados: " + resultado.getResultados());
 	        for(int k = 8; k < resultado.getResultados().size()+8; k++){
 	       		filaContenido = hoja1.createRow(k);
-	       		
 	       		Cell cell7= filaContenido.createCell((short)0);
-	       		cell7.setCellValue(resultado.getResultados().get(k-8).getCvePlaza().toString());
-	       		cell7.setCellStyle(styleContenido);
-	        	hoja1.autoSizeColumn((short)0);
+	       		//System.out.println("resultados: " + filaContenido);
+	       		String cvePlaza = resultado.getResultados().get(k-8).getCvePlaza();
+	       		if(cvePlaza != null) {
+		       		cell7.setCellValue(resultado.getResultados().get(k-8).getCvePlaza());
+		       		cell7.setCellStyle(styleContenido);
+		        	hoja1.autoSizeColumn((short)0);
+	       		}else{
+	       			cell7.setCellValue("N/A");
+		       		cell7.setCellStyle(styleFormato2);
+		       		hoja1.autoSizeColumn((short)0);
+	       		}
 	        	
 	       		cell7= filaContenido.createCell((short)1);
+	       		Integer numCertificado = resultado.getResultados().get(k-8).getNumCertificado();
+	       		//System.out.println("resultado noCert: " + numCertificado);
+	       		if(numCertificado != null) {
 	       		cell7.setCellValue(resultado.getResultados().get(k-8).getNumCertificado());
 	       		cell7.setCellStyle(styleContenido);
 	        	hoja1.autoSizeColumn((short)1);
-	        	
+	       		}else{
+	       			cell7.setCellValue("N/A");
+		       		cell7.setCellStyle(styleFormato2);
+		       		hoja1.autoSizeColumn((short)1);
+	       		}
+	       		
 	       		cell7= filaContenido.createCell((short)2);
+	       		String nombreContratante = resultado.getResultados().get(k-8).getNombre1Contratante().toString() + " " + 
+						   resultado.getResultados().get(k-8).getNombre2Contratante().toString() + " " +
+						   resultado.getResultados().get(k-8).getApMaternoContratante().toString();
+	       		/*System.out.println("resultado nombreCompletoContratante: " + nombreContratante);*/
+	       		if(cell7 != null) {
 	       		cell7.setCellValue(resultado.getResultados().get(k-8).getNombre1Contratante().toString() + " " + 
 	       						   resultado.getResultados().get(k-8).getNombre2Contratante().toString() + " " +
 	       						   resultado.getResultados().get(k-8).getApMaternoContratante().toString()
 	       						   );
 	       		cell7.setCellStyle(styleContenido);
 	        	hoja1.autoSizeColumn((short)2);
+	       		}else{
+	       			cell7.setCellValue("N/A");
+		       		cell7.setCellStyle(styleFormato2);
+		       		hoja1.autoSizeColumn((short)2);
+	       		}
 	        	
 	       		cell7= filaContenido.createCell((short)3);
-	       		cell7.setCellValue(resultado.getResultados().get(k-8).getNumNominaAsegurado().toString());
+	       		String numNominaAsegurado = resultado.getResultados().get(k-8).getNumNominaAsegurado();
+	       		//System.out.println("resultados noNomina: " + resultado.getResultados().get(k-8).getNumNominaAsegurado().toString());
+	       		if(numNominaAsegurado != null) {
+	       		cell7.setCellValue(resultado.getResultados().get(k-8).getNumNominaAsegurado());
 	       		cell7.setCellStyle(styleContenido);
 	        	hoja1.autoSizeColumn((short)3);
+	       		}else{
+	       			cell7.setCellValue("N/A");
+		       		cell7.setCellStyle(styleFormato2);
+		       		hoja1.autoSizeColumn((short)3);
+	       		}
 	        	
 	       		cell7= filaContenido.createCell((short)4);
-	       		cell7.setCellValue(resultado.getResultados().get(k-8).getFolioSolicitud());
+	       		Integer folioSolicitud = resultado.getResultados().get(k-8).getFolioSolicitud();
+	       		//System.out.println("resultados foliosol: " + folioSolicitud);
+	       		if(folioSolicitud != null) {
+	       		cell7.setCellValue(resultado.getResultados().get(k-8).getFolioSolicitud().toString());
 	       		cell7.setCellStyle(styleContenido);
 	        	hoja1.autoSizeColumn((short)4);
+	       		}else{
+	       			cell7.setCellValue("N/A");
+		       		cell7.setCellStyle(styleFormato2);
+		       		hoja1.autoSizeColumn((short)4);
+	       		}
 	        	
 	       		cell7= filaContenido.createCell((short)5);
-	       		cell7.setCellValue(resultado.getResultados().get(k-8).getFormatoSolicitud().toString());
+	       		String formatoSol = resultado.getResultados().get(k-8).getFormatoSolicitud();
+	       		//System.out.println("resultados formatoSol: " + formatoSol);
+	       		if(formatoSol != null) {
+	       		cell7.setCellValue(resultado.getResultados().get(k-8).getFormatoSolicitud());
 	       		cell7.setCellStyle(styleContenido);
 	        	hoja1.autoSizeColumn((short)5);
+	       		}else{
+	       			cell7.setCellValue("N/A");
+		       		cell7.setCellStyle(styleFormato2);
+		       		hoja1.autoSizeColumn((short)5);
+	       		}
 	        	
 	       		cell7= filaContenido.createCell((short)6);
-	       		cell7.setCellValue(resultado.getResultados().get(k-8).getFechaSolicitud());
+	       		Date fechasolicitud = resultado.getResultados().get(k-8).getFechaSolicitud();
+	       		//System.out.println("resultados fechaSol: " + fechasolicitud);
+	       		if(fechasolicitud != null) {
+	       		cell7.setCellValue(resultado.getResultados().get(k-8).getFechaSolicitud().toString());
 	       		cell7.setCellStyle(styleContenido);
 	       		cell7.setCellStyle(styleFecha);
 	        	hoja1.autoSizeColumn((short)6);
+	       		}else{
+	       			cell7.setCellValue("N/A");
+		       		cell7.setCellStyle(styleFormato2);
+		       		hoja1.autoSizeColumn((short)6);
+	       		}
 	        	
 	       		cell7= filaContenido.createCell((short)7);
-	       		cell7.setCellValue(resultado.getResultados().get(k-8).getDescripcionEstadoSolicitud().toString());
+	       		String descEdoSol = resultado.getResultados().get(k-8).getDescripcionEstadoSolicitud();
+	       		//System.out.println("resultados descEstadoSol: " + descEdoSol);
+	       		if(descEdoSol != null) {
+	       		cell7.setCellValue(resultado.getResultados().get(k-8).getDescripcionEstadoSolicitud());
 	       		cell7.setCellStyle(styleContenido);
 	        	hoja1.autoSizeColumn((short)7);
+	       		}else{
+	       			cell7.setCellValue("N/A");
+		       		cell7.setCellStyle(styleFormato2);
+		       		hoja1.autoSizeColumn((short)7);
+	       		}
 	        	
 	       		cell7= filaContenido.createCell((short)8);
+	       		String nombreAsegurado =   resultado.getResultados().get(k-8).getNombre1Asegurado().toString() + " " +
+										   resultado.getResultados().get(k-8).getNombre2Asegurado().toString() + " " +
+										   resultado.getResultados().get(k-8).getApMaternoAsegurado().toString();
+	       		
+	       		/*System.out.println("resultados nombreAsegurado: " + nombreAsegurado);*/
+	       		if(nombreAsegurado != null) {
 	       		cell7.setCellValue(resultado.getResultados().get(k-8).getNombre1Asegurado().toString() + " " +
 	       						   resultado.getResultados().get(k-8).getNombre2Asegurado().toString() + " " +
 	       						   resultado.getResultados().get(k-8).getApMaternoAsegurado().toString() 
 	       						   );
 	       		cell7.setCellStyle(styleContenido);
 	        	hoja1.autoSizeColumn((short)8);
+	       		}else{
+	       			cell7.setCellValue("N/A");
+		       		cell7.setCellStyle(styleFormato2);
+		       		hoja1.autoSizeColumn((short)8);
+	       		}
 	        	
 	       		cell7= filaContenido.createCell((short)9);
-	       		cell7.setCellValue(resultado.getResultados().get(k-8).getRFCasegurado().toString());
-	       		cell7.setCellStyle(styleContenido);
-	        	hoja1.autoSizeColumn((short)9);
+	       		String RFCAsegurado = resultado.getResultados().get(k-8).getRFCasegurado();
+	       		//System.out.println("resultados RFCAsegurado: " + RFCAsegurado);
+	       		if(RFCAsegurado != null) {
+		       		cell7.setCellValue(resultado.getResultados().get(k-8).getRFCasegurado());
+		       		cell7.setCellStyle(styleContenido);
+		        	hoja1.autoSizeColumn((short)9);
+	       		}else{
+	       			cell7.setCellValue("N/A");
+		       		cell7.setCellStyle(styleFormato2);
+		       		hoja1.autoSizeColumn((short)9);
+	       		}
 	        	
 	       		cell7= filaContenido.createCell((short)10);
-	       		cell7.setCellValue(resultado.getResultados().get(k-8).getTelefonoSolicitante().toString());
-	       		cell7.setCellStyle(styleContenido);
-	        	hoja1.autoSizeColumn((short)10);
+	       		String telSolicitante = resultado.getResultados().get(k-8).getTelefonoSolicitante();
+	       		//System.out.println("resultados telSolicitante: " + telSolicitante);
+	       		if(telSolicitante != null) { 
+		       		cell7.setCellValue(resultado.getResultados().get(k-8).getTelefonoSolicitante());
+		       		cell7.setCellStyle(styleContenido);
+		        	hoja1.autoSizeColumn((short)10);
+	       		}else{
+	       			cell7.setCellValue("N/A");
+		       		cell7.setCellStyle(styleFormato2);
+		       		hoja1.autoSizeColumn((short)10);
+	       		}
 	        	
 	       		cell7= filaContenido.createCell((short)11);
-	       		cell7.setCellValue(resultado.getResultados().get(k-8).getNumConsignatario().toString());
-	       		cell7.setCellStyle(styleContenido);
-	        	hoja1.autoSizeColumn((short)11);
+	       		Integer numConsignatario = resultado.getResultados().get(k-8).getNumConsignatario();
+	       		//System.out.println("resultados noConsignatario: " + numConsignatario);
+	       		if(numConsignatario != null) {
+		       		cell7.setCellValue(resultado.getResultados().get(k-8).getNumConsignatario().toString());
+		       		cell7.setCellStyle(styleContenido);
+		        	hoja1.autoSizeColumn((short)11);
+	       		}else{
+	       			cell7.setCellValue("N/A");
+		       		cell7.setCellStyle(styleFormato2);
+		       		hoja1.autoSizeColumn((short)11);
+	       		}
 	        	
 	       		cell7= filaContenido.createCell((short)12);
-	       		cell7.setCellValue(resultado.getResultados().get(k-8).getNumPoliza().toString());
-	       		cell7.setCellStyle(styleContenido);
-	        	hoja1.autoSizeColumn((short)12);
+	       		Integer numPoliza = resultado.getResultados().get(k-8).getNumPoliza();
+	       		//System.out.println("resultados noPoliza: " + resultado.getResultados().get(k-8).getNumPoliza().toString());
+	       		if(numPoliza != null) {
+		       		cell7.setCellValue(resultado.getResultados().get(k-8).getNumPoliza().toString());
+		       		cell7.setCellStyle(styleContenido);
+		        	hoja1.autoSizeColumn((short)12);
+	       		}else{
+	       			cell7.setCellValue("N/A");
+		       		cell7.setCellStyle(styleFormato2);
+		       		hoja1.autoSizeColumn((short)12);
+	       		}
 	        	
 	       		cell7= filaContenido.createCell((short)13);
-	       		cell7.setCellValue(resultado.getResultados().get(k-8).getFechaInicioVigencia());
-	       		cell7.setCellStyle(styleContenido);
-	       		cell7.setCellStyle(styleFecha);
+	       		Date fechaIniVigencia = resultado.getResultados().get(k-8).getFechaInicioVigencia();
+	       		//System.out.println("resultados fechaInicioVigencia: " + fechaIniVigencia);
+	       		if(fechaIniVigencia != null) {
+		       		cell7.setCellValue(resultado.getResultados().get(k-8).getFechaInicioVigencia().toString());
+		       		cell7.setCellStyle(styleContenido);
+		       		cell7.setCellStyle(styleFecha);
 	        	hoja1.autoSizeColumn((short)13);
+	       		}else{
+	       			cell7.setCellValue("N/A");
+		       		cell7.setCellStyle(styleFormato2);
+		       		hoja1.autoSizeColumn((short)13);
+	       		}
 	        	
 	       		cell7= filaContenido.createCell((short)14);
-	       		cell7.setCellValue(resultado.getResultados().get(k-8).getDescripcionEstadoPoliza().toString());
-	       		cell7.setCellStyle(styleContenido);
-	        	hoja1.autoSizeColumn((short)14);
+	       		String descEdoPoliza = resultado.getResultados().get(k-8).getDescripcionEstadoPoliza();
+	       		//System.out.println("resultados descEdoPoliza: " + descEdoPoliza);
+	       		if(descEdoPoliza != null) {
+		       		cell7.setCellValue(resultado.getResultados().get(k-8).getDescripcionEstadoPoliza());
+		       		cell7.setCellStyle(styleContenido);
+		        	hoja1.autoSizeColumn((short)14);
+	       		}else{
+	       			cell7.setCellValue("N/A");
+		       		cell7.setCellStyle(styleFormato2);
+		       		hoja1.autoSizeColumn((short)14);
+	       		}
 	        	
 	       		cell7= filaContenido.createCell((short)15);
-	       		cell7.setCellValue(resultado.getResultados().get(k-8).getDescripcionEstadoPolizaPagos().toString());
-	       		cell7.setCellStyle(styleContenido);
-	        	hoja1.autoSizeColumn((short)15);
+	       		String descEdoPolizaPagos = resultado.getResultados().get(k-8).getDescripcionEstadoPolizaPagos();
+	       		//System.out.println("resultados descEdoPolizaPagos: " + descEdoPolizaPagos);
+	       		if(descEdoPolizaPagos != null) {
+		       		cell7.setCellValue(resultado.getResultados().get(k-8).getDescripcionEstadoPolizaPagos().toString());
+		       		cell7.setCellStyle(styleContenido);
+		        	hoja1.autoSizeColumn((short)15);
+	       		}else{
+	       			cell7.setCellValue("N/A");
+		       		cell7.setCellStyle(styleFormato2);
+		       		hoja1.autoSizeColumn((short)15);
+	       		}
 	        	
 	       		cell7= filaContenido.createCell((short)16);
-	       		cell7.setCellValue(resultado.getResultados().get(k-8).getNombrePaquete().toString());
-	       		cell7.setCellStyle(styleContenido);
-	        	hoja1.autoSizeColumn((short)16);
+	       		String nombrePaquete = resultado.getResultados().get(k-8).getNombrePaquete();
+	       		//System.out.println("resultados nombrePaquete: " + nombrePaquete);
+	       		if(nombrePaquete != null) {
+		       		cell7.setCellValue(resultado.getResultados().get(k-8).getNombrePaquete().toString());
+		       		cell7.setCellStyle(styleContenido);
+		        	hoja1.autoSizeColumn((short)16);
+	       		}else{
+	       			cell7.setCellValue("N/A");
+		       		cell7.setCellStyle(styleFormato2);
+		       		hoja1.autoSizeColumn((short)16);
+	       		}
 	        	
 	       		cell7= filaContenido.createCell((short)17);
-	       		cell7.setCellValue(resultado.getResultados().get(k-8).getNombreGrupoAsegurado().toString());
-	       		cell7.setCellStyle(styleContenido);
-	        	hoja1.autoSizeColumn((short)17);
+	       		String nombreGpoAsegurado = resultado.getResultados().get(k-8).getNombreGrupoAsegurado();
+	       		//System.out.println("resultados nombreGpoAsegurado: " + nombreGpoAsegurado);
+	       		if(nombreGpoAsegurado != null) {
+		       		cell7.setCellValue(resultado.getResultados().get(k-8).getNombreGrupoAsegurado());
+		       		cell7.setCellStyle(styleContenido);
+		        	hoja1.autoSizeColumn((short)17);
+	       		}else{
+	       			cell7.setCellValue("N/A");
+		       		cell7.setCellStyle(styleFormato2);
+		       		hoja1.autoSizeColumn((short)17);
+	       		}
 	        	
 	       		cell7= filaContenido.createCell((short)18);
-	       		cell7.setCellValue(resultado.getResultados().get(k-8).getPrimaMensual().toString());
-	       		cell7.setCellStyle(styleContenido);
-	        	hoja1.autoSizeColumn((short)18);
+	       		Double primaMensual = resultado.getResultados().get(k-8).getPrimaMensual();
+	       		//System.out.println("resultados primaMensual: " + primaMensual);
+	       		if(primaMensual != null) {
+		       		cell7.setCellValue(resultado.getResultados().get(k-8).getPrimaMensual().toString());
+		       		cell7.setCellStyle(styleContenido);
+		        	hoja1.autoSizeColumn((short)18);
+	       		}else{
+	       			cell7.setCellValue("N/A");
+		       		cell7.setCellStyle(styleFormato2);
+		       		hoja1.autoSizeColumn((short)18);
+	       		}
 	        	
 	       		cell7= filaContenido.createCell((short)19);
-	       		cell7.setCellValue(resultado.getResultados().get(k-8).getNombreEmpresa().toString());
-	       		cell7.setCellStyle(styleContenido);
-	        	hoja1.autoSizeColumn((short)19);
+	       		String nombreEmpresa = resultado.getResultados().get(k-8).getNombreEmpresa();
+	       		//System.out.println("resultados nombreEmpresa: " + nombreEmpresa);
+	       		if(nombreEmpresa != null) {
+		       		cell7.setCellValue(resultado.getResultados().get(k-8).getNombreEmpresa());
+		       		cell7.setCellStyle(styleContenido);
+		        	hoja1.autoSizeColumn((short)19);
+	       		}else{
+	       			cell7.setCellValue("N/A");
+		       		cell7.setCellStyle(styleFormato2);
+		       		hoja1.autoSizeColumn((short)19);
+	       		}
 	        	
 	       		cell7= filaContenido.createCell((short)20);
-	       		cell7.setCellValue(resultado.getResultados().get(k-8).getNombreSucursal().toString());
-	       		cell7.setCellStyle(styleContenido);
-	        	hoja1.autoSizeColumn((short)20);
+	       		String nombreSucursal = resultado.getResultados().get(k-8).getNombreSucursal();
+	       		//System.out.println("resultados nombreSucursal: " + nombreSucursal);
+	       		if(nombreSucursal != null) {
+		       		cell7.setCellValue(resultado.getResultados().get(k-8).getNombreSucursal());
+		       		cell7.setCellStyle(styleContenido);
+		        	hoja1.autoSizeColumn((short)20);
+	       		}else{
+	       			cell7.setCellValue("N/A");
+		       		cell7.setCellStyle(styleFormato2);
+		       		hoja1.autoSizeColumn((short)20);
+	       		}
 	        	
 	       		cell7= filaContenido.createCell((short)21);
-	       		cell7.setCellValue(resultado.getResultados().get(k-8).getNombre1Agente().toString() + " " +
-	       						   resultado.getResultados().get(k-8).getNombre2Agente().toString() + " " +
-	       						   resultado.getResultados().get(k-8).getApPaternoAgente().toString() + " " +
-	       						   resultado.getResultados().get(k-8).getApMaternoAgente().toString()
-	       						   );
-	       		cell7.setCellStyle(styleContenido);
-	        	hoja1.autoSizeColumn((short)21);
+	       		String nombreAgente = resultado.getResultados().get(k-8).getNombre1Agente() + " " +
+					    resultado.getResultados().get(k-8).getNombre2Agente() + " " +
+					    resultado.getResultados().get(k-8).getApPaternoAgente() + " " +
+					    resultado.getResultados().get(k-8).getApMaternoAgente();
+	       		/*System.out.println("resultados nombreAgente: " + nombreAgente);*/
+	       		if(nombreAgente != null) {
+	       			cell7.setCellValue(resultado.getResultados().get(k-8).getNombre1Agente() + " " +
+		       						   resultado.getResultados().get(k-8).getNombre2Agente() + " " +
+		       						   resultado.getResultados().get(k-8).getApPaternoAgente() + " " +
+		       						   resultado.getResultados().get(k-8).getApMaternoAgente()
+		       						   );
+		       		cell7.setCellStyle(styleContenido);
+		        	hoja1.autoSizeColumn((short)21);
+	       		}else{
+	       			cell7.setCellValue("N/A");
+		       		cell7.setCellStyle(styleFormato2);
+		       		hoja1.autoSizeColumn((short)21);
+	       		}
 	        	
 	       		cell7= filaContenido.createCell((short)22);
 	       		Double saldoCuenta = resultado.getResultados().get(k-8).getSaldoCuenta();
 	       		//System.out.println("saldo cuenta: " + saldoCuenta);
 	       		if(saldoCuenta != null){
-	       			
 		       		cell7.setCellValue(resultado.getResultados().get(k-8).getSaldoCuenta());
 		       		cell7.setCellStyle(styleFormato);
 		       		hoja1.autoSizeColumn((short)22);
-		       		
-	       		}else {
-	       			
-	       			cell7.setCellValue(0);
+	       		}else{
+	       			cell7.setCellValue("N/A");
 		       		cell7.setCellStyle(styleFormato2);
 		       		hoja1.autoSizeColumn((short)22);
-		       		
 	       		}
 	       		
 	       		cell7= filaContenido.createCell((short)23);
+	       		//System.out.println("resultados ImporteRetiros: " + resultado.getResultados().get(k-8).getImporteRetiros());
 	       		Double importeRetiros = resultado.getResultados().get(k-8).getImporteRetiros();
 	       		//System.out.println("importeRetiros: " + importeRetiros);
 	       		if(importeRetiros != null){
@@ -296,7 +478,7 @@ public class GeneraArchivoConsultaGeneralExcelImpl implements GeneraArchivoConsu
 		       		
 	       		} else {
 	       			
-	       			cell7.setCellValue(0);
+	       			cell7.setCellValue("N/A");
 		       		cell7.setCellStyle(styleFormato2);
 		       		hoja1.autoSizeColumn((short)23);
 		       		

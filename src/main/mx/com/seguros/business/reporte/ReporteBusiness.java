@@ -887,7 +887,7 @@ public class ReporteBusiness implements ApplicationContextAware{
             System.out.println("+++++++++++...--Previo a Carga+++++++++++++++");
             //jasperFile=new File("C:\\mercuriows\\seguros4\\WebContent\\WEB-INF\\classes\\jasper\\reporteCartaResumenPolizajasper");
             //jasperFile=new File("C:\\Mercurio-Smart2\\WebContent\\WEB-INF\\classes\\jasper\\reporteAcuseReciboPoliza.jasper");
-            jasperFile=new File("C:\\desarrollo-mercurio2\\.metadata\\.plugins\\org.eclipse.wst.server.core\\tmp0\\wtpwebapps\\seguros4\\WEB-INF\\classes\\jasper\\reporteAcuseReciboPoliza.jasper"); //reporteAcuseReciboPoliza.jasper //reporteCartaResumenPoliza.jasper
+            jasperFile=new File("C:\\desarrollo-mercurio2\\.metadata\\.plugins\\org.eclipse.wst.server.core\\tmp0\\wtpwebapps\\seguros4\\WEB-INF\\classes\\jasper\\reporteCartaResumenPoliza.jasper"); //reporteAcuseReciboPoliza.jasper //reporteCartaResumenPoliza.jasper
             System.out.println(jasperFile);
             JasperReport jasperReport = (JasperReport) JRLoader.loadObjectFromLocation(jasperFile.getAbsolutePath());
             

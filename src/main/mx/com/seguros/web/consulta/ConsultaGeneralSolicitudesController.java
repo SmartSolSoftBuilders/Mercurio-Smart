@@ -147,7 +147,7 @@ public class ConsultaGeneralSolicitudesController extends SimpleFormController{
         	resultado.setRegistrosPorPagina(65525);
         	//System.out.println(resultado);
         	File archivo= this.generaArchivoConsultaGeneralExcel.generaArchivoExcel(resultado);
-        	System.out.println(archivo);
+        	//System.out.println(archivo);
         	InputStream inputstream = new FileInputStream(archivo);
         	//-no va-mav.setViewName("/consulta/consultaExcel");
         	response.setContentType("application/force-download");
