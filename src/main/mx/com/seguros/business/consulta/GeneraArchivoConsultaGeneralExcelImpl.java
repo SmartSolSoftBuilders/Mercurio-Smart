@@ -234,7 +234,7 @@ public class GeneraArchivoConsultaGeneralExcelImpl implements GeneraArchivoConsu
 	       		Date fechasolicitud = resultado.getResultados().get(k-8).getFechaSolicitud();
 	       		//System.out.println("resultados fechaSol: " + fechasolicitud);
 	       		if(fechasolicitud != null) {
-	       		cell7.setCellValue(resultado.getResultados().get(k-8).getFechaSolicitud().toString());
+	       		cell7.setCellValue(resultado.getResultados().get(k-8).getFechaSolicitud());
 	       		cell7.setCellStyle(styleContenido);
 	       		cell7.setCellStyle(styleFecha);
 	        	hoja1.autoSizeColumn((short)6);
@@ -332,7 +332,7 @@ public class GeneraArchivoConsultaGeneralExcelImpl implements GeneraArchivoConsu
 	       		Date fechaIniVigencia = resultado.getResultados().get(k-8).getFechaInicioVigencia();
 	       		//System.out.println("resultados fechaInicioVigencia: " + fechaIniVigencia);
 	       		if(fechaIniVigencia != null) {
-		       		cell7.setCellValue(resultado.getResultados().get(k-8).getFechaInicioVigencia().toString());
+		       		cell7.setCellValue(resultado.getResultados().get(k-8).getFechaInicioVigencia());
 		       		cell7.setCellStyle(styleContenido);
 		       		cell7.setCellStyle(styleFecha);
 	        	hoja1.autoSizeColumn((short)13);
