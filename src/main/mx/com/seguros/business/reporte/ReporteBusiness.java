@@ -881,13 +881,21 @@ public class ReporteBusiness implements ApplicationContextAware{
             System.out.println(reporteResourcePathSrc);
             System.out.println("ruta:"+reporteResourcePath + " " + reporteResourcePathSrc);
                 //JasperCompileManager.compileReportToFile("C:\\desarrollo-mercurio\\.metadata\\.plugins\\org.eclipse.wst.server.core\\tmp0\\wtpwebapps\\seguros4\\WEB-INF\\classes\\jasper\\" +reporteResourcePathSrc);
-            JasperCompileManager.compileReportToFile("C:\\desarrollo-mercurio2\\.metadata\\.plugins\\org.eclipse.wst.server.core\\tmp0\\wtpwebapps\\seguros4\\WEB-INF\\classes\\jasper\\" +reporteResourcePathSrc);
+                JasperCompileManager.compileReportToFile("C:\\Users\\Admin_Smart\\workspace-seguros4-git\\.metadata\\.plugins\\org.eclipse.wst.server.core\\tmp0\\wtpwebapps\\seguros4\\WEB-INF\\classes\\jasper\\" +reporteResourcePathSrc);
+                //JasperCompileManager.compileReportToFile("C:\\desarrollo-mercurio2\\.metadata\\.plugins\\org.eclipse.wst.server.core\\tmp0\\wtpwebapps\\seguros4\\WEB-INF\\classes\\jasper\\" +reporteResourcePathSrc);
+
                 jasperFile = obtenerUbicacionReporteEntrada(reporteResourcePath);
             }
+            int lastDot = reporteResourcePath.lastIndexOf(".");
             System.out.println("+++++++++++...--Previo a Carga+++++++++++++++");
             //jasperFile=new File("C:\\mercuriows\\seguros4\\WebContent\\WEB-INF\\classes\\jasper\\reporteCartaResumenPolizajasper");
             //jasperFile=new File("C:\\Mercurio-Smart2\\WebContent\\WEB-INF\\classes\\jasper\\reporteAcuseReciboPoliza.jasper");
-            jasperFile=new File("C:\\desarrollo-mercurio2\\.metadata\\.plugins\\org.eclipse.wst.server.core\\tmp0\\wtpwebapps\\seguros4\\WEB-INF\\classes\\jasper\\reporteCartaResumenPoliza.jasper"); //reporteAcuseReciboPoliza.jasper //reporteCartaResumenPoliza.jasper
+//<<<<<<< HEAD
+            //jasperFile=new File("C:\\desarrollo-mercurio2\\.metadata\\.plugins\\org.eclipse.wst.server.core\\tmp0\\wtpwebapps\\seguros4\\WEB-INF\\classes\\jasper\\reporteAcuseReciboPoliza.jasper"); //reporteAcuseReciboPoliza.jasper //reporteCartaResumenPoliza.jasper
+            jasperFile=new File("C:\\Users\\Admin_Smart\\workspace-seguros4-git\\.metadata\\.plugins\\org.eclipse.wst.server.core\\tmp0\\wtpwebapps\\seguros4\\WEB-INF\\classes\\jasper\\C:\\mercuriows\\seguros4\\WebContent\\WEB-INF\\classes\\jasper\\"+ reporteResourcePath.substring(0,lastDot) + ".jasper");
+//=======
+            jasperFile=new File("C:\\Users\\Admin_Smart\\workspace-seguros4-git\\.metadata\\.plugins\\org.eclipse.wst.server.core\\tmp0\\wtpwebapps\\seguros4\\WEB-INF\\classes\\jasper\\C:\\mercuriows\\seguros4\\WebContent\\WEB-INF\\classes\\jasper\\reporteCartaResumenPoliza.jasper"); //reporteAcuseReciboPoliza.jasper //reporteCartaResumenPoliza.jasper
+//>>>>>>> branch 'desarrollo' of https://github.com/SmartSolSoftBuilders/Mercurio-Smart.git
             System.out.println(jasperFile);
             JasperReport jasperReport = (JasperReport) JRLoader.loadObjectFromLocation(jasperFile.getAbsolutePath());
             
