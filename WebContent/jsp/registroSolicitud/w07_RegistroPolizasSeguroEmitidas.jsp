@@ -207,8 +207,8 @@
 	                	<span class="field330">&nbsp;&nbsp;Monto de la Cobertura &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span>
 	                </div>
 	                <input type="hidden" id="sumabitphid" name="sumabitphid" value="${datosSolicitud.polizaIndividual.sumaBITP}"/>
-	                <input type="hidden" id="sumadihid" name="sumadihid" value="${datosSolicitud.polizaIndividual.sumaDI}"/>
-	                <input type="hidden" id="sumapmhid" name="sumapmhid" value="${datosSolicitud.polizaIndividual.sumaPM}"/>
+	                <input type="hidden" id="sumadihid" name="sumadihid" value="${datosSolicitud.polizaIndividual.sumaDIPM}"/>
+	                <input type="hidden" id="sumapmhid" name="sumapmhid" value="${datosSolicitud.polizaIndividual.sumaDIPMC}"/>
 	
 	                <c:forEach items="${datosSolicitud.beneficiosPoliza}" var="beneficio" varStatus="iStatus">
 	                	<div class="row660">
