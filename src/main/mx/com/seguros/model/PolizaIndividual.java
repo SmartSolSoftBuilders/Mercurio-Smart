@@ -65,8 +65,8 @@ public class PolizaIndividual {
     private Double sumaGastosFunerarios;
     private Double sumaSEVI;
     private Double sumaBAF;
-    private Double sumaDI;
-    private Double sumaPM;
+    private Double sumaDIPM;
+    private Double sumaDIPMC;
     private Double sumaBITP;
     private Double sumaCPF;
     private Integer plazoSeguro;
@@ -379,23 +379,21 @@ public class PolizaIndividual {
     public void setSumaBAF(Double sumaBAF) {
         this.sumaBAF = sumaBAF;
     }
-    
-    
 
-    public Double getSumaDI() {
-		return sumaDI;
+	public Double getSumaDIPM() {
+		return sumaDIPM;
 	}
 
-	public void setSumaDI(Double sumaDI) {
-		this.sumaDI = sumaDI;
+	public void setSumaDIPM(Double sumaDIPM) {
+		this.sumaDIPM = sumaDIPM;
 	}
 
-	public Double getSumaPM() {
-		return sumaPM;
+	public Double getSumaDIPMC() {
+		return sumaDIPMC;
 	}
 
-	public void setSumaPM(Double sumaPM) {
-		this.sumaPM = sumaPM;
+	public void setSumaDIPMC(Double sumaDIPMC) {
+		this.sumaDIPMC = sumaDIPMC;
 	}
 
 	public Double getSumaBITP() {

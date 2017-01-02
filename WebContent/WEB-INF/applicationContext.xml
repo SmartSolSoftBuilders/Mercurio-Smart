@@ -126,8 +126,12 @@
 </bean>
 
 <bean id="consultaGeneralSolicitudesBusiness" class="mx.com.seguros.business.consulta.ConsultaGeneralSolicitudesBusiness">
-    <property name="solicitudDao" ref="solicitudDao"/>
+     <property name="solicitudDao" ref="solicitudDao"/>
      <property name="polizaDao" ref="polizaDao"/>
+</bean>
+
+<bean id="generaArchivoConsultaGeneralExcel" class="mx.com.seguros.business.consulta.GeneraArchivoConsultaGeneralExcelImpl">
+     
 </bean>
 
 <bean id="reporteBusiness" class="mx.com.seguros.business.reporte.ReporteBusiness">

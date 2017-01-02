@@ -252,8 +252,8 @@ public class ArchivoPolizasBusiness implements IArchivoPolizasBusiness {
             poliza.setFechaInicioVigencia(registroFuente.getFechaInicioVigencia());
             poliza.setSumaAseguradaIndividual(registroFuente.getSumaAseguradaIndividual());
             poliza.setSumaBAF(registroFuente.getSumaBAF());
-            poliza.setSumaDI(registroFuente.getSumaDI());
-            poliza.setSumaPM(registroFuente.getSumaPM());
+            poliza.setSumaDIPM(registroFuente.getSumaDIPM());
+            poliza.setSumaDIPMC(registroFuente.getSumaDIPMC());
             poliza.setSumaBITP(registroFuente.getSumaBITP());
             poliza.setSumaSEVI(registroFuente.getSumaSEVI());
             poliza.setSumaGastosFunerarios(registroFuente.getSumaGastosFunerarios());
@@ -494,9 +494,9 @@ public class ArchivoPolizasBusiness implements IArchivoPolizasBusiness {
 		
 		registro.setSumaBAF(obtenerDouble(datosSeparados,DistribucionCamposArchivoPolizasInbursa.SUMA_BAF));
 		
-		registro.setSumaDI(obtenerDouble(datosSeparados,DistribucionCamposArchivoPolizasInbursa.SUMA_DI));
+		registro.setSumaDIPM(obtenerDouble(datosSeparados,DistribucionCamposArchivoPolizasInbursa.SUMA_DIPM));
 		
-		registro.setSumaPM(obtenerDouble(datosSeparados,DistribucionCamposArchivoPolizasInbursa.SUMA_PM));
+		registro.setSumaDIPMC(obtenerDouble(datosSeparados,DistribucionCamposArchivoPolizasInbursa.SUMA_DIPMC));
 		
 		registro.setSumaBITP(obtenerDouble(datosSeparados,DistribucionCamposArchivoPolizasInbursa.SUMA_BITP));
 		

@@ -626,7 +626,7 @@
                                 
                                 <script type="text/javascript">
                                 	function excel(){
-                                		document.w01.formato.value = "xls";
+                                		document.w01.formato.value = "xlsx";
                                 		document.w01.submit();
                                 		
                                 	}
@@ -652,7 +652,7 @@
                             			${columna} 
                             		</c:if>
                             		<c:if test="${resultado != null }">
-                            			<a href="javascript:ordenarPor(${iCol.index})">${columna} 
+                            			<a href="javascript:ordenarPor(${iCol.index})">${columna}
 	                            		<c:if test="${criteriosBusqueda.orden[iCol.index] == 'asc' }">
 	                            			&#94;
 	                            		</c:if>
