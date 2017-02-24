@@ -9,6 +9,7 @@
 package mx.com.seguros.web.poliza;
 
 import java.util.Date;
+import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -54,19 +55,86 @@ public class RegistroPolizaController extends AbstractWizardFormController {
        RegistroPolizaCommand cmd = new RegistroPolizaCommand();
         
        List <BeneficioAdicional> beneficios = polizaBusiness.consultarCatalogoBeneficiosAdicionales();
-       
        cmd.setBeneficiosPoliza(new BeneficioAdicionalPoliza[beneficios.size()]);
        int i=0;
+       Enumeration <String>parametros = request.getParameterNames();
+       while (parametros.hasMoreElements()){
+    	   String p=parametros.nextElement();
+    	   System.out.println("Param:"+p);
+    	   String vals[] = request.getParameterValues(p);
+    	   for (int j=0;j<vals.length;j++){
+    		   System.out.println(vals[j]);
+    	   }
+       }
+       String montoCoberturaGASTOS_FUNERARIOS = "0";
+       if (request.getParameter("beneficiosPoliza[0].montoCobertura")!=null)
+    	   montoCoberturaGASTOS_FUNERARIOS=request.getParameter("beneficiosPoliza[0].montoCobertura");
+       
+       String montoCoberturaDIC= "0";
+       if (request.getParameter("beneficiosPoliza[1].montoCobertura")!=null)
+    	   montoCoberturaDIC=request.getParameter("beneficiosPoliza[1].montoCobertura");
+       
+       String montoCoberturaDIPM= "0";
+       if (request.getParameter("beneficiosPoliza[2].montoCobertura")!=null)
+    	   montoCoberturaDIPM=request.getParameter("beneficiosPoliza[2].montoCobertura");
+       
+       String montoCoberturaDIPMC= "0";
+       if (request.getParameter("beneficiosPoliza[3].montoCobertura")!=null)
+    	   montoCoberturaDIPMC=request.getParameter("beneficiosPoliza[3].montoCobertura");
+       
+       String montoCoberturaBIT= "0";
+       if (request.getParameter("beneficiosPoliza[4].montoCobertura")!=null)
+    	   montoCoberturaBIT=request.getParameter("beneficiosPoliza[4].montoCobertura");
+       
+       String montoCoberturaBITP= "0";
+       if (request.getParameter("beneficiosPoliza[5].montoCobertura")!=null)
+    	   montoCoberturaBITP=request.getParameter("beneficiosPoliza[5].montoCobertura");
+       
+       String montoCoberturaBAC= "0";
+       if (request.getParameter("beneficiosPoliza[6].montoCobertura")!=null)
+    	   montoCoberturaBAC=request.getParameter("beneficiosPoliza[6].montoCobertura");
+       
+       String montoCoberturaAHORRO= "0";
+       if (request.getParameter("beneficiosPoliza[7].montoCobertura")!=null)
+    	   montoCoberturaAHORRO=request.getParameter("beneficiosPoliza[7].montoCobertura");
+       
+       String montoCoberturaRG= "0";
+       if (request.getParameter("beneficiosPoliza[8].montoCobertura")!=null)
+    	   montoCoberturaRG=request.getParameter("beneficiosPoliza[8].montoCobertura");
+
+       
        for(BeneficioAdicional beneficio:beneficios){
     	   cmd.getBeneficiosPoliza()[i] = new BeneficioAdicionalPoliza();
     	   cmd.getBeneficiosPoliza()[i].setIdBeneficioAdicional(beneficio.getIdBeneficioAdicional());
     	   cmd.getBeneficiosPoliza()[i].setDescripcionBeneficio(beneficio.getDescripcionBeneficioAdicional());
+    	   switch (beneficio.getIdBeneficioAdicional()){
+    		   	case 1:
+    	    	   cmd.getBeneficiosPoliza()[i].setMontoCobertura(Double.parseDouble(montoCoberturaGASTOS_FUNERARIOS));
+    		   	case 2:
+     	    	   cmd.getBeneficiosPoliza()[i].setMontoCobertura(Double.parseDouble(montoCoberturaDIC));
+    		   	case 3:
+     	    	   cmd.getBeneficiosPoliza()[i].setMontoCobertura(Double.parseDouble(montoCoberturaDIPM));
+    		   	case 4:
+     	    	   cmd.getBeneficiosPoliza()[i].setMontoCobertura(Double.parseDouble(montoCoberturaDIPMC));
+    		   	case 5:
+     	    	   cmd.getBeneficiosPoliza()[i].setMontoCobertura(Double.parseDouble(montoCoberturaBIT));
+    		   	case 6:
+     	    	   cmd.getBeneficiosPoliza()[i].setMontoCobertura(Double.parseDouble(montoCoberturaBITP));
+    		   	case 7:
+     	    	   cmd.getBeneficiosPoliza()[i].setMontoCobertura(Double.parseDouble(montoCoberturaBAC));
+    		   	case 8:
+     	    	   cmd.getBeneficiosPoliza()[i].setMontoCobertura(Double.parseDouble(montoCoberturaAHORRO));
+    		   	case 9:
+     	    	   cmd.getBeneficiosPoliza()[i].setMontoCobertura(Double.parseDouble(montoCoberturaRG));
+    	    	   
+    	   }
+    	   
     	   i++;
        }
+       //System.out.println("cmdGetBeneficosPoliza "+cmd.getBeneficiosPoliza()[i]);
+        
 
-              
-         
-
+       
         return cmd;
 
     }
@@ -93,8 +161,8 @@ public class RegistroPolizaController extends AbstractWizardFormController {
         polizaBusiness.generarReportes(datosPoliza);
        
         //System.out.println("ruta rep cert" + polizaBusiness.obtenerReportesGenerados(datosPoliza).getRutaReporteCertInd());
-        System.out.println("ruta rep carta" + polizaBusiness.obtenerReportesGenerados(datosPoliza).getRutaReporteCartaResumen());
-        System.out.println("ruta rep acuse" + polizaBusiness.obtenerReportesGenerados(datosPoliza).getRutaReporteAcuseRecibo());
+        //System.out.println("ruta rep carta" + polizaBusiness.obtenerReportesGenerados(datosPoliza).getRutaReporteCartaResumen());
+        //System.out.println("ruta rep acuse" + polizaBusiness.obtenerReportesGenerados(datosPoliza).getRutaReporteAcuseRecibo());
         request.getSession().setAttribute("ReportesPDF", polizaBusiness.obtenerReportesGenerados(datosPoliza));
         ModelAndView mav = new ModelAndView("registroPoliza/registroPolizaExitoso");
         mav.addObject(polizaBusiness.obtenerReportesGenerados(datosPoliza));

@@ -192,17 +192,19 @@
             	<div id="titleg664x16">Registro de beneficios adicionales de p&oacute;liza.</div>
                 <div class="row660">
                 	<label class="label330">&nbsp;</label>
-                	<span class="field330">&nbsp;&nbsp;Costo del Beneficio &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Monto de la Cobertura</span>
+                	<span class="field330">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Monto de la Cobertura&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
                 </div>
+                
+	            
                 <c:forEach items="${datosPoliza.beneficiosPoliza}" var="beneficio" varStatus="iStatus">
                 	<div class="row660">
 	                  
 	                    <label class="label330">${beneficio.descripcionBeneficio}:</label>
 	                    <span class="field330">
 	                            <spring:bind path="datosPoliza.beneficiosPoliza[${iStatus.index}].sumaBeneficio">
-	                           	 <input type="text" name="${status.expression}" 
+	                           	 <!-- input type="text" name="${status.expression}" 
 	                           	 size="13"
-	                           	 id="${status.expression}" value="${status.value}" class="input"/>
+	                           	 id="${status.expression}" value="${status.value}" class="input"/-->
 	                           	 </spring:bind>
 	                           	 &nbsp;&nbsp;
 	                           	 <spring:bind path="datosPoliza.beneficiosPoliza[${iStatus.index}].montoCobertura">
@@ -217,6 +219,7 @@
 	               		
                 
                 </c:forEach>
+                
                 <span>&nbsp;</span>
                 <div align="center" class="submit664">
                     <input type="reset" value="Limpiar." class="input" tabindex="15"/>
