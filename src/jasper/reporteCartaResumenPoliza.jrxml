@@ -472,7 +472,7 @@ $V{formatoMoneda}.format($F{sumaGastosFunerarios}.doubleValue()):0.0) + "\n" +
 					<font fontName="Arial" size="9"/>
 					<paragraph lineSpacing="Double"/>
 				</textElement>
-				<textFieldExpression><![CDATA["\n$\n$\n$\n$\n$\n$\n" + ($V{signoPesos}!=null?$V{signoPesos}:"")]]></textFieldExpression>
+				<textFieldExpression><![CDATA["\n$\n$\n$\n" + ($V{signoPesos}!=null?$V{signoPesos}:"")]]></textFieldExpression>
 			</textField>
 		</band>
 	</detail>

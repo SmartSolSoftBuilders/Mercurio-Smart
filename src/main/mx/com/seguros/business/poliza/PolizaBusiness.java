@@ -486,11 +486,12 @@ public class PolizaBusiness implements IPolizaBusiness {
              */
             List<BeneficioAdicionalPoliza> listaBeneficios = new ArrayList<BeneficioAdicionalPoliza>();
             for(BeneficioAdicionalPoliza benef:datosPoliza.getBeneficiosPoliza()){
-            	if(benef.getSumaBeneficio() != null && benef.getSumaBeneficio()>0 &&
+            	if(//benef.getSumaBeneficio() != null && benef.getSumaBeneficio()>0 &&
             			benef.getMontoCobertura() != null && benef.getMontoCobertura() > 0){
             		listaBeneficios.add(benef);
             	}
             }
+            System.out.println("listaBeneficios "+listaBeneficios);
             poliza.setBeneficiosAdicionales(listaBeneficios);
              guardarBeneficiosAdicionales(poliza);
             
@@ -828,10 +829,11 @@ public class PolizaBusiness implements IPolizaBusiness {
 	public void guardarBeneficiosAdicionales(PolizaIndividual poliza) {
 		double totalCosto = 0;
 		double totalCobertura = 0;
+		//System.out.println("poliza.getBeneficiosAdicionales: "+poliza.getBeneficiosAdicionales());
 		for(BeneficioAdicionalPoliza beneficio:poliza.getBeneficiosAdicionales()){
 			beneficio.setNumPoliza(poliza.getNumPoliza());
 			beneficio.setNumConsignatario(poliza.getNumConsignatario());
-			totalCosto+=beneficio.getSumaBeneficio();
+			//totalCosto+=beneficio.getSumaBeneficio();
 			totalCobertura+=beneficio.getMontoCobertura();
 		}
 		polizaDao.eliminarBeneficiosAdicionalesDePoliza(poliza.getNumPoliza(), poliza.getNumConsignatario());
