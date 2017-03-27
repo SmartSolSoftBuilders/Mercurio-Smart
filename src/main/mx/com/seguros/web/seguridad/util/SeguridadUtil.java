@@ -51,6 +51,8 @@ public class SeguridadUtil {
 	public static String ROL_ATENCION_CLIENTES = "rol_atencion_clientes";
 	public static String ROL_ATENCION_CLIENTES_CENTRAL = "rol_atencion_clientes_central";
 	
+	public static String ROL_CONSULTA_ESPECIAL = "rol_consulta_especial";
+	
 	/**
 	 * Determina si el usuario tiene el rol de ventas
 	 * @return true si el usuario actual tiene el rol de ventas
@@ -128,6 +130,26 @@ public class SeguridadUtil {
 		
 		return false;
 	}
+	
+	/**
+	 * Determina si esl usuario es del rol consulta especial
+	 * @return
+	 */
+	
+	public boolean isRolConsultaEspecial(){
+		if(SecurityContextHolder.getContext() != null && 
+				SecurityContextHolder.getContext().getAuthentication() != null){
+			GrantedAuthority roles []= SecurityContextHolder.getContext().getAuthentication().getAuthorities();
+			for(GrantedAuthority rol:roles){
+				if(rol.getAuthority().equals(ROL_CONSULTA_ESPECIAL)){
+					return true;
+				}
+			}
+		}
+		
+		return false;
+	}
+	
 	/**
 	 * Verifica si tiene el rol de operaciones pero no de oficinas centrales
 	 * @return

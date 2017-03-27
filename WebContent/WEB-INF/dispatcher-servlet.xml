@@ -400,6 +400,19 @@
         <property name="seguridadUtil" ref="seguridadUtil"></property>
         <property name="sessionForm" value="true"></property>
     </bean>
+    
+    <bean name="/consultaEspecialController" class="mx.com.seguros.web.consulta.ConsultaEspecialController">
+        <property name="formView" value="consulta/consultaEspecial"/>
+        <property name="successView" value="consulta/consultaGeneralSolicitudes"/>
+        <property name="registrosPorPagina" value="7000"/>
+        <property name="commandClass" value="mx.com.seguros.dto.CriteriosConsultaSolicitudesDTO"/>
+        <property name="commandName" value="criteriosBusqueda"/>
+        <property name="bindOnNewForm" value="true"/>
+        <property name="consultaEspecialBusiness" ref="consultaEspecialBusiness"/>
+        <property name="generaArchivoConsultaGeneralExcel" ref="generaArchivoConsultaGeneralExcel"/>
+        <property name="seguridadUtil" ref="seguridadUtil"></property>
+        <property name="sessionForm" value="true"></property>
+    </bean>
 
     <bean name="/consultaDetalleSolicitudController" class="mx.com.seguros.web.consulta.ConsultaDetalleSolicitudController">
         <property name="polizaBusiness" ref="polizaBusiness"/>

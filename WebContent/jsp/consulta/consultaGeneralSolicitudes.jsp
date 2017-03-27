@@ -1,3 +1,12 @@
+<%@page import="com.sun.tools.internal.ws.processor.model.Request"%>
+<%@page import="javax.management.relation.Role"%>
+<%@page import="mx.com.seguros.model.seguridad.Rol"%>
+<%@page import="javax.activation.CommandObject"%>
+<%@page import="net.sf.ehcache.constructs.asynchronous.Command"%>
+<%@page import="javax.management.Query"%>
+<%@page import="mx.com.seguros.web.seguridad.util.SeguridadUtil"%>
+<%@page import="org.acegisecurity.GrantedAuthority"%>
+<%@page import="org.acegisecurity.context.SecurityContextHolder"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@page contentType="text/html"%>
@@ -464,8 +473,21 @@
 		                                   value="${status.value}"
 		                                   readonly/>
 		                        </spring:bind>
-	                          <a href="javascript:buscarAgente();" tabindex="2">
-	                                <img src="<c:url value="/img/helper.png"/>" alt="Buscar Agentes"/></a>
+		                        <a href="javascript:buscarAgente();" tabindex="2" id="img">
+	                            <img src="<c:url value="/img/helper.png"/>" alt="Buscar Agentes"/></a>
+	                                
+		                        <%GrantedAuthority rol[] = SecurityContextHolder.getContext().getAuthentication().getAuthorities();%>
+		                        <%System.out.println("ROLES__"+rol[0].getAuthority().toString()); %>
+		                        <%if(rol[0].getAuthority().toString().equals("ROL_VENTAS") || rol[0].getAuthority().toString().equals("rol_ventas")) {%>
+		                        	<script language="JavaScript" type="text/javascript">
+										document.getElementById("img").setAttribute("href","#");
+										document.getElementById("img").oncontextmenu=new Function("return false");
+									</script>
+		                        	<!--  input type="text" name="id" value ="si"/-->
+		                        <%}else{%>
+		                        	<!--input type="text" name="id" value ="no"/-->
+		                        <%} %>
+
                 
                 			</td>
                 			<td class="labelRow">

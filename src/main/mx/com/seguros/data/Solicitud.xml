@@ -11,6 +11,7 @@ PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
     <typeAlias alias="tarifa" type="mx.com.seguros.model.TarifaAportMensual"/>
     <typeAlias alias="historicoTarifa" type="mx.com.seguros.model.HistoricoTarifa"/>
     <typeAlias alias="criteriosSolicitud" type="mx.com.seguros.dto.CriteriosConsultaSolicitudesDTO"/>
+    <typeAlias alias="criteriosSolicitudEsp" type="mx.com.seguros.dto.CriteriosConsultaSolicitudesDTO"/>
     <typeAlias alias="resultadoConsultaSolicitud" type="mx.com.seguros.dto.ResultadoConsultaSolicitudDTO"/>
     
     <!-- solicitudResult -->
@@ -1029,6 +1030,361 @@ PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
                         $totalCamposOrden$
 
     </select>
+    
+    <select id="countConsultaEspecial"
+            resultClass="java.lang.Integer"
+            parameterClass="criteriosSolicitudEsp" >
+            select
+
+                count(*) as totalRegistros
+
+        from Solicitud solicitud left outer join Solicitante solicitante on solicitud.rfcSolicitante = solicitante.rfcSolicitante 
+                        left outer join CertificadoIndividual certificado  on certificado.foliosolicitud = solicitud.foliosolicitud
+                        and certificado.formatoSolicitud = solicitud.formatoSolicitud
+                        left outer join EstatusSolicitud estatusSolicitud on estatusSolicitud.idEstatusSolicitud = solicitud.idEstatusSolicitud
+                        left outer join PolizaIndividual polizaIndividual on polizaIndividual.folioSolicitud = solicitud.folioSolicitud
+                        	and polizaIndividual.formatoSolicitud = solicitud.formatoSolicitud 
+                        left outer join EstatusPolizaSeguimiento estatusPolizaSeguimiento on estatusPolizaSeguimiento.idEstatusPolizaSeguimiento = polizaIndividual.idEstatusPolizaSeguimiento
+                        left outer join EstatusPolizaPagos estatusPolizaPagos on estatusPolizaPagos.idEstatusPagosPoliza = polizaIndividual.idEstatusPagosPoliza
+                        left outer join Contratante contratante on contratante.numNominaContratante = solicitud.numNominaContratante
+                        left outer join Agente agente on agente.cveAgente = solicitud.cveAgente
+                        left outer join Empleado empleado on empleado.cveEmpleado = agente.cveEmpleado
+                        left outer join Plaza plaza on certificado.idPlaza = plaza.idPlaza
+                        left outer join Empresa empresa on empresa.cveEmpresa = solicitud.cveEmpresa
+                        left outer join Sucursal sucursal on sucursal.cveSucursal = empresa.cveSucursal
+                        left outer join GrupoAsegurado grupoAsegurado on grupoAsegurado.cveGrupoAsegurado = empresa.cveGrupoAsegurado
+                        left outer join PaqueteVidaDxN paqueteVidaDxN on paqueteVidaDxN.idPaqueteVidaDxN = polizaIndividual.tipoSeguro
+                        left outer join TarifaAportMensual tarifaAportMensual on tarifaAportMensual.cveTarifa = solicitud.cveTarifa
+                        <dynamic prepend="where" >
+                            <isNotNull prepend="and" property="fechaSolicitudInicial">
+                             <![CDATA[   solicitud.fechaSolicitud >= #fechaSolicitudInicial# ]]>
+                            </isNotNull>
+                            <isNotNull prepend="and" property="fechaSolicitudFinal">
+                             <![CDATA[   solicitud.fechaSolicitud <= #fechaSolicitudFinal# ]]>
+                            </isNotNull>
+                            <isNotNull prepend="and" property="idEstatusSolicitud">
+                                solicitud.idEstatusSolicitud = #idEstatusSolicitud#
+                            </isNotNull>
+                            <isNotNull prepend="and" property="idEstatusPoliza">
+                                polizaIndividual.idEstatusPolizaSeguimiento = #idEstatusPoliza#
+                            </isNotNull>
+                            <isNotEmpty prepend="and" property="rfcSolicitante">
+                                solicitud.rfcSolicitante like #rfcSolicitante#
+                            </isNotEmpty>
+                            <isNotEmpty prepend="and" property="nombreContratante">
+                                concat(lower(contratante.nombre1Contratante),' ',lower(contratante.nombre2Contratante)) like 
+                                lower(#nombreContratante#)
+                            </isNotEmpty>
+                            <isNotEmpty prepend="and" property="apPaternoContratante">
+                                lower(contratante.apPaternoContratante) like lower(#apPaternoContratante#)
+                            </isNotEmpty>
+                            <isNotEmpty prepend="and" property="apMaternoContratante">
+                                lower(contratante.apMaternoContratante) like lower(#apMaternoContratante#)
+                            </isNotEmpty>
+                            <isNotNull prepend="and" property="cveAgente">
+                                solicitud.cveAgente = #cveAgente#
+                            </isNotNull>
+                            <isNotNull prepend="and" property="idPlaza">
+                                certificado.idPlaza = #idPlaza#
+                            </isNotNull>
+                            <isNotNull prepend="and" property="cveGrupoAsegurado">
+                                empresa.cveGrupoAsegurado = #cveGrupoAsegurado#
+                            </isNotNull>
+                            <isNotNull prepend="and" property="cveSucursal">
+                                empresa.cveSucursal = #cveSucursal#
+                            </isNotNull>
+                            <isNotNull prepend="and" property="cveColonia">
+                                empresa.cveColonia = #cveColonia#
+                            </isNotNull>
+                            <isNotNull prepend="and" property="cveEmpresa">
+                                empresa.cveEmpresa = #cveEmpresa#
+                            </isNotNull>
+                            <isNotNull prepend="and" property="fechaProduccionInicial">
+                            <![CDATA[    solicitud.fechaProduccion >= #fechaProduccionInicial# ]]>
+                            </isNotNull>
+                            <isNotNull prepend="and" property="fechaProduccionFinal">
+                            <![CDATA[    solicitud.fechaProduccion <= #fechaProduccionFinal# ]]>
+                            </isNotNull>
+                            <isNotNull prepend="and" property="folioSolicitud">
+                            <![CDATA[    solicitud.folioSolicitud = #folioSolicitud# ]]>
+                            </isNotNull>
+							<isNotNull prepend="and" property="numPoliza">
+                            <![CDATA[    polizaIndividual.numPoliza = #numPoliza# ]]>
+                            </isNotNull>
+                            <isNotEmpty prepend="and" property="numNominaContratante">
+                            <![CDATA[    solicitud.numNominaContratante like #numNominaContratante# ]]>
+                            </isNotEmpty>
+                            <isNotNull prepend="and" property="numCertificado">
+                            <![CDATA[    certificado.numCertificado = #numCertificado# ]]>
+                            </isNotNull>
+                            <isNotEmpty prepend="and" property="nombreSolicitante">
+                                concat(lower(solicitante.nombre1Solicitante),' ',lower(solicitante.nombre2Solicitante)) like
+                                lower(#nombreSolicitante#)
+                            </isNotEmpty>
+                            <isNotEmpty prepend="and" property="apPaternoSolicitante">
+                                lower(solicitante.apPaternoSolicitante) like lower(#apPaternoSolicitante#)
+                            </isNotEmpty>
+                            <isNotEmpty prepend="and" property="apMaternoSolicitante">
+                                lower(solicitante.apMaternoSolicitante) like lower(#apMaternoSolicitante#)
+                            </isNotEmpty>
+
+
+
+                        </dynamic>
+    </select>
+    
+    <select id="sumConsultaEspecial"
+            resultClass="java.lang.Double"
+            parameterClass="criteriosSolicitudEsp" >
+            select
+
+                sum(tarifaAportMensual.importeTarifa) as totalRegistros
+
+        	from Solicitud solicitud left outer join Solicitante solicitante on solicitud.rfcSolicitante = solicitante.rfcSolicitante 
+                        left outer join CertificadoIndividual certificado  on certificado.foliosolicitud = solicitud.foliosolicitud
+                        and certificado.formatoSolicitud = solicitud.formatoSolicitud
+                        left outer join EstatusSolicitud estatusSolicitud on estatusSolicitud.idEstatusSolicitud = solicitud.idEstatusSolicitud
+                        left outer join PolizaIndividual polizaIndividual on polizaIndividual.folioSolicitud = solicitud.folioSolicitud
+                        	and polizaIndividual.formatoSolicitud = solicitud.formatoSolicitud 
+                        left outer join EstatusPolizaSeguimiento estatusPolizaSeguimiento on estatusPolizaSeguimiento.idEstatusPolizaSeguimiento = polizaIndividual.idEstatusPolizaSeguimiento
+                        left outer join EstatusPolizaPagos estatusPolizaPagos on estatusPolizaPagos.idEstatusPagosPoliza = polizaIndividual.idEstatusPagosPoliza
+                        left outer join Contratante contratante on contratante.numNominaContratante = solicitud.numNominaContratante
+                        left outer join Agente agente on agente.cveAgente = solicitud.cveAgente
+                        left outer join Empleado empleado on empleado.cveEmpleado = agente.cveEmpleado
+                        left outer join Plaza plaza on certificado.idPlaza = plaza.idPlaza
+                        left outer join Empresa empresa on empresa.cveEmpresa = solicitud.cveEmpresa
+                        left outer join Sucursal sucursal on sucursal.cveSucursal = empresa.cveSucursal
+                        left outer join GrupoAsegurado grupoAsegurado on grupoAsegurado.cveGrupoAsegurado = empresa.cveGrupoAsegurado
+                        left outer join PaqueteVidaDxN paqueteVidaDxN on paqueteVidaDxN.idPaqueteVidaDxN = polizaIndividual.tipoSeguro
+                        left outer join TarifaAportMensual tarifaAportMensual on tarifaAportMensual.cveTarifa = solicitud.cveTarifa
+                        <dynamic prepend="where" >
+                            <isNotNull prepend="and" property="fechaSolicitudInicial">
+                             <![CDATA[   solicitud.fechaSolicitud >= #fechaSolicitudInicial# ]]>
+                            </isNotNull>
+                            <isNotNull prepend="and" property="fechaSolicitudFinal">
+                             <![CDATA[   solicitud.fechaSolicitud <= #fechaSolicitudFinal# ]]>
+                            </isNotNull>
+                            <isNotNull prepend="and" property="idEstatusSolicitud">
+                                solicitud.idEstatusSolicitud = #idEstatusSolicitud#
+                            </isNotNull>
+                            <isNotNull prepend="and" property="idEstatusPoliza">
+                                polizaIndividual.idEstatusPolizaSeguimiento = #idEstatusPoliza#
+                            </isNotNull>
+                            <isNotEmpty prepend="and" property="rfcSolicitante">
+                                solicitud.rfcSolicitante like #rfcSolicitante#
+                            </isNotEmpty>
+                            <isNotEmpty prepend="and" property="nombreContratante">
+                                concat(lower(contratante.nombre1Contratante),' ',lower(contratante.nombre2Contratante)) like 
+                                lower(#nombreContratante#)
+                            </isNotEmpty>
+                            <isNotEmpty prepend="and" property="apPaternoContratante">
+                                lower(contratante.apPaternoContratante) like lower(#apPaternoContratante#)
+                            </isNotEmpty>
+                            <isNotEmpty prepend="and" property="apMaternoContratante">
+                                lower(contratante.apMaternoContratante) like lower(#apMaternoContratante#)
+                            </isNotEmpty>
+                            <isNotNull prepend="and" property="cveAgente">
+                                solicitud.cveAgente = #cveAgente#
+                            </isNotNull>
+                            <isNotNull prepend="and" property="idPlaza">
+                                certificado.idPlaza = #idPlaza#
+                            </isNotNull>
+                            <isNotNull prepend="and" property="cveGrupoAsegurado">
+                                empresa.cveGrupoAsegurado = #cveGrupoAsegurado#
+                            </isNotNull>
+                            <isNotNull prepend="and" property="cveSucursal">
+                                empresa.cveSucursal = #cveSucursal#
+                            </isNotNull>
+                            <isNotNull prepend="and" property="cveColonia">
+                                empresa.cveColonia = #cveColonia#
+                            </isNotNull>
+                            <isNotNull prepend="and" property="cveEmpresa">
+                                empresa.cveEmpresa = #cveEmpresa#
+                            </isNotNull>
+                            <isNotNull prepend="and" property="fechaProduccionInicial">
+                            <![CDATA[    solicitud.fechaProduccion >= #fechaProduccionInicial# ]]>
+                            </isNotNull>
+                            <isNotNull prepend="and" property="fechaProduccionFinal">
+                            <![CDATA[    solicitud.fechaProduccion <= #fechaProduccionFinal# ]]>
+                            </isNotNull>
+                            <isNotNull prepend="and" property="folioSolicitud">
+                            <![CDATA[    solicitud.folioSolicitud = #folioSolicitud# ]]>
+                            </isNotNull>
+							<isNotNull prepend="and" property="numPoliza">
+                            <![CDATA[    polizaIndividual.numPoliza = #numPoliza# ]]>
+                            </isNotNull>
+                            <isNotEmpty prepend="and" property="numNominaContratante">
+                            <![CDATA[    solicitud.numNominaContratante like #numNominaContratante# ]]>
+                            </isNotEmpty>
+                            <isNotNull prepend="and" property="numCertificado">
+                            <![CDATA[    certificado.numCertificado = #numCertificado# ]]>
+                            </isNotNull>
+                            <isNotEmpty prepend="and" property="nombreSolicitante">
+                                concat(lower(solicitante.nombre1Solicitante),' ',lower(solicitante.nombre2Solicitante)) like
+                                lower(#nombreSolicitante#)
+                            </isNotEmpty>
+                            <isNotEmpty prepend="and" property="apPaternoSolicitante">
+                                lower(solicitante.apPaternoSolicitante) like lower(#apPaternoSolicitante#)
+                            </isNotEmpty>
+                            <isNotEmpty prepend="and" property="apMaternoSolicitante">
+                                lower(solicitante.apMaternoSolicitante) like lower(#apMaternoSolicitante#)
+                            </isNotEmpty>
+
+
+
+                        </dynamic>
+    </select>
+
+
+     <select id="consultaEspecial"
+            resultMap="resultadoConsultaSolicitudResult"
+            parameterClass="criteriosSolicitudEsp">
+       select
+       
+                solicitud.folioSolicitud,
+                solicitud.formatoSolicitud,
+                polizaIndividual.numConsignatario,
+                certificado.numCertificado,
+                estatusSolicitud.descripcionEstatusSolicitud,
+                estatusPolizaSeguimiento.descripcionEstatusPoliza,
+                polizaIndividual.numPoliza,
+                grupoAsegurado.nombreGrupoAsegurado,
+                solicitante.apPaternoSolicitante,
+                solicitante.apMaternoSolicitante,
+                solicitante.nombre1Solicitante,
+                solicitante.nombre2Solicitante,
+                solicitud.numNominaContratante,
+                solicitud.rfcSolicitante,
+                contratante.nombre1Contratante,
+                contratante.nombre2Contratante,
+                contratante.apPaternoContratante,
+                contratante.apMaternoContratante,
+                solicitante.telefono,
+                polizaIndividual.fechaInicioVigencia,
+                polizaIndividual.fechaFinVigencia,
+                solicitud.fechaSolicitud,
+                paqueteVidaDxN.nombrePaquete,
+                polizaIndividual.plazoSeguro,
+                empleado.nombre1Empleado,
+                empleado.nombre2Empleado,
+                empleado.apPaternoEmpleado,
+                empleado.apMaternoEmpleado,
+                tarifaAportMensual.importeTarifa,
+                tarifaAportMensual.descripcion,
+                polizaIndividual.sumaAseguradaIndividual,
+                polizaIndividual.sumaBAF,
+                polizaIndividual.sumaGastosFunerarios,
+                polizaIndividual.sumaSEVI,
+                tarifaAportMensual.importeTarifa+
+                polizaIndividual.sumaAseguradaIndividual+
+                polizaIndividual.sumaBAF+
+                polizaIndividual.sumaGastosFunerarios+
+                polizaIndividual.sumaSEVI as totalProteccion,
+                plaza.cvePlaza,
+                empresa.nombreEmpresa,
+                sucursal.nombreSucursal,
+                estatusPolizaPagos.descripcionEstatusPagosPoliza,
+                cuenta.saldoCuenta,
+                (select sum(ret.importeAplicado) from TramiteRetiro ret where ret.numPoliza = polizaIndividual.numPoliza and ret.numConsignatario = polizaIndividual.numConsignatario) as importeRetiros 
+        from Solicitud solicitud 
+        				left outer join Solicitante solicitante on solicitud.rfcSolicitante = solicitante.rfcSolicitante 
+                        left outer join CertificadoIndividual certificado  on certificado.foliosolicitud = solicitud.foliosolicitud 
+                        and certificado.formatoSolicitud = solicitud.formatoSolicitud
+                        left outer join EstatusSolicitud estatusSolicitud on estatusSolicitud.idEstatusSolicitud = solicitud.idEstatusSolicitud
+                        left outer join PolizaIndividual polizaIndividual on polizaIndividual.folioSolicitud = solicitud.folioSolicitud
+						and polizaIndividual.formatoSolicitud = solicitud.formatoSolicitud                        
+                        left outer join EstatusPolizaSeguimiento estatusPolizaSeguimiento on 
+                        estatusPolizaSeguimiento.idEstatusPolizaSeguimiento = polizaIndividual.idEstatusPolizaSeguimiento
+                        left outer join EstatusPolizaPagos estatusPolizaPagos on estatusPolizaPagos.idEstatusPagosPoliza = polizaIndividual.idEstatusPagosPoliza
+                        left outer join Contratante contratante on contratante.numNominaContratante = solicitud.numNominaContratante
+                        left outer join Agente agente on agente.cveAgente = solicitud.cveAgente
+                        left outer join Empleado empleado on empleado.cveEmpleado = agente.cveEmpleado
+                        left outer join Plaza plaza on certificado.idPlaza = plaza.idPlaza
+                        left outer join Empresa empresa on empresa.cveEmpresa = solicitud.cveEmpresa
+                        left outer join Sucursal sucursal on sucursal.cveSucursal = empresa.cveSucursal
+                        left outer join GrupoAsegurado grupoAsegurado on grupoAsegurado.cveGrupoAsegurado = empresa.cveGrupoAsegurado
+                        left outer join PaqueteVidaDxN paqueteVidaDxN on paqueteVidaDxN.idPaqueteVidaDxN = polizaIndividual.tipoSeguro
+                        left outer join TarifaAportMensual tarifaAportMensual on tarifaAportMensual.cveTarifa = solicitud.cveTarifa
+                        left outer join CuentaCliente cuenta on cuenta.numPoliza = polizaIndividual.numPoliza and cuenta.numConsignatario = polizaIndividual.numConsignatario
+                        <dynamic prepend="where" >
+                            <isNotNull prepend="and" property="fechaSolicitudInicial">
+                             <![CDATA[   solicitud.fechaSolicitud >= #fechaSolicitudInicial# ]]>
+                            </isNotNull>
+                            <isNotNull prepend="and" property="fechaSolicitudFinal">
+                             <![CDATA[   solicitud.fechaSolicitud <= #fechaSolicitudFinal# ]]>
+                            </isNotNull>
+                            <isNotNull prepend="and" property="idEstatusSolicitud">
+                                solicitud.idEstatusSolicitud = #idEstatusSolicitud#
+                            </isNotNull>
+                            <isNotNull prepend="and" property="idEstatusPoliza">
+                                polizaIndividual.idEstatusPolizaSeguimiento = #idEstatusPoliza#
+                            </isNotNull>
+                            <isNotEmpty prepend="and" property="rfcSolicitante">
+                                solicitud.rfcSolicitante like #rfcSolicitante#
+                            </isNotEmpty>
+                            <isNotEmpty prepend="and" property="nombreContratante">
+                                concat(lower(contratante.nombre1Contratante),' ',lower(contratante.nombre2Contratante)) like
+                                lower(#nombreContratante#)
+                            </isNotEmpty>
+                            <isNotEmpty prepend="and" property="apPaternoContratante">
+                                lower(contratante.apPaternoContratante) like lower(#apPaternoContratante#)
+                            </isNotEmpty>
+                            <isNotEmpty prepend="and" property="apMaternoContratante">
+                                lower(contratante.apMaternoContratante) like lower(#apMaternoContratante#)
+                            </isNotEmpty>
+                            <isNotNull prepend="and" property="cveAgente">
+                                solicitud.cveAgente = #cveAgente#
+                            </isNotNull>
+                            <isNotNull prepend="and" property="idPlaza">
+                                certificado.idPlaza = #idPlaza#
+                            </isNotNull>
+                            <isNotNull prepend="and" property="cveGrupoAsegurado">
+                                empresa.cveGrupoAsegurado = #cveGrupoAsegurado#
+                            </isNotNull>
+                            <isNotNull prepend="and" property="cveSucursal">
+                                empresa.cveSucursal = #cveSucursal#
+                            </isNotNull>
+                            <isNotNull prepend="and" property="cveColonia">
+                                empresa.cveColonia = #cveColonia#
+                            </isNotNull>
+                            <isNotNull prepend="and" property="cveEmpresa">
+                                empresa.cveEmpresa = #cveEmpresa#
+                            </isNotNull>
+                            <isNotNull prepend="and" property="fechaProduccionInicial">
+                            <![CDATA[    solicitud.fechaProduccion >= #fechaProduccionInicial# ]]>
+                            </isNotNull>
+                            <isNotNull prepend="and" property="fechaProduccionFinal">
+                            <![CDATA[    solicitud.fechaProduccion <= #fechaProduccionFinal# ]]>
+                            </isNotNull>
+							<isNotNull prepend="and" property="folioSolicitud">
+                            <![CDATA[    solicitud.folioSolicitud = #folioSolicitud# ]]>
+                            </isNotNull>
+							<isNotNull prepend="and" property="numPoliza">
+                            <![CDATA[    polizaIndividual.numPoliza = #numPoliza# ]]>
+                            </isNotNull>
+                            <isNotEmpty prepend="and" property="numNominaContratante">
+                            <![CDATA[    solicitud.numNominaContratante like #numNominaContratante# ]]>
+                            </isNotEmpty>
+                            <isNotNull prepend="and" property="numCertificado">
+                            <![CDATA[    certificado.numCertificado = #numCertificado# ]]>
+                            </isNotNull>
+                            <isNotEmpty prepend="and" property="nombreSolicitante">
+                                concat(lower(solicitante.nombre1Solicitante),' ',lower(solicitante.nombre2Solicitante)) like
+                                lower(#nombreSolicitante#)
+                            </isNotEmpty>
+                            <isNotEmpty prepend="and" property="apPaternoSolicitante">
+                                lower(solicitante.apPaternoSolicitante) like lower(#apPaternoSolicitante#)
+                            </isNotEmpty>
+                            <isNotEmpty prepend="and" property="apMaternoSolicitante">
+                                lower(solicitante.apMaternoSolicitante) like lower(#apMaternoSolicitante#)
+                            </isNotEmpty>
+
+                        </dynamic>
+                        
+                        $totalCamposOrden$
+
+    </select>
+    
      <select id="obtenerEstatusSolicitud" resultMap="estatusSolicitudResult">
         select * from EstatusSolicitud order by idEstatusSolicitud asc
     </select>

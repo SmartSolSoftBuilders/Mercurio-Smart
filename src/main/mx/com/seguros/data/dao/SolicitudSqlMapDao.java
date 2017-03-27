@@ -140,6 +140,38 @@ public class SolicitudSqlMapDao extends SqlMapClientDaoSupport implements ISolic
          }
 
     }
+    
+    @Override
+    public void consultarSolicitudesEsp(CriteriosConsultaSolicitudesDTO criterios, ResultadoPaginadoDTO resultado) {
+        String nombreContratanteOriginal = null;
+        
+        //se agregan los "%" para que realice correctamente la búsqueda por nombre
+    	if(criterios != null && StringUtils.isNotBlank(criterios.getNombreContratante())){
+    		nombreContratanteOriginal = criterios.getNombreContratante() ;
+    		criterios.setNombreContratante("%"  + nombreContratanteOriginal +"%");
+        }
+    	if(resultado != null){
+            if(resultado.isPrimerVez()){
+                //obtener el total de registros de la consulta
+                Integer totalResultados = (Integer)getSqlMapClientTemplate().queryForObject("countConsultaEspecial", criterios);
+                resultado.setTotalResultados(totalResultados);
+                resultado.setTotalPaginas((int)Math.ceil( ((double)totalResultados)/((double)resultado.getRegistrosPorPagina()) ));
+                
+                //Obtener el total de primas que arroja la consulta
+                Double totalPrima = (Double)getSqlMapClientTemplate().queryForObject("sumConsultaEspecial", criterios);
+                resultado.setTotalPrima(totalPrima);
+                
+                
+            }
+            resultado.setResultados(getSqlMapClientTemplate().queryForList("consultaEspecial",criterios,
+                    (resultado.getPaginaActual()-1)*resultado.getRegistrosPorPagina()
+                    ,resultado.getRegistrosPorPagina() ));
+        }
+    	 if(criterios != null  ){
+    		 criterios.setNombreContratante(nombreContratanteOriginal);
+         }
+
+    }
 
     @Override
     public Solicitud obtenerDetalleSolicitudPorFolio(int folioSolicitud, String formatoSolicitud) {

@@ -29,6 +29,10 @@ servlet but should be the only jsp outide of the web-inf
       function consultaGeneralSolicitudes(){
           document.location.href = '<c:url value="/app/consultaGeneralSolicitudesController"/>';
       }
+      
+      function consultaEspecial(){
+          document.location.href = '<c:url value="/app/consultaEspecialController"/>';
+      }
      
        
         </script>
@@ -65,8 +69,16 @@ servlet but should be the only jsp outide of the web-inf
               <tr>
               	<td colspan="3" align="center">
               		<input name="button4" type="button"
-                                       onclick="consultaGeneralSolicitudes();"
+                                   onclick="consultaGeneralSolicitudes();"
                                    value="Consulta General de Solicitudes"/>
+              	</td>
+              </tr>
+              
+              <tr>
+              	<td colspan="3" align="center">
+              		<input name="button5" type="button"
+                                   onclick="consultaEspecial();"
+                                   value="Consulta General de Solicitudes_Especial"/>
               	</td>
               </tr>
 
