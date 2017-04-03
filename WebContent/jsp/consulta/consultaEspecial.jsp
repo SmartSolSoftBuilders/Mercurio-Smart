@@ -29,7 +29,7 @@
         <script language="JavaScript" type="text/javascript"
                 src="<c:url value="/js/GUIHelper.js"/>">
         </script>
-                <script language="JavaScript" type="text/javascript"
+        <script language="JavaScript" type="text/javascript"
                 src="<c:url value="/js/disableCopyPaste.js"/>">
         </script>
         

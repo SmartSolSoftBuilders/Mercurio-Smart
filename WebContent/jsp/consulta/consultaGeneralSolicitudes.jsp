@@ -478,11 +478,15 @@
 	                                
 		                        <%GrantedAuthority rol[] = SecurityContextHolder.getContext().getAuthentication().getAuthorities();%>
 		                        <%System.out.println("ROLES__"+rol[0].getAuthority().toString()); %>
-		                        <%if(rol[0].getAuthority().toString().equals("ROL_VENTAS") || rol[0].getAuthority().toString().equals("rol_ventas")) {%>
+		                        <%if(rol[0].getAuthority().toString().equals("ROL_VENTAS") || rol[0].getAuthority().toString().equals("rol_ventas")
+		                        	|| rol[0].getAuthority().toString().equals("ROL_CONSULTA_ESPECIAL") || rol[0].getAuthority().toString().equals("rol_consulta_especial")) {%>
 		                        	<script language="JavaScript" type="text/javascript">
 										document.getElementById("img").setAttribute("href","#");
 										document.getElementById("img").oncontextmenu=new Function("return false");
 									</script>
+									<script language="JavaScript" type="text/javascript"
+							                src="<c:url value="/js/disableCopyPaste.js"/>">
+							        </script>
 		                        	<!--  input type="text" name="id" value ="si"/-->
 		                        <%}else{%>
 		                        	<!--input type="text" name="id" value ="no"/-->
