@@ -22,13 +22,16 @@
 	<parameter name="numCertificadoParam" class="java.lang.Integer" isForPrompting="false">
 		<defaultValueExpression><![CDATA[new Integer (1)]]></defaultValueExpression>
 	</parameter>
+	<parameter name="numConsignatarioParam" class="java.lang.Integer" isForPrompting="false">
+		<defaultValueExpression><![CDATA[new Integer (1)]]></defaultValueExpression>
+	</parameter>
 	<parameter name="numPolizaParam" class="java.lang.Integer" isForPrompting="false"/>
 	<parameter name="SUBREPORT_DIR" class="java.lang.String" isForPrompting="false">
 		<defaultValueExpression><![CDATA["C:\\workspace_estrategas\\seguros2\\src\\java\\jasper\\"]]></defaultValueExpression>
 	</parameter>
 	<queryString>
 		<![CDATA[SELECT
-	reg.sumaBITP, reg.sumaDIPM, reg.sumaDIPMC, cer.numCertificado,
+	reg1.sumaDIPM, reg2.sumaDIPMC, reg3.sumaBITP, cer.numCertificado,
        	slc.apPaternoSolicitante, slc.apMaternoSolicitante, slc.nombre1Solicitante,
         	slc.nombre2Solicitante, slc.fechaNacimientoSolicitante,
 	pol.numPoliza, pol.numConsignatario, pol.sumaAseguradaIndividual,
@@ -74,27 +77,46 @@ FROM
 	LEFT OUTER JOIN ProductosInburnomina  productosInburnomina ON
 	productosInburnomina.numPoliza = pol.numPoliza
 	AND productosInburnomina.numConsignatario = pol.numConsignatario
-,(SELECT sumaDIPM,sumaDIPMC,sumaBITP FROM (
+,(
+	SELECT t1.sumaDIPM FROM(
+				(SELECT COALESCE((SELECT montoCobertura FROM beneficioadicionalpoliza 
+				WHERE numPoliza=$P{numPolizaParam}  
+				AND numConsignatario=$P{numConsignatarioParam} 
+				AND idBeneficioAdicional=3),0) AS sumaDIPM)
+					
+					
 
-SELECT IFNULL((SELECT montoCobertura AS sumaDIPM FROM beneficioadicionalpoliza WHERE numPoliza=$P{numPolizaParam} AND idBeneficioAdicional=3),0) AS sumaDIPMC
+			) AS t1
 
-) AS t1,
-
+) AS reg1,
 (
+	SELECT t2.sumaDIPMC FROM(
+				(SELECT COALESCE((SELECT montoCobertura FROM beneficioadicionalpoliza 
+				WHERE numPoliza=$P{numPolizaParam} 
+				AND numConsignatario=$P{numConsignatarioParam} 
+				AND idBeneficioAdicional=4),0) AS sumaDIPMC)
+					
+					
 
-SELECT IFNULL((SELECT montoCobertura AS sumaDIPM FROM beneficioadicionalpoliza WHERE numPoliza=$P{numPolizaParam} AND idBeneficioAdicional=4),0) AS sumaDIPM
-) AS t2,
+			) AS t2
 
+) AS reg2,
 (
+	SELECT t3.sumaBITP FROM(
+				(SELECT COALESCE((SELECT montoCobertura FROM beneficioadicionalpoliza 
+				WHERE numPoliza=$P{numPolizaParam} 
+				AND numConsignatario=$P{numConsignatarioParam} 
+				AND idBeneficioAdicional=6),0) AS sumaBITP)
+					
+					
 
-SELECT IFNULL((SELECT montoCobertura AS sumaDIPM FROM beneficioadicionalpoliza WHERE numPoliza=$P{numPolizaParam} AND idBeneficioAdicional=6),0) AS sumaBITP
-) AS t3
-) AS reg
+			) AS t3
 
+) AS reg3
 WHERE
-	cer.numCertificado=$P{numCertificadoParam}
+	cer.numCertificado = $P{numCertificadoParam}
 AND
-	pol.numPoliza=$P{numPolizaParam}]]>
+	pol.numPoliza = $P{numPolizaParam}]]>
 	</queryString>
 	<field name="numCertificado" class="java.lang.Long"/>
 	<field name="apPaternoSolicitante" class="java.lang.String"/>
@@ -472,7 +494,8 @@ $V{formatoMoneda}.format($F{sumaGastosFunerarios}.doubleValue()):0.0) + "\n" +
 					<font fontName="Arial" size="9"/>
 					<paragraph lineSpacing="Double"/>
 				</textElement>
-				<textFieldExpression><![CDATA["\n$\n$\n$\n" + ($V{signoPesos}!=null?$V{signoPesos}:"")]]></textFieldExpression>
+				<textFieldExpression><![CDATA[(($F{nombrePaquete}.equals("VIINT092")) || ($F{nombrePaquete}.equals("VIINT093")) ?
+												"\n$\n$\n$\n$\n$\n$\n":"\n$\n$\n$\n")]]></textFieldExpression>
 			</textField>
 		</band>
 	</detail>
