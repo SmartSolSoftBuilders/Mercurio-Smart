@@ -253,7 +253,7 @@ AND pol.numPoliza=$P{numPolizaParam}]]>
 				<textElement textAlignment="Center" verticalAlignment="Middle" rotation="None" lineSpacing="Single">
 					<font fontName="Arial" size="8" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="Helvetica" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
 				</textElement>
-				<text><![CDATA[PÃ“LIZA:]]></text>
+				<text><![CDATA[PÓLIZA:]]></text>
 			</staticText>
 			<textField pattern="" isBlankWhenNull="false">
 				<reportElement key="textField-4" mode="Transparent" x="54" y="22" width="345" height="20" forecolor="#000000" backcolor="#FFFFFF"/>
@@ -308,9 +308,9 @@ AND pol.numPoliza=$P{numPolizaParam}]]>
 				<textElement verticalAlignment="Middle" rotation="None" lineSpacing="Single">
 					<font fontName="Arial" size="16" isBold="true" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="Helvetica-Bold" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
 				</textElement>
-				<text><![CDATA[TOTAL DE PROTECCIÃ“N:]]></text>
+				<text><![CDATA[TOTAL DE PROTECCIÓN:]]></text>
 			</staticText>
-			<textField evaluationTime="Report" pattern="Â¤ #,##0" isBlankWhenNull="true">
+			<textField evaluationTime="Report" pattern="¤ #,##0" isBlankWhenNull="true">
 				<reportElement key="textField" mode="Transparent" x="332" y="74" width="145" height="21" forecolor="#000000" backcolor="#FFFFFF"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -412,7 +412,7 @@ $V{formatoMoneda}.format($F{sumaGastosFunerarios}.doubleValue()) + "\n" +
 				<textElement textAlignment="Left" verticalAlignment="Top" rotation="None" lineSpacing="Single">
 					<font fontName="Arial" size="8" isBold="false" isItalic="true" isUnderline="false" isStrikeThrough="false" pdfFontName="Helvetica-Oblique" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
 				</textElement>
-				<text><![CDATA[* Consultar la descripciÃ³n del beneficio y sus condiciones de pago en la secciÃ³n correspondiente del Capitulo III de las Condiciones Generales]]></text>
+				<text><![CDATA[* Consultar la descripción del beneficio y sus condiciones de pago en la sección correspondiente del Capitulo III de las Condiciones Generales]]></text>
 			</staticText>
 			<textField pattern="" isBlankWhenNull="false">
 				<reportElement key="textField-16" mode="Transparent" x="5" y="291" width="541" height="16" forecolor="#000000" backcolor="#FFFFFF"/>
@@ -425,7 +425,7 @@ $V{formatoMoneda}.format($F{sumaGastosFunerarios}.doubleValue()) + "\n" +
 				<textElement textAlignment="Center" verticalAlignment="Middle" rotation="None" lineSpacing="Single">
 					<font fontName="Arial" size="10" isBold="true" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="Helvetica-Bold" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
 				</textElement>
-				<textFieldExpression class="java.lang.String"><![CDATA["HORARIO DE ATENCIÃ“N: " + $F{horarioAtencion}]]></textFieldExpression>
+				<textFieldExpression class="java.lang.String"><![CDATA["HORARIO DE ATENCIÓN: " + $F{horarioAtencion}]]></textFieldExpression>
 			</textField>
 			<textField pattern="" isBlankWhenNull="false">
 				<reportElement key="textField-10" mode="Transparent" x="9" y="257" width="531" height="30" forecolor="#000000" backcolor="#FFFFFF"/>
@@ -448,10 +448,10 @@ $V{formatoMoneda}.format($F{sumaGastosFunerarios}.doubleValue()) + "\n" +
 					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
-				<textElement textAlignment="Justified" verticalAlignment="Middle" rotation="None" lineSpacing="Single">
+				<textElement textAlignment="Left" verticalAlignment="Middle" rotation="None" lineSpacing="Single">
 					<font fontName="Arial" size="9" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="Helvetica" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
 				</textElement>
-				<text><![CDATA[LE SUPLICAMOS VERIFICAR QUE TODOS LOS DATOS DE SU PÃ“LIZA ESTÃ‰N CORRECTOS Y]]></text>
+				<text><![CDATA[LE SUPLICAMOS VERIFICAR QUE TODOS LOS DATOS DE SU PÓLIZA ESTÉN CORRECTOS Y]]></text>
 			</staticText>
 			<staticText>
 				<reportElement key="staticText-17" mode="Transparent" x="19" y="214" width="511" height="12" forecolor="#000000" backcolor="#FFFFFF"/>
@@ -461,10 +461,10 @@ $V{formatoMoneda}.format($F{sumaGastosFunerarios}.doubleValue()) + "\n" +
 					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
-				<textElement textAlignment="Justified" verticalAlignment="Middle" rotation="None" lineSpacing="Single">
+				<textElement textAlignment="Left" verticalAlignment="Middle" rotation="None" lineSpacing="Single">
 					<font fontName="Arial" size="9" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="Helvetica" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
 				</textElement>
-				<text><![CDATA[PARA TRÃMITES DE RETIRO PARCIAL O TOTAL DE SU PÃ“LIZA, FAVOR DE COMUNICARSE AL ÃREA DE ATENCIÃ“N A]]></text>
+				<text><![CDATA[PARA TRÁMITES DE RETIRO PARCIAL O TOTAL DE SU PÓLIZA, FAVOR DE COMUNICARSE AL ÁREA DE ATENCIÓN A]]></text>
 			</staticText>
 			<textField pattern="$ #,##0.00" isBlankWhenNull="false">
 				<reportElement key="textField-14" mode="Transparent" x="156" y="226" width="301" height="12" forecolor="#000000" backcolor="#FFFFFF"/>
@@ -475,7 +475,7 @@ $V{formatoMoneda}.format($F{sumaGastosFunerarios}.doubleValue()) + "\n" +
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement textAlignment="Left" verticalAlignment="Top" rotation="None" lineSpacing="Single">
-					<font fontName="Arial" size="9" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="Helvetica" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
+					<font fontName="Arial" size="9" isBold="true" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="Helvetica" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
 				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA["(" + $F{lada} + ") " + $F{telefono}]]></textFieldExpression>
 			</textField>
@@ -490,7 +490,7 @@ $V{formatoMoneda}.format($F{sumaGastosFunerarios}.doubleValue()) + "\n" +
 				<textElement textAlignment="Left" verticalAlignment="Top" rotation="None" lineSpacing="Single">
 					<font fontName="Arial" size="9" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="Helvetica" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
 				</textElement>
-				<text><![CDATA[Y ACUDIR CON DOCUMENTACIÃ“N COMPLETA AL SIGUIENTE DOMICILIO DE SERVICIO:]]></text>
+				<text><![CDATA[Y ACUDIR CON DOCUMENTACIÓN COMPLETA AL SIGUIENTE DOMICILIO DE SERVICIO:]]></text>
 			</staticText>
 			<staticText>
 				<reportElement key="staticText" mode="Transparent" x="19" y="182" width="519" height="11" forecolor="#000000" backcolor="#FFFFFF"/>
@@ -503,7 +503,7 @@ $V{formatoMoneda}.format($F{sumaGastosFunerarios}.doubleValue()) + "\n" +
 				<textElement textAlignment="Left" verticalAlignment="Top" rotation="None" lineSpacing="Single">
 					<font fontName="Arial" size="9" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="Helvetica" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
 				</textElement>
-				<text><![CDATA[PRIMA E INVERSIÃ“N SE REGISTREN CORRECTA Y OPORTUNAMENTE, EVITANDO ASÃ INCONVENIENTES FUTUROS]]></text>
+				<text><![CDATA[PRIMA E INVERSIÓN SE REGISTREN CORRECTA Y OPORTUNAMENTE, EVITANDO ASÍ INCONVENIENTES FUTUROS]]></text>
 			</staticText>
 			<staticText>
 				<reportElement key="staticText" mode="Transparent" x="19" y="158" width="404" height="12" forecolor="#000000" backcolor="#FFFFFF"/>
@@ -513,10 +513,10 @@ $V{formatoMoneda}.format($F{sumaGastosFunerarios}.doubleValue()) + "\n" +
 					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
-				<textElement textAlignment="Justified" verticalAlignment="Top" rotation="None" lineSpacing="Single">
+				<textElement textAlignment="Left" verticalAlignment="Top" rotation="None" lineSpacing="Single">
 					<font fontName="Arial" size="9" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="Helvetica-Bold" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
 				</textElement>
-				<text><![CDATA[DESCUENTOS APAREZCAN EN SU TALÃ“N DE CHEQUE QUINCENAL BAJO EL CONCEPTO ]]></text>
+				<text><![CDATA[DESCUENTOS APAREZCAN EN SU TALÓN DE CHEQUE QUINCENAL BAJO EL CONCEPTO ]]></text>
 			</staticText>
 			<staticText>
 				<reportElement key="staticText" mode="Transparent" x="420" y="143" width="97" height="15" forecolor="#000000" backcolor="#FFFFFF"/>
@@ -526,7 +526,7 @@ $V{formatoMoneda}.format($F{sumaGastosFunerarios}.doubleValue()) + "\n" +
 					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
-				<textElement textAlignment="Right" verticalAlignment="Middle" rotation="None" lineSpacing="Single">
+				<textElement textAlignment="Left" verticalAlignment="Middle" rotation="None" lineSpacing="Single">
 					<font fontName="Arial" size="9" isBold="true" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="Helvetica-Bold" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
 				</textElement>
 				<text><![CDATA[REVISAR QUE LOS]]></text>
@@ -542,7 +542,7 @@ $V{formatoMoneda}.format($F{sumaGastosFunerarios}.doubleValue()) + "\n" +
 				<textElement textAlignment="Left" verticalAlignment="Top" rotation="None" lineSpacing="Single">
 					<font fontName="Arial" size="9" isBold="true" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="Helvetica-Bold" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
 				</textElement>
-				<text><![CDATA[CORRESPONDIENTE AL INICIO DE VIGENCIA DE SU PÃ“LIZA]]></text>
+				<text><![CDATA[CORRESPONDIENTE AL INICIO DE VIGENCIA DE SU PÓLIZA]]></text>
 			</staticText>
 			<textField pattern="" isBlankWhenNull="false">
 				<reportElement key="textField-25" mode="Transparent" x="418" y="158" width="30" height="12" forecolor="#000000" backcolor="#FFFFFF"/>
@@ -582,7 +582,7 @@ $V{formatoMoneda}.format($F{sumaGastosFunerarios}.doubleValue()) + "\n" +
 				<textElement textAlignment="Left" verticalAlignment="Top" rotation="None" lineSpacing="Single">
 					<font fontName="Arial" size="9" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="Helvetica" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
 				</textElement>
-				<text><![CDATA[CLIENTES EN EL TELÃ‰FONO:]]></text>
+				<text><![CDATA[CLIENTES EN EL TELÉFONO:]]></text>
 			</staticText>
 			<staticText>
 				<reportElement key="staticText-33" mode="Transparent" x="19" y="193" width="208" height="12" forecolor="#000000" backcolor="#FFFFFF"/>
@@ -592,10 +592,10 @@ $V{formatoMoneda}.format($F{sumaGastosFunerarios}.doubleValue()) + "\n" +
 					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
-				<textElement textAlignment="Justified" verticalAlignment="Top" rotation="None" lineSpacing="Single">
+				<textElement textAlignment="Left" verticalAlignment="Top" rotation="None" lineSpacing="Single">
 					<font fontName="Arial" size="9" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="Helvetica" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
 				</textElement>
-				<text><![CDATA[EN EL PAGO POR DISPOSICIÃ“N DE SU FONDO.]]></text>
+				<text><![CDATA[EN EL PAGO POR DISPOSICIÓN DE SU FONDO.]]></text>
 			</staticText>
 			<staticText>
 				<reportElement key="staticText-34" mode="Transparent" x="406" y="226" width="82" height="13" forecolor="#000000" backcolor="#FFFFFF"/>
@@ -618,7 +618,7 @@ $V{formatoMoneda}.format($F{sumaGastosFunerarios}.doubleValue()) + "\n" +
 					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
-				<textElement textAlignment="Right" verticalAlignment="Top" rotation="None" lineSpacing="Single">
+				<textElement textAlignment="Left" verticalAlignment="Top" rotation="None" lineSpacing="Single">
 					<font fontName="Arial" size="9" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="Helvetica" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
 				</textElement>
 				<text><![CDATA[ PARA GARANTIZAR QUE SUS APORTACIONES A]]></text>
@@ -660,7 +660,7 @@ $V{formatoMoneda}.format($F{sumaGastosFunerarios}.doubleValue()) + "\n" +
 				<textElement textAlignment="Center" verticalAlignment="Middle" rotation="None" lineSpacing="Single">
 					<font fontName="Arial" size="10" isBold="false" isItalic="false" isUnderline="true" isStrikeThrough="false" pdfFontName="Helvetica" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
 				</textElement>
-				<text><![CDATA[DISTRIBUCIÃ“N DEL PAGO MENSUAL]]></text>
+				<text><![CDATA[DISTRIBUCIÓN DEL PAGO MENSUAL]]></text>
 			</staticText>
 			<staticText>
 				<reportElement key="staticText-21" mode="Transparent" x="101" y="70" width="257" height="20" forecolor="#000000" backcolor="#FFFFFF"/>
@@ -673,7 +673,7 @@ $V{formatoMoneda}.format($F{sumaGastosFunerarios}.doubleValue()) + "\n" +
 				<textElement verticalAlignment="Middle" rotation="None" lineSpacing="Single">
 					<font fontName="Arial" size="13" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="Helvetica" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
 				</textElement>
-				<text><![CDATA[APORTACIÃ“N PARA INVERSIÃ“N:]]></text>
+				<text><![CDATA[APORTACIÓN PARA INVERSIÓN:]]></text>
 			</staticText>
 			<staticText>
 				<reportElement key="staticText-11" mode="Transparent" x="101" y="24" width="245" height="40" forecolor="#000000" backcolor="#FFFFFF"/>
@@ -686,7 +686,7 @@ $V{formatoMoneda}.format($F{sumaGastosFunerarios}.doubleValue()) + "\n" +
 				<textElement verticalAlignment="Middle" rotation="None" lineSpacing="Single">
 					<font fontName="Arial" size="13" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="Helvetica" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
 				</textElement>
-				<text><![CDATA[APORTACIÃ“N QUINCENAL PARA PRIMA DE SEGUROS:]]></text>
+				<text><![CDATA[APORTACIÓN QUINCENAL PARA PRIMA DE SEGUROS:]]></text>
 			</staticText>
 			<textField pattern="#,##0" isBlankWhenNull="false">
 				<reportElement key="textField-7" mode="Transparent" x="361" y="42" width="95" height="20" forecolor="#000000" backcolor="#FFFFFF"/>
