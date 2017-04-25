@@ -31,92 +31,84 @@
 	</parameter>
 	<queryString>
 		<![CDATA[SELECT
-	reg1.sumaDIPM, reg2.sumaDIPMC, reg3.sumaBITP, cer.numCertificado,
-       	slc.apPaternoSolicitante, slc.apMaternoSolicitante, slc.nombre1Solicitante,
-        	slc.nombre2Solicitante, slc.fechaNacimientoSolicitante,
-	pol.numPoliza, pol.numConsignatario, pol.sumaAseguradaIndividual,
-	paq.nombrePaquete,
-        	tar.importeTarifa, tar.importePrimaInd,
-	pol.sumaBAF sumaAseguradaBAFPoliza,
-          baf.sumaAseguradaBAF bafOriginal,
-	pol.sumaGastosFunerarios,pol.sumaSEVI,
-	pol.importeAhorroAdicionalMensual,
-        	pla.cvePlaza, pla.domicilioPlaza, pla.lada, pla.telefono, pla.horarioAtencion,
-        	agt.cveAgente, agt.cveSupervisor, agt.cveGerente,ret.cveDescuento,
-	productosInburnomina.indRcLicencia,
-	productosInburnomina.indInburmedic,
-	productosInburnomina.indSeguCancer,
-	productosInburnomina.numLicencia,
-	productosInburnomina.primaMensualLicencia,
-	productosInburnomina.primaMensualInburmedic,
-	productosInburnomina.primaMensualSeguCancer
-FROM
-	CertificadoIndividual cer JOIN
-  	PolizaIndividual pol ON
-  	cer.folioSolicitud = pol.folioSolicitud AND cer.formatoSolicitud = pol.formatoSolicitud
-  	JOIN Solicitud sol ON
-  	sol.folioSolicitud=pol.folioSolicitud AND sol.formatoSolicitud = pol.formatoSolicitud
-  	JOIN Solicitante slc ON
-  	slc.RFCsolicitante=sol.RFCsolicitante LEFT OUTER JOIN
-	PaqueteVidaDxN paq ON
-  	paq.idPaqueteVidaDxN=pol.tipoSeguro LEFT OUTER JOIN
-  	TarifaAportMensual tar ON
-  	tar.cveTarifa=sol.cveTarifa JOIN
-  	Plaza pla ON
-  	pla.idPlaza=cer.idPlaza JOIN
-  	Agente agt ON
-  	agt.cveAgente=sol.cveAgente JOIN
-  	Empresa epr ON
-  	epr.cveEmpresa = sol.cveEmpresa JOIN
-	GrupoAsegurado gpo ON
-  	gpo.cveGrupoAsegurado = epr.cveGrupoAsegurado LEFT OUTER JOIN
-  	Retenedor ret ON
-  	ret.cveRetenedor=gpo.cveRetenedor LEFT OUTER JOIN
-  	BAF baf ON
-  	baf.idPaqueteVidaDxN = paq.idPaqueteVidaDxN AND baf.importePrimaBAF = tar.cveTarifa
-	LEFT OUTER JOIN ProductosInburnomina  productosInburnomina ON
-	productosInburnomina.numPoliza = pol.numPoliza
-	AND productosInburnomina.numConsignatario = pol.numConsignatario
-,(
-	SELECT t1.sumaDIPM FROM(
-				(SELECT COALESCE((SELECT montoCobertura FROM beneficioadicionalpoliza 
-				WHERE numPoliza=$P{numPolizaParam}  
-				AND numConsignatario=$P{numConsignatarioParam} 
-				AND idBeneficioAdicional=3),0) AS sumaDIPM)
-					
-					
+		reg.sumaBITP,reg.sumaDIPM, reg.sumaDIPMC,  cer.numCertificado,
+		slc.apPaternoSolicitante, slc.apMaternoSolicitante, slc.nombre1Solicitante,
+		slc.nombre2Solicitante, slc.fechaNacimientoSolicitante,
+		pol.numPoliza, pol.numConsignatario, pol.sumaAseguradaIndividual,
+		paq.nombrePaquete,
+		tar.importeTarifa, tar.importePrimaInd,
+		pol.sumaBAF sumaAseguradaBAFPoliza,
+		baf.sumaAseguradaBAF bafOriginal,
+		pol.sumaGastosFunerarios,pol.sumaSEVI,
+		pol.importeAhorroAdicionalMensual,
+		pla.cvePlaza, pla.domicilioPlaza, pla.lada, pla.telefono, pla.horarioAtencion,
+		agt.cveAgente, agt.cveSupervisor, agt.cveGerente,ret.cveDescuento,
+		productosInburnomina.indRcLicencia,
+		productosInburnomina.indInburmedic,
+		productosInburnomina.indSeguCancer,
+		productosInburnomina.numLicencia,
+		productosInburnomina.primaMensualLicencia,
+		productosInburnomina.primaMensualInburmedic,
+		productosInburnomina.primaMensualSeguCancer
+	FROM
+		CertificadoIndividual cer JOIN
+		PolizaIndividual pol ON
+		cer.folioSolicitud = pol.folioSolicitud AND cer.formatoSolicitud = pol.formatoSolicitud
+		JOIN Solicitud sol ON
+		sol.folioSolicitud=pol.folioSolicitud AND sol.formatoSolicitud = pol.formatoSolicitud
+		JOIN Solicitante slc ON
+		slc.RFCsolicitante=sol.RFCsolicitante LEFT OUTER JOIN
+		PaqueteVidaDxN paq ON
+		paq.idPaqueteVidaDxN=pol.tipoSeguro LEFT OUTER JOIN
+		TarifaAportMensual tar ON
+		tar.cveTarifa=sol.cveTarifa JOIN
+		Plaza pla ON
+		pla.idPlaza=cer.idPlaza JOIN
+		Agente agt ON
+		agt.cveAgente=sol.cveAgente JOIN
+		Empresa epr ON
+		epr.cveEmpresa = sol.cveEmpresa JOIN
+		GrupoAsegurado gpo ON
+		gpo.cveGrupoAsegurado = epr.cveGrupoAsegurado LEFT OUTER JOIN
+		Retenedor ret ON
+		ret.cveRetenedor=gpo.cveRetenedor LEFT OUTER JOIN
+		BAF baf ON
+		baf.idPaqueteVidaDxN = paq.idPaqueteVidaDxN AND baf.importePrimaBAF = tar.cveTarifa
+		LEFT OUTER JOIN ProductosInburnomina  productosInburnomina ON
+		productosInburnomina.numPoliza = pol.numPoliza
+		AND productosInburnomina.numConsignatario = pol.numConsignatario,
+		(SELECT sumaBITP, sumaDIPM, sumaDIPMC FROM 
 
-			) AS t1
+			(
 
-) AS reg1,
-(
-	SELECT t2.sumaDIPMC FROM(
-				(SELECT COALESCE((SELECT montoCobertura FROM beneficioadicionalpoliza 
+				SELECT IFNULL((SELECT montoCobertura AS sumaDIPM FROM beneficioadicionalpoliza 
+				WHERE numPoliza=$P{numPolizaParam} 
+				AND numConsignatario=$P{numConsignatarioParam}
+				AND idBeneficioAdicional=3),0) AS sumaDIPM
+							
+				) AS t1, 
+				(
+
+				SELECT IFNULL((SELECT montoCobertura AS sumaDIPMC FROM beneficioadicionalpoliza 
 				WHERE numPoliza=$P{numPolizaParam} 
 				AND numConsignatario=$P{numConsignatarioParam} 
-				AND idBeneficioAdicional=4),0) AS sumaDIPMC)
-					
-					
+				AND idBeneficioAdicional=4),0) AS sumaDIPMC
+							
+				) AS t2, 
+				(
 
-			) AS t2
-
-) AS reg2,
-(
-	SELECT t3.sumaBITP FROM(
-				(SELECT COALESCE((SELECT montoCobertura FROM beneficioadicionalpoliza 
+				SELECT IFNULL((SELECT montoCobertura AS sumaBITP FROM beneficioadicionalpoliza 
 				WHERE numPoliza=$P{numPolizaParam} 
-				AND numConsignatario=$P{numConsignatarioParam} 
-				AND idBeneficioAdicional=6),0) AS sumaBITP)
-					
-					
+				AND numConsignatario=$P{numConsignatarioParam}	 
+				AND idBeneficioAdicional=6),0) AS sumaBITP
+							
+				) AS t3
+			) AS reg
 
-			) AS t3
-
-) AS reg3
-WHERE
-	cer.numCertificado = $P{numCertificadoParam}
-AND
-	pol.numPoliza = $P{numPolizaParam}]]>
+	WHERE
+		cer.numCertificado = $P{numCertificadoParam}
+	AND
+		pol.numPoliza = $P{numPolizaParam}]]>
 	</queryString>
 	<field name="numCertificado" class="java.lang.Long"/>
 	<field name="apPaternoSolicitante" class="java.lang.String"/>
@@ -155,13 +147,17 @@ AND
 	<field name="sumaDIPM" class="java.math.BigDecimal"/>
 	<field name="sumaDIPMC" class="java.math.BigDecimal"/>
 	<variable name="vidaYbaf" class="java.math.BigDecimal">
-		<variableExpression><![CDATA[$F{sumaAseguradaIndividual}.add(
-    ($F{sumaAseguradaBAFPoliza}!=null && $F{sumaAseguradaBAFPoliza}.intValue()>0)?$F{sumaAseguradaBAFPoliza}:
-    ($F{bafOriginal}!=null?$F{bafOriginal}:new BigDecimal(0))
-)]]></variableExpression>
-		<initialValueExpression><![CDATA[$F{sumaAseguradaIndividual}.add(
-    ($F{sumaAseguradaBAFPoliza}!=null && $F{sumaAseguradaBAFPoliza}.intValue()>0)?$F{sumaAseguradaBAFPoliza}:
-    ($F{bafOriginal}!=null?$F{bafOriginal}:new BigDecimal(0)))]]></initialValueExpression>
+	<variableExpression>
+		<![CDATA[$F{sumaAseguradaIndividual}.add(
+		($F{sumaAseguradaBAFPoliza}!=null && $F{sumaAseguradaBAFPoliza}.intValue()>0)?$F{sumaAseguradaBAFPoliza}:
+		($F{bafOriginal}!=null?$F{bafOriginal}:new BigDecimal(0))
+		)]]>
+	</variableExpression>
+	<initialValueExpression>
+		<![CDATA[$F{sumaAseguradaIndividual}.add(
+		($F{sumaAseguradaBAFPoliza}!=null && $F{sumaAseguradaBAFPoliza}.intValue()>0)?$F{sumaAseguradaBAFPoliza}:
+		($F{bafOriginal}!=null?$F{bafOriginal}:new BigDecimal(0)))]]>
+	</initialValueExpression>
 	</variable>
 	<variable name="sumaBeneficios" class="java.math.BigDecimal">
 		<variableExpression><![CDATA[new BigDecimal(0)]]></variableExpression>
@@ -192,35 +188,41 @@ AND
 		<initialValueExpression><![CDATA[]]></initialValueExpression>
 	</variable>
 	<variable name="descInburnomina" class="java.lang.String">
-		<variableExpression><![CDATA[( $F{indRcLicencia}!=null&&$F{indRcLicencia}.longValue()>0 ? "RC Licencia\n":"") +
-( $F{indInburmedic}!=null&&$F{indInburmedic}.longValue()>0 ? "Inburmedic\n":"") +
-( $F{indSeguCancer}!=null&&$F{indSeguCancer}.longValue()>0 ? "SeguCancer\n":"")]]></variableExpression>
-		<initialValueExpression><![CDATA[]]></initialValueExpression>
+	<variableExpression>
+		<![CDATA[( $F{indRcLicencia}!=null&&$F{indRcLicencia}.longValue()>0 ? "RC Licencia\n":"") +
+		($F{indInburmedic}!=null&&$F{indInburmedic}.longValue()>0 ? "Inburmedic\n":"") +
+		( $F{indSeguCancer}!=null&&$F{indSeguCancer}.longValue()>0 ? "SeguCancer\n":"")]]>
+	</variableExpression>
+	<initialValueExpression><![CDATA[]]></initialValueExpression>
 	</variable>
 	<variable name="montosInburnomina" class="java.lang.String">
-		<variableExpression><![CDATA[( $F{indRcLicencia}!=null&&$F{indRcLicencia}.longValue()>0 ?
-     "\n":"") +
-( $F{indInburmedic}!=null&&$F{indInburmedic}.longValue()>0 ?
-     "\n":"") +
-( $F{indSeguCancer}!=null&&$F{indSeguCancer}.longValue()>0 ?
-     "\n":"")]]></variableExpression>
+	<variableExpression>
+		<![CDATA[( $F{indRcLicencia}!=null&&$F{indRcLicencia}.longValue()>0 ?
+		 "\n":"") +
+		( $F{indInburmedic}!=null&&$F{indInburmedic}.longValue()>0 ?
+			 "\n":"") +
+		( $F{indSeguCancer}!=null&&$F{indSeguCancer}.longValue()>0 ?
+		 "\n":"")]]>
+	 </variableExpression>
 		<initialValueExpression><![CDATA[]]></initialValueExpression>
 	</variable>
 	<variable name="importeQuincenalInburnomina" class="java.lang.Double">
-		<variableExpression><![CDATA[new Double(
-( $F{primaMensualLicencia}!=null ?
-   $F{primaMensualLicencia}.doubleValue()/2.0:0.0) +
-(
-$F{primaMensualInburmedic}!=null ?
-   $F{primaMensualInburmedic}.doubleValue()/2.0:0.0
-)
-+
-(
-$F{primaMensualSeguCancer}!=null ?
-   $F{primaMensualSeguCancer}.doubleValue()/2.0:0.0
-)
+	<variableExpression>
+		<![CDATA[new Double(
+		( $F{primaMensualLicencia}!=null ?
+		   $F{primaMensualLicencia}.doubleValue()/2.0:0.0) +
+		(
+		$F{primaMensualInburmedic}!=null ?
+		   $F{primaMensualInburmedic}.doubleValue()/2.0:0.0
+		)
+		+
+		(
+		$F{primaMensualSeguCancer}!=null ?
+		   $F{primaMensualSeguCancer}.doubleValue()/2.0:0.0
+		)
 
- )]]></variableExpression>
+		 )]]>
+	</variableExpression>
 		<initialValueExpression><![CDATA[new Double( ( $F{primaMensualLicencia}!=null ?    $F{primaMensualLicencia}.doubleValue()/2.0:0.0) + ( $F{primaMensualInburmedic}!=null ?    $F{primaMensualInburmedic}.doubleValue()/2.0:0.0 ) + ( $F{primaMensualSeguCancer}!=null ?    $F{primaMensualSeguCancer}.doubleValue()/2.0:0.0 )   )]]></initialValueExpression>
 	</variable>
 	<background>
@@ -421,7 +423,7 @@ $F{primaMensualSeguCancer}!=null ?
 				</textElement>
 				<text><![CDATA[TOTAL DE PROTECCIÓN:]]></text>
 			</staticText>
-			<textField evaluationTime="Report" pattern="¤ #,##0" isBlankWhenNull="true">
+			<textField evaluationTime="Report" pattern="#,##0" isBlankWhenNull="true">
 				<reportElement key="textField" mode="Transparent" x="332" y="63" width="145" height="21" forecolor="#000000" backcolor="#FFFFFF"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -433,12 +435,14 @@ $F{primaMensualSeguCancer}!=null ?
 					<font fontName="Arial" size="15" isBold="true" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="Helvetica-Bold" pdfEncoding="Cp1250" isPdfEmbedded="false"/>
 					<paragraph lineSpacing="Single"/>
 				</textElement>
-				<textFieldExpression><![CDATA[new BigDecimal(
-($V{vidaYbaf}!=null? $V{vidaYbaf}.doubleValue():0.0)+
-($F{sumaGastosFunerarios}!=null?$F{sumaGastosFunerarios}.doubleValue():0.0)+
-($F{sumaSEVI}!=null?$F{sumaSEVI}.doubleValue():0.0) +
-($V{sumaBeneficios}!=null?$V{sumaBeneficios}.doubleValue():0.0)
-)]]></textFieldExpression>
+				<textFieldExpression>
+					<![CDATA[new BigDecimal(
+					($V{vidaYbaf}!=null? $V{vidaYbaf}.doubleValue():0.0)+
+					($F{sumaGastosFunerarios} != null ? $F{sumaGastosFunerarios}.doubleValue() : 0.0)+
+					($F{sumaSEVI} != null ? $F{sumaSEVI}.doubleValue() : 0.0) +
+					($V{sumaBeneficios} != null ? $V{sumaBeneficios}.doubleValue() : 0.0)
+					)]]>
+				</textFieldExpression>
 			</textField>
 			<textField evaluationTime="Report">
 				<reportElement x="45" y="95" width="353" height="240"/>
@@ -446,17 +450,18 @@ $F{primaMensualSeguCancer}!=null ?
 					<font fontName="Arial" size="9" isItalic="true" pdfFontName="Helvetica-Oblique"/>
 					<paragraph lineSpacing="Double"/>
 				</textElement>
-				<textFieldExpression><![CDATA["----- COBERTURAS -----\n"+
-"VIDA Y BAF" + "\n" +
-"SEVI" + "\n"+
-"GASTOS FUNERARIOS FAMILIAR*" + "\n"+
-(
-(($F{nombrePaquete}.equals("VIINT092")) || ($F{nombrePaquete}.equals("VIINT093"))) ?
-"SUMA BITP (Beneficio Incapacidad total y Permanente)" + "\n"+
-"SUMA DIPM (Pago de suma asegurada por muerte accidental y Perdida de miembros)" + "\n"+
-"SUMA DIPMC (Pago de suma asegurada por muerte accidental y Perdida de miembros colectiva)" + "\n":""
-
-)]]></textFieldExpression>
+				<textFieldExpression>
+					<![CDATA["----- COBERTURAS -----\n"+
+					"VIDA Y BAF" + "\n" +
+					"SEVI" + "\n"+
+					"GASTOS FUNERARIOS FAMILIAR*" + "\n"+
+					(
+					(($F{nombrePaquete}.equals("VIINT092")) || ($F{nombrePaquete}.equals("VIINT093"))) ?
+					"SUMA BITP (Beneficio Incapacidad total y Permanente)" + "\n"+
+					"SUMA DIPM (Pago de suma asegurada por muerte accidental y Perdida de miembros)" + "\n"+
+					"SUMA DIPMC (Pago de suma asegurada por muerte accidental y Perdida de miembros colectiva)" + "\n":""
+					)]]>
+				</textFieldExpression>
 			</textField>
 			<textField evaluationTime="Report">
 				<reportElement x="388" y="85" width="100" height="240"/>
@@ -464,29 +469,31 @@ $F{primaMensualSeguCancer}!=null ?
 					<font fontName="Arial" size="9" isItalic="true" pdfFontName="Helvetica-Oblique"/>
 					<paragraph lineSpacing="Double"/>
 				</textElement>
-				<textFieldExpression><![CDATA["----- MONTO -----\n"+
-(($V{vidaYbaf}!= null) ?
-$V{formatoMoneda}.format($V{vidaYbaf}.doubleValue()):0.0) + "\n" +
+				<textFieldExpression>
+					<![CDATA["----- MONTO -----\n"+
+						(($V{vidaYbaf}!= null) ?
+						$V{formatoMoneda}.format($V{vidaYbaf}.doubleValue()):0.0) + "\n" +
 
-(($F{sumaSEVI}!= null) ?
-$V{formatoMoneda}.format($F{sumaSEVI}.doubleValue()):0.0) + "\n" +
+						(($F{sumaSEVI}!= null) ?
+						$V{formatoMoneda}.format($F{sumaSEVI}.doubleValue()):0.0) + "\n" +
 
-(($F{sumaGastosFunerarios}!= null) ?
-$V{formatoMoneda}.format($F{sumaGastosFunerarios}.doubleValue()):0.0) + "\n" +
+						(($F{sumaGastosFunerarios}!= null) ?
+						$V{formatoMoneda}.format($F{sumaGastosFunerarios}.doubleValue()):0.0) + "\n" +
 
-(
-(($F{nombrePaquete}.equals("VIINT092")) || ($F{nombrePaquete}.equals("VIINT093"))) ?
+						(
+						(($F{nombrePaquete}.equals("VIINT092")) || ($F{nombrePaquete}.equals("VIINT093"))) ?
 
-    (($F{sumaBITP}!= null) ?
-    $V{formatoMoneda}.format($F{sumaBITP}.doubleValue()):0.0) + "\n" +
+						(($F{sumaBITP}!= null) ?
+						$V{formatoMoneda}.format($F{sumaBITP}.doubleValue()):0.0) + "\n" +
 
-    (($F{sumaDIPM}!= null) ?
-    $V{formatoMoneda}.format($F{sumaDIPM}.doubleValue()):0.0) + "\n" +
+						(($F{sumaDIPM}!= null) ?
+						$V{formatoMoneda}.format($F{sumaDIPM}.doubleValue()):0.0) + "\n" +
 
-    (($F{sumaDIPMC}!= null) ?
-    $V{formatoMoneda}.format($F{sumaDIPMC}.doubleValue()):0.0) + "\n" :""
+						(($F{sumaDIPMC}!= null) ?
+						$V{formatoMoneda}.format($F{sumaDIPMC}.doubleValue()):0.0) + "\n" :""
 
-)]]></textFieldExpression>
+					)]]>
+				</textFieldExpression>
 			</textField>
 			<textField evaluationTime="Report">
 				<reportElement x="390" y="85" width="20" height="240"/>
@@ -494,8 +501,10 @@ $V{formatoMoneda}.format($F{sumaGastosFunerarios}.doubleValue()):0.0) + "\n" +
 					<font fontName="Arial" size="9"/>
 					<paragraph lineSpacing="Double"/>
 				</textElement>
-				<textFieldExpression><![CDATA[(($F{nombrePaquete}.equals("VIINT092")) || ($F{nombrePaquete}.equals("VIINT093")) ?
-												"\n$\n$\n$\n$\n$\n$\n":"\n$\n$\n$\n")]]></textFieldExpression>
+				<textFieldExpression>
+					<![CDATA[(($F{nombrePaquete}.equals("VIINT092")) || ($F{nombrePaquete}.equals("VIINT093")) ?
+					"\n$\n$\n$\n$\n$\n$\n":"\n$\n$\n$\n")]]>
+				</textFieldExpression>
 			</textField>
 		</band>
 	</detail>
@@ -723,21 +732,23 @@ $V{formatoMoneda}.format($F{sumaGastosFunerarios}.doubleValue()):0.0) + "\n" +
 					<font fontName="Arial" size="11" isBold="true" isItalic="true" isUnderline="false" isStrikeThrough="false" pdfFontName="Helvetica-Oblique" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
 					<paragraph lineSpacing="Single"/>
 				</textElement>
-				<textFieldExpression><![CDATA[new BigDecimal(
-(
-$F{importeTarifa}.doubleValue()+
-(
-    $V{sumaAportBeneficios}!=null?
-    $V{sumaAportBeneficios}.doubleValue():0.0
- )+
-(
-    $V{importeQuincenalInburnomina}!=null?
-    $V{importeQuincenalInburnomina}.doubleValue():0.0
- )
-)
-*2.0+
-($F{importeAhorroAdicionalMensual}!=null?$F{importeAhorroAdicionalMensual}.doubleValue():0.0)
-)]]></textFieldExpression>
+				<textFieldExpression>
+					<![CDATA[new BigDecimal(
+					(
+					$F{importeTarifa}.doubleValue()+
+					(
+						$V{sumaAportBeneficios}!=null?
+						$V{sumaAportBeneficios}.doubleValue():0.0
+					 )+
+					(
+						$V{importeQuincenalInburnomina}!=null?
+						$V{importeQuincenalInburnomina}.doubleValue():0.0
+					 )
+					)
+					*2.0+
+					($F{importeAhorroAdicionalMensual}!=null?$F{importeAhorroAdicionalMensual}.doubleValue():0.0)
+					)]]>
+				</textFieldExpression>
 			</textField>
 			<staticText>
 				<reportElement key="staticText-10" mode="Transparent" x="91" y="2" width="245" height="14" forecolor="#000000" backcolor="#FFFFFF"/>
@@ -793,13 +804,15 @@ $F{importeTarifa}.doubleValue()+
 					<font fontName="Arial" size="11" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="Helvetica" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
 					<paragraph lineSpacing="Single"/>
 				</textElement>
-				<textFieldExpression><![CDATA[new BigDecimal(
-$F{importeTarifa}.doubleValue()+
-(
-    $V{sumaAportBeneficios}!=null?
-    $V{sumaAportBeneficios}.doubleValue():0.0
- )
-)]]></textFieldExpression>
+				<textFieldExpression>
+					<![CDATA[new BigDecimal(
+					$F{importeTarifa}.doubleValue()+
+					(
+						$V{sumaAportBeneficios}!=null?
+						$V{sumaAportBeneficios}.doubleValue():0.0
+					 )
+					)]]>
+				</textFieldExpression>
 			</textField>
 			<textField pattern="#,##0" isBlankWhenNull="false">
 				<reportElement key="textField-8" mode="Transparent" x="357" y="38" width="98" height="20" forecolor="#000000" backcolor="#FFFFFF"/>
@@ -813,13 +826,15 @@ $F{importeTarifa}.doubleValue()+
 					<font fontName="Arial" size="11" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="Helvetica" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
 					<paragraph lineSpacing="Single"/>
 				</textElement>
-				<textFieldExpression><![CDATA[new BigDecimal(
-$F{importeTarifa}.doubleValue()+
-(
-    $V{sumaAportBeneficios}!=null?
-    $V{sumaAportBeneficios}.doubleValue():0.0
- )
-)]]></textFieldExpression>
+				<textFieldExpression>
+					<![CDATA[new BigDecimal(
+					$F{importeTarifa}.doubleValue()+
+					(
+						$V{sumaAportBeneficios}!=null?
+						$V{sumaAportBeneficios}.doubleValue():0.0
+					 )
+					)]]>
+				</textFieldExpression>
 			</textField>
 			<textField evaluationTime="Report" pattern="" isBlankWhenNull="false">
 				<reportElement key="textField-6" mode="Transparent" x="385" y="136" width="16" height="20" forecolor="#000000" backcolor="#FFFFFF"/>
@@ -1081,18 +1096,20 @@ $F{importeTarifa}.doubleValue()+
 					<font fontName="Arial" size="11" isBold="true" isItalic="true" isUnderline="false" isStrikeThrough="false" pdfFontName="Helvetica-Oblique" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
 					<paragraph lineSpacing="Single"/>
 				</textElement>
-				<textFieldExpression><![CDATA[new BigDecimal(
-($F{importeTarifa}.doubleValue()+
-(
-    $V{sumaAportBeneficios}!=null?
-    $V{sumaAportBeneficios}.doubleValue():0.0
- )+
-(
-    $V{importeQuincenalInburnomina}!=null?
-    $V{importeQuincenalInburnomina}.doubleValue():0.0
- ))+
-(($F{importeAhorroAdicionalMensual}!=null?$F{importeAhorroAdicionalMensual}.doubleValue():0.0)/2.0)
-)]]></textFieldExpression>
+				<textFieldExpression>
+					<![CDATA[new BigDecimal(
+					($F{importeTarifa}.doubleValue()+
+					(
+						$V{sumaAportBeneficios}!=null?
+						$V{sumaAportBeneficios}.doubleValue():0.0
+					 )+
+					(
+						$V{importeQuincenalInburnomina}!=null?
+						$V{importeQuincenalInburnomina}.doubleValue():0.0
+					 ))+
+					(($F{importeAhorroAdicionalMensual}!=null?$F{importeAhorroAdicionalMensual}.doubleValue():0.0)/2.0)
+					)]]>
+				</textFieldExpression>
 			</textField>
 			<textField evaluationTime="Report" pattern="" isBlankWhenNull="false">
 				<reportElement key="textField-6" mode="Transparent" x="385" y="156" width="16" height="20" forecolor="#000000" backcolor="#FFFFFF"/>

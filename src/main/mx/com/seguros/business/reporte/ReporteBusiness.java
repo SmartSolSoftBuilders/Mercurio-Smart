@@ -572,7 +572,7 @@ public class ReporteBusiness implements ApplicationContextAware{
     } // generarReporteCertificadoIndividual() //*/
 
     public String generarReporteCartaResumenPoliza(int numCertificado,
-            int numPoliza, String cvePlaza) {
+            int numPoliza, int numConsignatario, String cvePlaza) {
         // certificadoIndividual.setFechaExpedicion(new Date());
         
         //Mantenimiento Smart Solutions febrero 2012
@@ -584,6 +584,7 @@ public class ReporteBusiness implements ApplicationContextAware{
                 + cvePlaza + ".pdf";
         parametros.put("numCertificadoParam", numCertificado);
         parametros.put("numPolizaParam", numPoliza);
+        parametros.put("numConsignatarioParam", numConsignatario);
         //para el caso de carta resumen, se prepara como parámetro una lista de datos clave - valor para
         //imprimir las coberturas y su monto tanto coberturas adicionales como las predeterminadas,
         //esto con la intención de ponerlas todas en un subreporte y no existan espacios en blanco entre
@@ -862,7 +863,7 @@ public class ReporteBusiness implements ApplicationContextAware{
         //Se obtiene a partir de la ruta relativa 23/11/2011 Mantenimiento QTX
         System.out.println("+++++++++++ReporteBusiness--Obtencion Archivo+++++++++++++++");
         jasperFile = obtenerUbicacionReporteEntrada(reporteResourcePath);
-        System.out.println("jasper file "+jasperFile); 
+        System.out.println("jasper file "+jasperFile);
        try {
             if (jasperFile == null) {
             	 System.out.println("+++++++++++ReporteBusiness--Previo a Compilacion+++++++++++++++");
@@ -881,7 +882,7 @@ public class ReporteBusiness implements ApplicationContextAware{
             System.out.println(reporteResourcePathSrc);
             System.out.println("ruta:"+reporteResourcePath + " " + reporteResourcePathSrc);
                 //JasperCompileManager.compileReportToFile("C:\\desarrollo-mercurio\\.metadata\\.plugins\\org.eclipse.wst.server.core\\tmp0\\wtpwebapps\\seguros4\\WEB-INF\\classes\\jasper\\" +reporteResourcePathSrc);
-                JasperCompileManager.compileReportToFile("C:\\MarsWorkspace\\Seguros\\.metadata\\.plugins\\org.eclipse.wst.server.core\\tmp0\\wtpwebapps\\seguros4\\WEB-INF\\classes\\jasper\\" +reporteResourcePathSrc);
+                JasperCompileManager.compileReportToFile("C:\\MarsWorkspace\\Seguros2\\.metadata\\.plugins\\org.eclipse.wst.server.core\\tmp0\\wtpwebapps\\seguros4\\WEB-INF\\classes\\jasper\\" +reporteResourcePathSrc);
                 //JasperCompileManager.compileReportToFile("C:\\desarrollo-mercurio2\\.metadata\\.plugins\\org.eclipse.wst.server.core\\tmp0\\wtpwebapps\\seguros4\\WEB-INF\\classes\\jasper\\" +reporteResourcePathSrc);
 
                 jasperFile = obtenerUbicacionReporteEntrada(reporteResourcePath);
@@ -893,7 +894,7 @@ public class ReporteBusiness implements ApplicationContextAware{
             //jasperFile=new File("C:\\Mercurio-Smart2\\WebContent\\WEB-INF\\classes\\jasper\\reporteAcuseReciboPoliza.jasper");
 //<<<<<<< HEAD
             //jasperFile=new File("C:\\desarrollo-mercurio2\\.metadata\\.plugins\\org.eclipse.wst.server.core\\tmp0\\wtpwebapps\\seguros4\\WEB-INF\\classes\\jasper\\reporteAcuseReciboPoliza.jasper"); //reporteAcuseReciboPoliza.jasper //reporteCartaResumenPoliza.jasper
-            jasperFile=new File("C:\\MarsWorkspace\\Seguros\\.metadata\\.plugins\\org.eclipse.wst.server.core\\tmp0\\wtpwebapps\\seguros4\\WEB-INF\\classes\\jasper\\"+ reporteResourcePath.substring(0,lastDot) + ".jasper");
+            jasperFile=new File("C:\\MarsWorkspace\\Seguros2\\.metadata\\.plugins\\org.eclipse.wst.server.core\\tmp0\\wtpwebapps\\seguros4\\WEB-INF\\classes\\jasper\\"+ reporteResourcePath.substring(0,lastDot) + ".jasper");
 //=======
             //jasperFile=new File("C:\\MarsWorkspace\\Seguros\\.metadata\\.plugins\\org.eclipse.wst.server.core\\tmp0\\wtpwebapps\\seguros4\\WEB-INF\\classes\\jasper\\reporteCartaResumenPoliza.jasper"); //reporteAcuseReciboPoliza.jasper //reporteCartaResumenPoliza.jasper
 //>>>>>>> branch 'desarrollo' of https://github.com/SmartSolSoftBuilders/Mercurio-Smart.git
@@ -1158,8 +1159,8 @@ public class ReporteBusiness implements ApplicationContextAware{
 			rutaFinal = generarReporteCartaResumenPoliza(
 					NumberUtils.toInt(params.get("numCertificado")!=null?params.get("numCertificado").toString():null,0),
 					NumberUtils.toInt(params.get("numPoliza")!=null?params.get("numPoliza").toString():null,0), 
+					NumberUtils.toInt(params.get("numConsignatario")!=null?params.get("numConsignatario").toString():null,0),
 					params.get("cvePlaza")!=null?params.get("cvePlaza").toString():StringUtils.EMPTY);
-			
 			
 		}
 		if(ACUSE_RECIBO.equals(claveReporte)){

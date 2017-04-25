@@ -38,6 +38,7 @@ public class GenerarReportesPolizaController extends AbstractController {
 		Map datos = new HashMap();
 		Integer numCertificado = FormatUtil.parseIntNull(request.getParameter("numCertificado"));
 		Integer numPoliza = FormatUtil.parseIntNull(request.getParameter("numPoliza"));
+		Integer numConsignatario = FormatUtil.parseIntNull(request.getParameter("numConsignatario"));
 		String cvePlaza = request.getParameter("cvePlaza");
 		String reporte = request.getParameter("tipoReporte");
 		String folioSolicitud = request.getParameter("folioSolicitud");
@@ -46,7 +47,7 @@ public class GenerarReportesPolizaController extends AbstractController {
 		String rutaReporte = null;
 		if(numPoliza != null){
 			if(CARTA_RESUMEN.equals(reporte)){
-				rutaReporte = reporteBusiness.generarReporteCartaResumenPoliza(numCertificado, numPoliza, cvePlaza);
+				rutaReporte = reporteBusiness.generarReporteCartaResumenPoliza(numCertificado, numPoliza, numConsignatario, cvePlaza);
 				mv.addObject("nombreReporte", "Carta Resumen de Póliza");
 			}
 			if(ACUSE_RECIBO.equals(reporte)){

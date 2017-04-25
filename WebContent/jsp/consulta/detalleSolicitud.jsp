@@ -115,13 +115,14 @@
 
            	numPoliza = document.getElementById("numPolizaFrm").value;
            	numCertificado = document.getElementById("numCertificadoFrm").value;
+           	numConsignatario = document.getElementById("numConsignatarioFrm").value;
            	cvePlaza = document.getElementById("cvePlazaFrm").value;
            	folioSolicitud = document.getElementById("folioSolicitudFrm").value;
            	formatoSolicitud = document.getElementById("formatoSolicitudFrm").value;
            	
                urlBase     = '<c:url value="/app/generarReportesPolizaController"/>';
                propiedades = 'width='+700+',height='+800+',toolbar=no,directories=no,menubar=no,resizable=yes,status=yes,dependent=yes';
-               params = 'numPoliza='+numPoliza+'&numCertificado='+numCertificado+'&cvePlaza='+cvePlaza+'&tipoReporte='+tipoReporte+
+               params = 'numPoliza='+numPoliza+'&numCertificado='+numCertificado+'&numConsignatario='+numConsignatario+'&cvePlaza='+cvePlaza+'&tipoReporte='+tipoReporte+
                '&folioSolicitud='+folioSolicitud+"&formatoSolicitud="+formatoSolicitud;
                url    = urlBase + '?' + params;
               
@@ -158,20 +159,20 @@
     <body>
     
     <%GrantedAuthority rol[] = SecurityContextHolder.getContext().getAuthentication().getAuthorities();%>
-		                        <%System.out.println("ROLES__"+rol[0].getAuthority().toString()); %>
-		                        <%if(rol[0].getAuthority().toString().equals("ROL_VENTAS") || rol[0].getAuthority().toString().equals("rol_ventas")
-		                        	|| rol[0].getAuthority().toString().equals("ROL_CONSULTA_ESPECIAL") || rol[0].getAuthority().toString().equals("rol_consulta_especial")) {%>
-		                        	<script language="JavaScript" type="text/javascript">
-										document.getElementById("img").setAttribute("href","#");
-										document.getElementById("img").oncontextmenu=new Function("return false");
-									</script>
-									<script language="JavaScript" type="text/javascript"
-							                src="<c:url value="/js/disableCopyPaste.js"/>">
-							        </script>
-		                        	<!--  input type="text" name="id" value ="si"/-->
-		                        <%}else{%>
-		                        	<!--input type="text" name="id" value ="no"/-->
-		                        <%} %>
+	<%System.out.println("ROLES__"+rol[0].getAuthority().toString()); %>
+	<%if(rol[0].getAuthority().toString().equals("ROL_VENTAS") || rol[0].getAuthority().toString().equals("rol_ventas")
+		 || rol[0].getAuthority().toString().equals("ROL_CONSULTA_ESPECIAL") || rol[0].getAuthority().toString().equals("rol_consulta_especial")) {%>
+	<script language="JavaScript" type="text/javascript">
+			document.getElementById("img").setAttribute("href","#");
+			document.getElementById("img").oncontextmenu=new Function("return false");
+	</script>
+	<script language="JavaScript" type="text/javascript"
+			src="<c:url value="/js/disableCopyPaste.js"/>">
+	</script>
+	       	<!--  input type="text" name="id" value ="si"/-->
+	<%}else{%>
+	       	<!--input type="text" name="id" value ="no"/-->
+	<%}%>
     
     <spring:nestedPath path="poliza">
     
@@ -829,6 +830,7 @@
 	                
 	                </div>
             	</c:forEach>
+            	&nbsp;
             	<div id="titleg664x16" >Productos Adicionales de Inburnomina Integral</div>
                 <table cellpadding="0" cellspacing="2" width="664">
                 	<tr>
