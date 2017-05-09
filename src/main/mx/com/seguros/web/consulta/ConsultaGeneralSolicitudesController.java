@@ -8,6 +8,7 @@ package mx.com.seguros.web.consulta;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStream;
+import java.lang.reflect.Field;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
@@ -35,7 +36,6 @@ import org.springframework.validation.Errors;
 import org.springframework.web.bind.ServletRequestDataBinder;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.SimpleFormController;
-
 /**
  * Controller que atiende las solicitudes de consulta de solicitudes
  * @author Emigdio Hernández
@@ -50,6 +50,7 @@ public class ConsultaGeneralSolicitudesController extends SimpleFormController{
     @Override
     protected Map referenceData(HttpServletRequest request,Object command, Errors errors) throws java.lang.Exception{
         Map data = new HashMap();
+        //System.out.println("ref1=referenceData");
         //verificación de los roles del usuario
         
         data.put("rolVentas",new Boolean(seguridadUtil.isRolVentas()));
@@ -66,6 +67,16 @@ public class ConsultaGeneralSolicitudesController extends SimpleFormController{
 
     	CriteriosConsultaSolicitudesDTO  command = new CriteriosConsultaSolicitudesDTO();
         
+    	//System.out.println("ref2=formBackingObject");
+    	
+    	for (Field field : seguridadUtil.getClass().getDeclaredFields()) {
+            field.setAccessible(true);
+            String name = field.getName();
+            Object value = field.get(seguridadUtil);
+            System.out.printf("Field name: %s, Field value: %s%n", name, value);
+        }
+      System.out.println(seguridadUtil);
+      //System.out.println("cveAgente "+ seguridadUtil.getAgente().getCveAgente());
     	
         if(seguridadUtil.isRolVentas()){
         	command.setCveAgente(seguridadUtil.getAgente().getCveAgente());
@@ -137,11 +148,11 @@ public class ConsultaGeneralSolicitudesController extends SimpleFormController{
         
         
         //Verificar si se desea exportar en Excel La consulta
-        System.out.println(request.getParameter("formato"));
-        System.out.println(resultado.getResultados());
-
+        System.out.println("formato "+request.getParameter("formato"));
+        System.out.println("resultados "+resultado.getResultados());
+        System.out.println("idPlaza: "+seguridadUtil.getEmpleado().getIdPlaza());
         consultaGeneralSolicitudesBusiness.consultarSolicitudes(criterios, resultado);
-
+        System.out.println("idPlaza: "+seguridadUtil.getEmpleado().getIdPlaza());
         if(request.getParameter("formato") != null && "xlsx".equals(request.getParameter("formato"))){
         	resultado.setPaginaActual(1);
         	resultado.setRegistrosPorPagina(65525);
