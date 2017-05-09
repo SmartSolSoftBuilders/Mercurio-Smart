@@ -873,6 +873,7 @@ public class ReporteBusiness implements ApplicationContextAware{
             	// compila al archivo .jrxml:
                 int lastDot = reporteResourcePath.lastIndexOf(".");
                 String reporteResourcePathSrc;
+                File jrxmlFile;
                 reporteResourcePathSrc = reporteResourcePath.substring(0,
                         lastDot)
                         + ".jrxml";
@@ -881,10 +882,14 @@ public class ReporteBusiness implements ApplicationContextAware{
             System.out.println("+++++++++++ReporteBusiness--Previo a Compilacion+++++++++++++++");
             System.out.println(reporteResourcePathSrc);
             System.out.println("ruta:"+reporteResourcePath + " " + reporteResourcePathSrc);
+            
+            jrxmlFile = obtenerUbicacionReporteEntrada(reporteResourcePathSrc);
+            System.out.println("jasper file "+jrxmlFile);
+            
                 //JasperCompileManager.compileReportToFile("C:\\desarrollo-mercurio\\.metadata\\.plugins\\org.eclipse.wst.server.core\\tmp0\\wtpwebapps\\seguros4\\WEB-INF\\classes\\jasper\\" +reporteResourcePathSrc);
-                JasperCompileManager.compileReportToFile("C:\\MarsWorkspace\\Seguros2\\.metadata\\.plugins\\org.eclipse.wst.server.core\\tmp0\\wtpwebapps\\seguros4\\WEB-INF\\classes\\jasper\\" +reporteResourcePathSrc);
+                //JasperCompileManager.compileReportToFile("C:\\MarsWorkspace\\Seguros2\\.metadata\\.plugins\\org.eclipse.wst.server.core\\tmp0\\wtpwebapps\\seguros4\\WEB-INF\\classes\\jasper\\" +reporteResourcePathSrc);
                 //JasperCompileManager.compileReportToFile("C:\\desarrollo-mercurio2\\.metadata\\.plugins\\org.eclipse.wst.server.core\\tmp0\\wtpwebapps\\seguros4\\WEB-INF\\classes\\jasper\\" +reporteResourcePathSrc);
-
+                JasperCompileManager.compileReportToFile(jrxmlFile.getAbsolutePath());
                 jasperFile = obtenerUbicacionReporteEntrada(reporteResourcePath);
             }
             int lastDot = reporteResourcePath.lastIndexOf(".");
@@ -894,7 +899,7 @@ public class ReporteBusiness implements ApplicationContextAware{
             //jasperFile=new File("C:\\Mercurio-Smart2\\WebContent\\WEB-INF\\classes\\jasper\\reporteAcuseReciboPoliza.jasper");
 //<<<<<<< HEAD
             //jasperFile=new File("C:\\desarrollo-mercurio2\\.metadata\\.plugins\\org.eclipse.wst.server.core\\tmp0\\wtpwebapps\\seguros4\\WEB-INF\\classes\\jasper\\reporteAcuseReciboPoliza.jasper"); //reporteAcuseReciboPoliza.jasper //reporteCartaResumenPoliza.jasper
-            jasperFile=new File("C:\\MarsWorkspace\\Seguros2\\.metadata\\.plugins\\org.eclipse.wst.server.core\\tmp0\\wtpwebapps\\seguros4\\WEB-INF\\classes\\jasper\\"+ reporteResourcePath.substring(0,lastDot) + ".jasper");
+            //jasperFile=new File("C:\\MarsWorkspace\\Seguros2\\.metadata\\.plugins\\org.eclipse.wst.server.core\\tmp0\\wtpwebapps\\seguros4\\WEB-INF\\classes\\jasper\\"+ reporteResourcePath.substring(0,lastDot) + ".jasper");
 //=======
             //jasperFile=new File("C:\\MarsWorkspace\\Seguros\\.metadata\\.plugins\\org.eclipse.wst.server.core\\tmp0\\wtpwebapps\\seguros4\\WEB-INF\\classes\\jasper\\reporteCartaResumenPoliza.jasper"); //reporteAcuseReciboPoliza.jasper //reporteCartaResumenPoliza.jasper
 //>>>>>>> branch 'desarrollo' of https://github.com/SmartSolSoftBuilders/Mercurio-Smart.git
