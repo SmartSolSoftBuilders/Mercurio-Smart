@@ -526,6 +526,7 @@ public class PolizaBusiness implements IPolizaBusiness {
         int folioSolicitud = solicitud.getFolioSolicitud();
         String formatoSolicitud = solicitud.getFormatoSolicitud();
         int numCertificado = solicitud.getCertificadoindividual().getNumCertificado();
+        int numConsignatario = datosPoliza.getPolizaIndividual().getNumConsignatario();
         int numPoliza = poliza.getNumPoliza();
         /**
          * Mantenimieto: QTX Noviembre 2011 se agrega el formato de la solicitud a la llave primaria de la solicitud
@@ -535,7 +536,7 @@ public class PolizaBusiness implements IPolizaBusiness {
         /*Se suspende generacion del PDF certificado individual por cambio de producto 29/04/2010 ***CGB***
          String rutaReporteCertInd = reporteBusiness.generarReporteCertificadoIndividual(folioSolicitud, numPoliza, numCertificado, cvePlaza);*/
         //System.out.println("ruta rep cert: "+rutaReporteCertInd);
-        String rutaReporteCartaRes = reporteBusiness.generarReporteCartaResumenPoliza(numCertificado, numPoliza, cvePlaza);
+        String rutaReporteCartaRes = reporteBusiness.generarReporteCartaResumenPoliza(numCertificado, numPoliza,numConsignatario, cvePlaza);
         //System.out.println("ruta rep carta res: "+rutaReporteCartaRes);
         String rutaReporteAcuse = reporteBusiness.generarReporteAcuseReciboPoliza(numCertificado, numPoliza, cvePlaza);
         //System.out.println("ruta rep acuse: "+rutaReporteAcuse);
