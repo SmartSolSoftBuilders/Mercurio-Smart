@@ -519,6 +519,7 @@ public class PolizaBusiness implements IPolizaBusiness {
         getAseguradoDao().insertarAsegurado(solicitante, contratante, poliza);
     }
 
+    
     @Override
     public void generarReportes(RegistroPolizaCommand datosPoliza) {
         PolizaIndividual poliza = datosPoliza.getPolizaIndividual();
