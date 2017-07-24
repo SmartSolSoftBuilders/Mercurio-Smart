@@ -176,11 +176,13 @@ public class GeneraArchivoConsultaGeneralExcelImpl implements GeneraArchivoConsu
 	       		cell7= filaContenido.createCell((short)2);
 	       		String nombreContratante = resultado.getResultados().get(k-8).getNombre1Contratante().toString() + " " + 
 						   resultado.getResultados().get(k-8).getNombre2Contratante().toString() + " " +
+						   resultado.getResultados().get(k-8).getApPaternoContratante().toString()+ " " +
 						   resultado.getResultados().get(k-8).getApMaternoContratante().toString();
 	       		/*System.out.println("resultado nombreCompletoContratante: " + nombreContratante);*/
 	       		if(cell7 != null) {
 	       		cell7.setCellValue(resultado.getResultados().get(k-8).getNombre1Contratante().toString() + " " + 
 	       						   resultado.getResultados().get(k-8).getNombre2Contratante().toString() + " " +
+	       						   resultado.getResultados().get(k-8).getApPaternoContratante().toString()+ " " +
 	       						   resultado.getResultados().get(k-8).getApMaternoContratante().toString()
 	       						   );
 	       		cell7.setCellStyle(styleContenido);
@@ -260,12 +262,14 @@ public class GeneraArchivoConsultaGeneralExcelImpl implements GeneraArchivoConsu
 	       		cell7= filaContenido.createCell((short)8);
 	       		String nombreAsegurado =   resultado.getResultados().get(k-8).getNombre1Asegurado().toString() + " " +
 										   resultado.getResultados().get(k-8).getNombre2Asegurado().toString() + " " +
+										   resultado.getResultados().get(k-8).getApPaternoAsegurado().toString()+ " " +
 										   resultado.getResultados().get(k-8).getApMaternoAsegurado().toString();
 	       		
 	       		/*System.out.println("resultados nombreAsegurado: " + nombreAsegurado);*/
 	       		if(nombreAsegurado != null) {
 	       		cell7.setCellValue(resultado.getResultados().get(k-8).getNombre1Asegurado().toString() + " " +
 	       						   resultado.getResultados().get(k-8).getNombre2Asegurado().toString() + " " +
+	       						   resultado.getResultados().get(k-8).getApPaternoAsegurado().toString()+ " " +
 	       						   resultado.getResultados().get(k-8).getApMaternoAsegurado().toString() 
 	       						   );
 	       		cell7.setCellStyle(styleContenido);
