@@ -281,8 +281,8 @@ public class ProcesoCorreccionDatosBusinessImpl implements IProcesoCorreccionDat
 		
 		List<BeneficioAdicionalPoliza> listaBeneficios = new ArrayList<BeneficioAdicionalPoliza>();
         for(BeneficioAdicionalPoliza benef:polizaBD.getBeneficiosAdicionales()){
-        	if(benef.getSumaBeneficio() != null && benef.getSumaBeneficio()>0 &&
-        			benef.getMontoCobertura() != null && benef.getMontoCobertura() > 0){
+        	if(benef.getSumaBeneficio() != null && benef.getSumaBeneficio()>=0 &&
+        			benef.getMontoCobertura() != null && benef.getMontoCobertura() >= 0){
         		benef.setNumPoliza(polizaBD.getNumPoliza());
         		benef.setNumConsignatario(polizaBD.getNumConsignatario());
         		listaBeneficios.add(benef);
