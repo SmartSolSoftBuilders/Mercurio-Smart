@@ -160,10 +160,8 @@
         
     <body>
        <jsp:include page="/jsp/menu.jsp"></jsp:include>
-    				<br/><br/> 
-      
-            
-            
+    				<br/><br/>
+					
             <form action="<c:url value="/app/consultaGeneralSolicitudesController"/>" method="post" name="w01">
                 <input type="hidden" name="indiceOrden"  />
                 <spring:nestedPath path="criteriosBusqueda">

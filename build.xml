@@ -1,0 +1,247 @@
+<?xml version="1.0"?>
+<!-- Seguros -->
+<!-- basedir es el root del proyecto -->
+<project name="Seguros" default="help" basedir=".">
+<!-- 
+	Las propiedades descritas abajo, estan ahora localizadas en un archivo de texto llamado 'build.properties'
+	si se debe recrear el archivo, estos son los valores:
+	
+	build.compiler=modern
+
+	tomcat=C:/apache-tomcat-8.5.23
+
+	java_home=C:/Program Files/Java7/jdk1.7.0_80
+
+	jre_home=C:/Program Files/Java7/jdk1.7.0_80/jre
+		
+
+	tomcat_lib=C:/apache-tomcat-8.5.23/lib
+
+	java_home_lib=C:/Program Files/Java7/jdk1.7.0_80/lib
+
+	jre_home_lib=C:/Program Files/Java7/jdk1.7.0_80/jre/lib
+		
+	build.dir=C:/ant_builds
+
+	src=C:/Users/Admin/git/Mercurio-Smart/src
+
+	WebContent=C:/Users/Admin/git/Mercurio-Smart/WebContent
+	
+	Las siguientes solo son las propiedades del proyecto, si se requieren en lugar el archivo de propiedades, solo descomentar a partir de esta linea:
+	**************************************************************************************************************************************************
+
+	<property name="build.compiler" value="modern"/>
+
+	<property name="tomcat" value="C:/apache-tomcat-8.5.23"/>
+
+	<property name="java_home" value="C:/Program Files/Java7/jdk1.7.0_80"/>
+
+	<property name="jre_home" value="${java_home}/jre"/>
+	
+
+	<property name="tomcat_lib" value="${tomcat}/lib"/>
+
+	<property name="java_home_lib" value="${java_home}/lib"/>
+
+	<property name="jre_home_lib" value="${jre_home}/lib"/>
+	
+	<property name="build.dir" value="C:/ant_builds"/>
+
+	<property name="src" value="${basedir}/src"/>
+
+	<property name="WebContent" value="${basedir}/WebContent"/>
+	-->
+	<!-- archivo de propiedades -->
+	<property file="build.properties"/>
+	<!-- path to libraries -->
+	<path id="compile.lib">
+		<fileset dir="${WebContent}/WEB-INF/lib">
+			<include name="*.jar"/>
+		</fileset>
+		<fileset dir="${tomcat_lib}">
+			<include name="*.jar"/>
+		</fileset>
+		<fileset dir="${java_home_lib}">
+			<include name="**/*.jar"/>
+			<include name="*.properties"/>
+		</fileset>
+		<fileset dir="${jre_home_lib}">
+			<include name="**/*.jar"/>
+			<include name="*.properties"/>
+		</fileset>
+	</path>
+	<!--classpath adicional para jasperreports -->
+	<path id="jrcclasspath">
+		<fileset dir="${WebContent}/WEB-INF/lib">
+			<include name="*.jar"/>
+		</fileset>
+	</path>
+	<!-- define jrc task para compilar *.jrxml files -->
+	<taskdef name="jrc" classname="net.sf.jasperreports.ant.JRAntCompileTask"> 
+		<classpath refid="jrcclasspath"/>
+	</taskdef>
+	
+	<!-- despliega información -->
+	<target name="help">
+		<echo>Construccion del proyecto HSS-Seguros</echo>
+		<echo></echo>
+		<echo>El script usa un archivo de propiedades 'build.properties' que debe ir en el mismo directorio raiz del proyecto con 'build.xml'</echo>
+		<echo></echo>
+		<echo>Targets</echo>
+		<echo>Para ejecutar un target: desde cmd, te debes colocar en la raiz del proyecto y utilizar el comando: ant -target- p.e.: ant limpiar. Para ejectuar multiples tareas: ant -taget- -target- p.e.: ant init compilar.</echo>
+		<echo></echo>
+		<echo>limpiar: borra los directorios creados en ${build.dir}.</echo>
+		<echo>init: crea los directorios ${build.dir}/seguros/classes.</echo>
+		<echo>compilar: compila las clases java desde ${src}/main.</echo>
+		<echo>copiar: copia los archivos .xml desde ${src}/main/mx/com/seguros/data hacia la carpeta destino en ${build.dir}/seguros/classes/mx/com/seguros/data. Depende de "compilar"</echo>
+		<echo></echo>
+		<echo>war: crea el war seguros.war. Depende de "copiar"</echo>
+		<echo>deploy: borra la carpeta y el archivo war existente en tomcat, luego copia el archivo ${build.dir}/seguros/seguros.war desde la carpeta de construccion hacia la carpeta webapps dentro de tomcat. Depende de "war"</echo>
+		<echo>el comando "ant deploy" ejecuta todo el proceso desde compilar hasta el deploy stage.</echo>
+		<echo></echo>
+		<echo>jasper: Este target tiene 3 tareas: Primero, copia el archivo .jrxml desde una ubicacion fuente hacia la carpeta de construccion para cambiar su codificacion a UTF-8. Despues compila el archivo .jrxml para generar un archivo .jasper. Por ultimo, reemplaza el archivo en la carpeta repositorio</echo>
+		<echo></echo>
+		<echo>jasper_alt, simplemente provee una fuente alternativa para obtener el archivo .jrxml en el caso de que no exista desde la carpeta repositorio original.</echo>
+		<echo></echo>
+		<echo>Adicionalmente, los target 'startup' y 'shutdown', inician y detienen tomcat respectivamente.</echo>
+	</target>
+	
+	<!-- borra directorio destino -->
+	<target name="limpiar">
+		<delete dir="${build.dir}">
+			<include name="**/seguros/**"/>
+			<include name="seguros.war"/>
+		</delete>
+		<echo>borrando carpeta ${build.dir}/classes...</echo>
+		<exec dir="${build.dir}/seguros" executable="cmd" os="Windows 10">
+			<arg value="/c"/>
+			<arg value="rmdir classes jasper /S /Q"/>
+		</exec>
+	</target>
+	
+	<!-- crea directorios en destino -->
+	<target name="init">
+		<echo>Creando directorio destino...</echo>
+		<mkdir dir="${build.dir}/seguros/classes"/>
+		<mkdir dir="${build.dir}/seguros/jasper/temp"/>
+	</target>
+	
+	<!-- compila jasper file y le da encoding en utf-8, luego lo copia al directorio de jasper-->
+	<target name="jasper">
+		<!--<echo>${jasper.name}</echo> / encoding="ISO-8859-1"-->
+		<echo>copiando...</echo>
+		<copy file="${jasper.home}/${jasper.name}.jrxml" tofile="${build.dir}/seguros/jasper/compilado/${jasper.name}.jrxml" overwrite="true"
+		encoding="UTF-8" outputencoding="UTF-8" />
+		
+		<echo>compilando...</echo>		
+		<jrc 
+		destdir="${build.dir}/seguros"
+		tempdir="${build.dir}/seguros/jasper/temp"
+		keepjava="true"
+		xmlvalidation="true">
+			<src>
+				<fileset dir="${build.dir}/seguros/">
+					<include name="**/compilado/${jasper.name}.jrxml"/>
+				</fileset>
+			</src>
+			<classpath refid="jrcclasspath"/>
+		</jrc>
+		
+		<echo>copiando...</echo>
+		<!--<exec dir="${WebContent}/WEB-INF/classes/jasper" executable="cmd" os="Windows 10">
+			<arg value="/c"/>
+			<arg value="del ${jasper.name}.jrxml ${jasper.name}.jasper /F /Q"/>
+		</exec>-->
+		<copy todir="${jasper.home}" overwrite="true">
+			<fileset dir="${build.dir}/seguros/jasper/compilado">
+				<include name="${jasper.name}.jrxml"/>
+				<include name="${jasper.name}.jasper"/>
+			</fileset>
+		</copy>
+	</target> 
+	
+	<!-- este target se usa para copiar el jrxml en el caso de que no exista en ${WebContent}/WEB-INF/classes/jasper para ser copiado-->
+	<target name="jasper_alt">
+		<copy todir="${jasper.home}" overwrite="true">
+			<fileset dir="${jasper.replace.dir}">
+				<include name="${jasper.name}.jrxml"/>
+				<include name="${jasper.name}.jasper"/>
+			</fileset>
+		</copy>
+	</target>
+	
+	<!-- compila java files -->
+	<target name="compilar">
+		<javac destdir="${build.dir}/seguros/classes/" srcdir="${src}/main">
+			<include name="**/*.java"/>
+			<classpath refid="compile.lib"/>
+		</javac>
+	</target>
+	
+	<!-- copia archivos -->
+	<target name="copiar" depends="compilar">
+		<copy todir="${build.dir}/seguros/classes/mx/com/seguros">
+			<fileset dir="${src}/main/mx/com/seguros">
+				<exclude name="**/dao/**"/>
+				<include name="**/data/**.xml"/>
+			</fileset>
+		</copy>
+	</target>
+	
+	<!-- crea war file -->
+	<target name="war" depends="copiar">
+		<war destfile="${build.dir}/seguros/seguros.war" webxml="${WebContent}/WEB-INF/web.xml">
+			<fileset dir="${src}">
+				<include name="${src}/**"/>
+				<exclude name="**/main/**"/>
+			</fileset>
+			<fileset dir="${WebContent}">
+				<exclude name="**/.settings/**"/>
+			</fileset>
+			<metainf dir="${WebContent}/META-INF"/>
+			<lib dir="${WebContent}/WEB-INF/lib"/>
+			<classes dir="${build.dir}/seguros/classes"/>
+		</war>
+	</target>
+	
+	<!-- copia war a tomcat.dir -->
+	<target name="deploy" depends="war">
+		<echo>borrando war...</echo>
+		<delete dir="${tomcat}/webapps">
+			<!-- <include name="seguros/**"/>-->
+			<include name="seguros.war"/>
+		</delete>
+		<echo>borrando carpeta seguros...</echo>
+		<exec dir="${tomcat}/webapps" executable="cmd" os="Windows 10">
+			<arg value="/c"/>
+			<arg value="rmdir seguros /S /Q"/>
+		</exec>
+		<echo>copiando war desde ${build.dir}</echo>
+		<copy todir="${tomcat}/webapps">
+			<fileset dir="${build.dir}/seguros">
+				<include name="seguros.war"/>
+			</fileset>
+		</copy>
+	</target>
+	
+	<!-- inicia tomcat -->
+	
+	<target name="startup">
+		<echo>iniciando tomcat...</echo>
+		<exec dir="${tomcat}/bin" executable="cmd" os="Windows 10">
+			<arg value="/c"/>
+			<arg value="startup.bat"/>
+		</exec>
+	</target>
+	
+	<!-- detiene tomcat -->
+	
+	<target name="shutdown">
+		<echo>deteniendo tomcat...</echo>
+		<exec dir="${tomcat}/bin" executable="cmd" os="Windows 10">
+			<arg value="/c"/>
+			<arg value="shutdown.bat"/>
+		</exec>
+	</target>
+	
+</project>
