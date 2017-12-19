@@ -18,7 +18,7 @@
 con.apPaternoContratante, con.apMaternoContratante, con.nombre1Contratante, con.nombre2Contratante,
      	agt.cveAgente, agt.cveSupervisor,agt.cveGerente,
        tar.importeTarifa,
-       pla.cvePlaza, tip.descripcionEmpresa, (SELECT nombreTurno FROM turnoEmpresa tEpr WHERE epr.cveTurno = tEpr.cveTurno) AS turnoEmpresa,epr.nombreEmpresa,
+       pla.cvePlaza, tip.descripcionEmpresa, epr.nombreEmpresa,
 (select sum(benef.sumaBeneficio) from BeneficioAdicionalPoliza benef where
   benef.numPoliza = pol.numPoliza and benef.numConsignatario = pol.numConsignatario) as sumaBeneficios
 FROM CertificadoIndividual cer,PolizaIndividual pol,Asegurado asg,Solicitud sol,Contratante con,Agente agt,
@@ -56,7 +56,6 @@ and tip.tipoEmpresa=epr.tipoEmpresa]]>
 	<field name="importeTarifa" class="java.math.BigDecimal"/>
 	<field name="cvePlaza" class="java.lang.String"/>
 	<field name="descripcionEmpresa" class="java.lang.String"/>
-    <field name="turnoEmpresa" class="java.lang.String"/>
 	<field name="nombreEmpresa" class="java.lang.String"/>
 	<field name="sumaBeneficios" class="java.math.BigDecimal"/>
 	<background>
@@ -478,7 +477,7 @@ and tip.tipoEmpresa=epr.tipoEmpresa]]>
 				<textElement>
 					<font size="10" isBold="true"/>
 				</textElement>
-				<textFieldExpression class="java.lang.String"><![CDATA[$F{nombreEmpresa} + ' ' + $F{turnoEmpresa}]]></textFieldExpression>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{nombreEmpresa}]]></textFieldExpression>
 			</textField>
 			<staticText>
 				<reportElement key="staticText-4" x="7" y="115" width="70" height="13"/>
