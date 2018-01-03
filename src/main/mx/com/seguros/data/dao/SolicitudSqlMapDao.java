@@ -280,5 +280,28 @@ public class SolicitudSqlMapDao extends SqlMapClientDaoSupport implements ISolic
 		params.put("fecha", fecha);
 		return (HistoricoTarifa)getSqlMapClientTemplate().queryForObject("buscarTarifaEnFecha",params);
 	}
+
+	@Override
+	public void carteraSolicitudes(ResultadoPaginadoDTO resultado) {
+				
+    	if(resultado != null){
+           /* if(resultado.isPrimerVez()){
+                //obtener el total de registros de la consulta
+                Integer totalResultados = (Integer)getSqlMapClientTemplate().queryForObject("countConsultaCarteraSolicitudes");
+                resultado.setTotalResultados(totalResultados);
+                resultado.setTotalPaginas((int)Math.ceil( ((double)totalResultados)/((double)resultado.getRegistrosPorPagina()) ));
+                                   
+                
+            }*/
+            
+            
+           // resultado.setResultados(getSqlMapClientTemplate().queryForList("consultaCarteraSolicitudes",
+                   // (resultado.getPaginaActual()-1)*resultado.getRegistrosPorPagina()
+                    //,resultado.getRegistrosPorPagina() ));
+    		
+    		resultado.setResultados(getSqlMapClientTemplate().queryForList("consultaCarteraSolicitudes"));
+        }
+    	 		
+	}
 	
 }

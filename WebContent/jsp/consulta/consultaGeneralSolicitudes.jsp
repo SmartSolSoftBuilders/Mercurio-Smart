@@ -475,7 +475,7 @@
 	                            <img src="<c:url value="/img/helper.png"/>" alt="Buscar Agentes"/></a>
 	                                
 		                        <%GrantedAuthority rol[] = SecurityContextHolder.getContext().getAuthentication().getAuthorities();%>
-		                        <%System.out.println("ROLES__"+rol[0].getAuthority().toString()); %>
+		                        <%System.out.println("ROLES__"+rol[0].getAuthority().toString());%>
 		                        <%if(rol[0].getAuthority().toString().equals("ROL_VENTAS") || rol[0].getAuthority().toString().equals("rol_ventas")
 		                        	|| rol[0].getAuthority().toString().equals("ROL_CONSULTA_ESPECIAL") || rol[0].getAuthority().toString().equals("rol_consulta_especial")) {%>
 		                        	<script language="JavaScript" type="text/javascript">
@@ -638,28 +638,48 @@
                                 <input type="hidden" name="totalPaginas" value="<c:out value="${resultado.totalPaginas}"/>"/>
                                 <input type="hidden" name="totalPrima" value="<c:out value="${resultado.totalPrima}"/>"/>
                                 <input type="hidden" name="formato" id="formato" value=""/>
-                               
-                                <c:if test="${resultado.totalResultados > 0}">
-                                	
-                                	 <c:if test="${resultado.paginaActual>1}"><a href="javascript:cambioPagina(<c:out value="${resultado.paginaActual-1}"/>)" >&lt;</a></c:if> P&aacute;gina <c:out value="${resultado.paginaActual}"/> de <c:out value="${resultado.totalPaginas}"/>
-                                 <c:if test="${resultado.paginaActual<resultado.totalPaginas}"><a href="javascript:cambioPagina(<c:out value="${resultado.paginaActual+1}"/>)" >&gt;</a></c:if>
-                                
-                                
-                                <br/>
-                                <a href="javascript:excel();"><img border="0" src="<c:url value="/img/skin/excel.jpg"/>" width="40" title="Exportar Resultados a Excel"></img></a>
-                                
-                                <script type="text/javascript">
+
+
+
+							<c:if test="${resultado.totalResultados > 0}">
+								<c:if test="${resultado.paginaActual > 1}">
+									<a
+										href="javascript:cambioPagina(<c:out value="${resultado.paginaActual - 1}"/>)">&lt;</a>
+								</c:if> P&aacute;gina <c:out value="${resultado.paginaActual}" /> de <c:out
+									value="${resultado.totalPaginas}" />
+								<c:if test="${resultado.paginaActual < resultado.totalPaginas}">
+									<a
+										href="javascript:cambioPagina(<c:out value="${resultado.paginaActual + 1}"/>)">&gt;</a>
+								</c:if>
+
+								<br />
+
+															
+								
+								
+								<a href="javascript:excel();"><img border="0"
+									src="<c:url value="/img/skin/excel.jpg"/>" width="40"
+									title="Exportar Resultados a Excel"></img></a>
+
+
+
+								<script type="text/javascript">
                                 	function excel(){
                                 		document.w01.formato.value = "xlsx";
                                 		document.w01.submit();
                                 		
                                 	}
+                                             	
+                                	                                	
                                 </script>
-                                </c:if>
-                                
-                               
+								
+								<br />
+								
+							</c:if>
 
-                            </td>
+
+
+						</td>
 
                         </tr>
                         <tr align="left" valign="middle" height="20">

@@ -733,7 +733,7 @@ function  mostrarTarifas(campoRef){
             
             </form>
             
-                    <form action="#"  name="w02" method="POST">
+                    <form action="#"  name="w02" method="post">
                 
                 <script type="text/javascript" >
                     function obtenNumeroPoliza(){

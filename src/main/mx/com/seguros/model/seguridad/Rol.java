@@ -23,6 +23,15 @@ public class Rol {
 	public String getAuthority() {
 		return authority;
 	}
+	
+	/*public String rol;
+	
+	public String getRol() {
+		return rol;
+	}
+	public void setRol(String rol) {
+		this.rol = rol;
+	}*/
 	/**
 	 * @param authority the authority to set
 	 */

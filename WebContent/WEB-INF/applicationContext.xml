@@ -136,8 +136,16 @@
 </bean>
 
 <bean id="generaArchivoConsultaGeneralExcel" class="mx.com.seguros.business.consulta.GeneraArchivoConsultaGeneralExcelImpl">
+
      
 </bean>
+
+<bean id="generaArchivoConsultaCarteraExcel" class="mx.com.seguros.business.consulta.GeneraArchivoConsultaCarteraExcelImpl">
+
+     
+</bean>
+
+
 
 <bean id="reporteBusiness" class="mx.com.seguros.business.reporte.ReporteBusiness">
     <property name="jdbcDataSource" ref="jdbcDataSource"/>

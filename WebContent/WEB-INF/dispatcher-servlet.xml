@@ -401,6 +401,14 @@
         <property name="sessionForm" value="true"></property>
     </bean>
     
+    <bean name="/consultaGeneralCarteraController" class="mx.com.seguros.web.consulta.ConsultaGeneralCarteraController" >  
+    	<property name="registrosPorPagina" value="7000"/>
+    	<property name="consultaGeneralSolicitudesBusiness" ref="consultaGeneralSolicitudesBusiness"/>
+        <property name="generaArchivoConsultaCarteraExcel" ref="generaArchivoConsultaCarteraExcel"/>
+        <property name="seguridadUtil" ref="seguridadUtil"></property>
+    
+    </bean>
+    
     <bean name="/consultaEspecialController" class="mx.com.seguros.web.consulta.ConsultaEspecialController">
         <property name="formView" value="consulta/consultaEspecial"/>
         <property name="successView" value="consulta/consultaGeneralSolicitudes"/>

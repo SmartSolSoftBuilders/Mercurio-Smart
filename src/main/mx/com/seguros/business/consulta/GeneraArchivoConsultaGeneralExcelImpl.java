@@ -16,6 +16,7 @@ import org.apache.poi.xssf.usermodel.XSSFFont;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
+import mx.com.seguros.dto.ResultadoCarteraSolicitudDTO;
 import mx.com.seguros.dto.ResultadoConsultaSolicitudDTO;
 import mx.com.seguros.utils.ResultadoPaginadoDTO;
 
@@ -505,6 +506,14 @@ public class GeneraArchivoConsultaGeneralExcelImpl implements GeneraArchivoConsu
 		}
 		
 		return archivo;
+	}
+
+
+
+	@Override
+	public File generaArchivoCarteraExcel(ResultadoPaginadoDTO<ResultadoCarteraSolicitudDTO> resultado) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 

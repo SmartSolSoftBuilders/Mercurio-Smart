@@ -35,7 +35,7 @@
     				<br/><br/>
     <tag:errors name="datosPoliza"/>
     <spring:nestedPath path="datosPoliza">
-        <form action="#" method="POST">
+        <form action="#" method="post">
             <table width="740" height="199" border="0" align="center">
                 <tr >
                     <div id="titleg664x16">Generar reporte de p&oacute;lizas emitidas</div>

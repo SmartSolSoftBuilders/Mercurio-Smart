@@ -7,6 +7,7 @@ package mx.com.seguros.business.consulta;
 
 import mx.com.seguros.dto.CriteriosConsultaPolizaPorBajaDTO;
 import mx.com.seguros.dto.CriteriosConsultaSolicitudesDTO;
+import mx.com.seguros.dto.ResultadoCarteraSolicitudDTO;
 import mx.com.seguros.dto.ResultadoConsultaSolicitudDTO;
 import mx.com.seguros.utils.ResultadoPaginadoDTO;
 
@@ -31,4 +32,10 @@ public interface IConsultaGeneralSolicitudesBusiness {
      * @param resultado resultado de la consulta
      */
     void consultarPolizasPorBaja(CriteriosConsultaPolizaPorBajaDTO criterios, ResultadoPaginadoDTO<ResultadoConsultaSolicitudDTO> resultado);
+    
+    
+    /**
+     * Realiza consulta cartera general sólo con parametro resultado
+     */
+    void consultarCarteraSolicitudes(ResultadoPaginadoDTO<ResultadoCarteraSolicitudDTO> resultado);
 }

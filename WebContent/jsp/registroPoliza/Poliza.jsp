@@ -758,7 +758,7 @@ return (((sign)?'':'-') + num );
                         <input type="hidden" name="montoCoberturaBeneficiosFrm" id="montoCoberturaBeneficiosFrm" />
             </form>
             
-            <form name="w02" method="POST">
+            <form name="w02" method="post">
                 <script>
                     function obtenNumeroPoliza(){
                                                
