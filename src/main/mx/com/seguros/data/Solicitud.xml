@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<!DOCTYPE sqlMap
+<!DOCTYPE sqlMap	
 PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
-"http://ibatis.apache.org/dtd/sql-map-2.dtd">
+"http://ibatis.apache.org/dtd/sql-map-2.dtd">    
 <sqlMap namespace="Solicitud">
     <typeAlias alias="solicitud" type="mx.com.seguros.model.Solicitud"/>
     <typeAlias alias="solicitante" type="mx.com.seguros.model.Solicitante"/>
@@ -13,6 +13,7 @@ PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
     <typeAlias alias="criteriosSolicitud" type="mx.com.seguros.dto.CriteriosConsultaSolicitudesDTO"/>
     <typeAlias alias="criteriosSolicitudEsp" type="mx.com.seguros.dto.CriteriosConsultaSolicitudesDTO"/>
     <typeAlias alias="resultadoConsultaSolicitud" type="mx.com.seguros.dto.ResultadoConsultaSolicitudDTO"/>
+    <typeAlias alias="resultadoCarteraSolicitud" type="mx.com.seguros.dto.ResultadoCarteraSolicitudDTO"/>
     
     <!-- solicitudResult -->
     <resultMap id="solicitudResult" class="solicitud">
@@ -45,9 +46,7 @@ PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
         <result property="porcentajeComisionPromotor" column="porcentajeComisionPromotor" />
         <result property="porcentajeComisionAgenteInbursa" column="porcentajeComisionAgenteInbursa" />
         <result property="tarifaTotal" column="tarifaTotal" />
-        
-		
-		
+        		
         <result property="solicitante.fechaNacimientoSolicitante" column="fechaNacimientoSolicitante"/>
         <result property="solicitante.puestoSolicitante" column="puestoSolicitante"/>
         <result property="solicitante.sexoSolicitanteMasculino" column="sexoSolicitanteMasculino"/>
@@ -113,7 +112,7 @@ PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
         <result property="cveEmpresa" column="cveEmpresa"/>
         <result property="idEstatusSolicitud" column="idEstatusSolicitud"/>
     </resultMap>
-     <resultMap id="resultadoConsultaSolicitudResult" class="resultadoConsultaSolicitud">
+      <resultMap id="resultadoConsultaSolicitudResult" class="resultadoConsultaSolicitud">
         <result property="folioSolicitud" column="folioSolicitud"/>
         <result property="formatoSolicitud" column="formatoSolicitud"/>
         <result property="numConsignatario" column="numConsignatario"/>
@@ -156,6 +155,29 @@ PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
       	<result property="importeRetiros" column="importeRetiros"/>
       	
     </resultMap>
+      
+    
+    
+    <resultMap id="resultadoCarteraSolicitudResult" class="resultadoCarteraSolicitud">
+    	<result property="numPoliza" column="numPoliza"/>
+        <result property="numConsignatario" column="numConsignatario"/>
+        <result property="alias" column="alias"/>
+        <result property="apPaternoEmpleado" column="apPaternoEmpleado"/>
+        <result property="apMaternoEmpleado" column="apMaternoEmpleado"/>
+        <result property="nombre1Empleado" column="nombre1Empleado"/>
+        <result property="nombre2Empleado" column="nombre2Empleado"/>
+        <result property="cveEmpleado" column="cveEmpleado"/>
+        <result property="cveAgente" column="cveAgente"/>
+        <result property="nombreEmpresa" column="nombreEmpresa"/>
+        <result property="nombreSucursal" column="nombreSucursal"/>
+        <result property="concatenada" column="concatenada"/>
+                
+    </resultMap>
+    
+    
+    
+    
+    
     <resultMap id="estatusSolicitudResult" class="estatusSolicitud">
          <result property="idEstatusSolicitud" column="idEstatusSolicitud"/>
           <result property="descripcionEstatusSolicitud" column="descripcionEstatusSolicitud"/>
@@ -1029,6 +1051,66 @@ PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
                         
                         $totalCamposOrden$
 
+    </select>
+    
+    <select id="consultaCarteraSolicitudes"
+            resultMap="resultadoCarteraSolicitudResult">
+       select 
+       
+                  poliIndi.numPoliza as numPoliza,
+                  poliIndi.numConsignatario  as numConsignatario, 
+                  plaza.alias as alias, 
+                  empl.apPaternoEmpleado as apPaternoEmpleado, 
+                  empl.apMaternoEmpleado as apMaternoEmpleado, 
+                  empl.nombre1Empleado as nombre1Empleado, 
+                  empl.nombre2Empleado as nombre2Empleado, 
+                  empl.cveEmpleado as cveEmpleado, 
+                  age.cveAgente as cveAgente, 
+                  empresa.nombreEmpresa as nombreEmpresa, 
+                  sucursal.nombreSucursal as nombreSucursal, 
+                  concat (poliIndi.numConsignatario, poliIndi.numPoliza) as concatenada  
+        from solicitud 
+        			left outer join Solicitante solicitante on solicitud.rfcSolicitante = solicitante.rfcSolicitante 
+					left outer join CertificadoIndividual certificado  on certificado.foliosolicitud = solicitud.foliosolicitud 
+					and certificado.formatoSolicitud = solicitud.formatoSolicitud
+					left outer join PolizaIndividual poliIndi on poliIndi.folioSolicitud = solicitud.folioSolicitud
+					and poliIndi.formatoSolicitud = solicitud.formatoSolicitud                        
+					left outer join Agente age on age.cveAgente = solicitud.cveAgente
+					left outer join Empleado empl on empl.cveEmpleado = age.cveEmpleado
+					left outer join Plaza plaza on certificado.idPlaza = plaza.idPlaza
+					left outer join Empresa empresa on empresa.cveEmpresa = solicitud.cveEmpresa
+					left outer join Sucursal sucursal on sucursal.cveSucursal = empresa.cveSucursal
+					
+			 		 
+		WHERE  poliIndi.numPoliza IS NOT NULL AND poliIndi.numConsignatario IS NOT NULL  
+		                             
+                        
+                    $totalCamposOrden$
+
+    </select >
+    
+    <select id="countConsultaCarteraSolicitudes" 
+    		resultClass="java.lang.Integer">
+    		  		
+    		select
+
+                count(*) as totalRegistros
+                
+                from solicitud 
+        			left outer join Solicitante solicitante on solicitud.rfcSolicitante = solicitante.rfcSolicitante 
+					left outer join CertificadoIndividual certificado  on certificado.foliosolicitud = solicitud.foliosolicitud 
+					and certificado.formatoSolicitud = solicitud.formatoSolicitud
+					left outer join PolizaIndividual poliIndi on poliIndi.folioSolicitud = solicitud.folioSolicitud
+					and poliIndi.formatoSolicitud = solicitud.formatoSolicitud                        
+					left outer join Agente age on age.cveAgente = solicitud.cveAgente
+					left outer join Empleado empl on empl.cveEmpleado = age.cveEmpleado
+					left outer join Plaza plaza on certificado.idPlaza = plaza.idPlaza
+					left outer join Empresa empresa on empresa.cveEmpresa = solicitud.cveEmpresa
+					left outer join Sucursal sucursal on sucursal.cveSucursal = empresa.cveSucursal
+					
+                WHERE  poliIndi.numPoliza IS NOT NULL AND poliIndi.numConsignatario IS NOT NULL
+    			and plaza.idPlaza = 10;
+    
     </select>
     
     <select id="countConsultaEspecial"

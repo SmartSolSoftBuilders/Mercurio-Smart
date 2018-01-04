@@ -9,6 +9,7 @@ import mx.com.seguros.data.dao.IPolizaDao;
 import mx.com.seguros.data.dao.ISolicitudDao;
 import mx.com.seguros.dto.CriteriosConsultaPolizaPorBajaDTO;
 import mx.com.seguros.dto.CriteriosConsultaSolicitudesDTO;
+import mx.com.seguros.dto.ResultadoCarteraSolicitudDTO;
 import mx.com.seguros.dto.ResultadoConsultaSolicitudDTO;
 import mx.com.seguros.utils.ResultadoPaginadoDTO;
 
@@ -21,6 +22,7 @@ public class ConsultaGeneralSolicitudesBusiness implements IConsultaGeneralSolic
     private ISolicitudDao solicitudDao;
     
     private IPolizaDao polizaDao;
+    
     
     @Override
     public void consultarSolicitudes(CriteriosConsultaSolicitudesDTO criterios, ResultadoPaginadoDTO<ResultadoConsultaSolicitudDTO> resultado) {
@@ -53,5 +55,13 @@ public class ConsultaGeneralSolicitudesBusiness implements IConsultaGeneralSolic
 	public void setPolizaDao(IPolizaDao polizaDao) {
 		this.polizaDao = polizaDao;
 	}
+
+	@Override
+	public void consultarCarteraSolicitudes(ResultadoPaginadoDTO<ResultadoCarteraSolicitudDTO> resultado) {
+		solicitudDao.carteraSolicitudes(resultado);
+		
+	}
+
+	
 
 }

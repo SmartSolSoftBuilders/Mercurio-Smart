@@ -19,7 +19,12 @@ import javax.servlet.http.HttpServletResponse;
 
 import mx.com.seguros.business.consulta.GeneraArchivoConsultaGeneralExcel;
 import mx.com.seguros.business.consulta.GeneraArchivoConsultaGeneralExcelImpl;
+
 import mx.com.seguros.business.consulta.IConsultaGeneralSolicitudesBusiness;
+
+
+
+import mx.com.seguros.business.movimientosdependencia.ArchivoTXT;
 import mx.com.seguros.dto.CriteriosConsultaSolicitudesDTO;
 import mx.com.seguros.dto.ResultadoConsultaSolicitudDTO;
 import mx.com.seguros.utils.ResultadoPaginadoDTO;
@@ -45,21 +50,21 @@ public class ConsultaGeneralSolicitudesController extends SimpleFormController{
 
     private IConsultaGeneralSolicitudesBusiness consultaGeneralSolicitudesBusiness;
     private GeneraArchivoConsultaGeneralExcel generaArchivoConsultaGeneralExcel;
-
     private SeguridadUtil seguridadUtil;
-    @Override
+   
+	@Override
     protected Map referenceData(HttpServletRequest request,Object command, Errors errors) throws java.lang.Exception{
         Map data = new HashMap();
-        //System.out.println("ref1=referenceData");
         //verificación de los roles del usuario
         
         data.put("rolVentas",new Boolean(seguridadUtil.isRolVentas()));
         data.put("rolAdministrador",new Boolean(seguridadUtil.isRolAdministrador()));
+        data.put("rolDireccion",new Boolean(seguridadUtil.isRolDireccion()));
         Usuario usuario = seguridadUtil.getUsuario();
         if(seguridadUtil.isRolVentas()){
         	data.put("cveAgente",seguridadUtil.getAgente().getCveAgente());
         }
-        
+                
         return data;
     }
     @Override
@@ -73,11 +78,11 @@ public class ConsultaGeneralSolicitudesController extends SimpleFormController{
             field.setAccessible(true);
             String name = field.getName();
             Object value = field.get(seguridadUtil);
-            System.out.printf("Field name: %s, Field value: %s%n", name, value);
+            //System.out.printf("Field name: %s, Field value: %s%n", name, value);
         }
-      System.out.println(seguridadUtil);
-      //System.out.println("cveAgente "+ seguridadUtil.getAgente().getCveAgente());
-    	
+      //System.out.println(seguridadUtil);
+      //System.out.println("Prueba       cveAgente "+ seguridadUtil.getAgente().getCveAgente());
+    	    	
         if(seguridadUtil.isRolVentas()){
         	command.setCveAgente(seguridadUtil.getAgente().getCveAgente());
         }
@@ -85,6 +90,10 @@ public class ConsultaGeneralSolicitudesController extends SimpleFormController{
         if(seguridadUtil.isRolOperacionesNoCentrales()){
         	command.setIdPlaza(seguridadUtil.getEmpleado().getIdPlaza());
         }
+        if(seguridadUtil.isRolDireccion()){
+    		//command.setCveAgente(seguridadUtil.getEmpleado().getCveEmpleado());
+        	
+    	}
         
 
         return command;
@@ -93,8 +102,7 @@ public class ConsultaGeneralSolicitudesController extends SimpleFormController{
     
     
     @Override
-    protected void initBinder(HttpServletRequest req,
-            ServletRequestDataBinder binder) throws Exception {
+    protected void initBinder(HttpServletRequest req,ServletRequestDataBinder binder) throws Exception {
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
         dateFormat.format(new Date());
         CustomDateEditor dateEditor = new CustomDateEditor(dateFormat, true);
@@ -146,43 +154,59 @@ public class ConsultaGeneralSolicitudesController extends SimpleFormController{
             criterios.setFechaSolicitudFinal(DateUtils.parseDate(criterios.getStrFechaSolicitudFinal(), new String[]{"dd/MM/yyyy"}));
         }
         
+       
+
+        
+        
         
         //Verificar si se desea exportar en Excel La consulta
-        System.out.println("formato "+request.getParameter("formato"));
-        System.out.println("resultados "+resultado.getResultados());
-        System.out.println("idPlaza: "+seguridadUtil.getEmpleado().getIdPlaza());
+        //System.out.println("formato "+request.getParameter("formato"));
+        //System.out.println("resultados "+resultado.getResultados());
         consultaGeneralSolicitudesBusiness.consultarSolicitudes(criterios, resultado);
+        //consultaDireccionSolicitudesBusiness.consultarSolicitudes(criterios, resultado);
         System.out.println("idPlaza: "+seguridadUtil.getEmpleado().getIdPlaza());
+        System.out.println("UserName: "+ seguridadUtil.getUsuario().getUsername());
+        
+        if(seguridadUtil.isRolDireccion()){
+        	System.out.println("rol >Direccion");
+        }else{
+        	System.out.println("No es rol direccion");
+        }
+        //System.out.println(seguridadUtil);
         if(request.getParameter("formato") != null && "xlsx".equals(request.getParameter("formato"))){
         	resultado.setPaginaActual(1);
         	resultado.setRegistrosPorPagina(65525);
-        	//System.out.println(resultado);
         	File archivo= this.generaArchivoConsultaGeneralExcel.generaArchivoExcel(resultado);
-        	//System.out.println(archivo);
         	InputStream inputstream = new FileInputStream(archivo);
-        	//-no va-mav.setViewName("/consulta/consultaExcel");
+            //-no va-mav.setViewName("/consulta/consultaExcel");
         	response.setContentType("application/force-download");
-            response.setHeader("Content-Disposition",
-            		"attachment; filename= " +  "consultaGeneral.xlsx");
+            response.setHeader("Content-Disposition","attachment; filename= " +  "consultaGeneral.xlsx");
             IOUtils.copy(inputstream, response.getOutputStream());
             response.flushBuffer();
             return null;
         }
+        
+        
+       
         
        // consultaGeneralSolicitudesBusiness.consultarSolicitudes(criterios, resultado);
         
         
         mav.addObject("resultado", resultado);
         
-        mav.addObject("rolVentas",new Boolean(seguridadUtil.isRolVentas()));
-        mav.addObject("rolAdministrador",new Boolean(seguridadUtil.isRolAdministrador()));
+        
+        mav.addObject("rolVentas",seguridadUtil.isRolVentas());
+        mav.addObject("rolAdministrador",seguridadUtil.isRolAdministrador());
+        mav.addObject("rolDireccion",seguridadUtil.isRolDireccion());
+        
+        System.out.println("rol ventas? "+seguridadUtil.isRolVentas());
+        System.out.println("rol admin ? "+seguridadUtil.isRolAdministrador());
+        System.out.println("rol direccion? "+seguridadUtil.isRolDireccion());
 
         return mav;
     }
-
     
-
-
+    
     /**
      * @return the registrosPorPagina
      */
@@ -211,7 +235,6 @@ public class ConsultaGeneralSolicitudesController extends SimpleFormController{
         this.consultaGeneralSolicitudesBusiness = consultaGeneralSolicitudesBusiness;
     }
 
-
 	/**
 	 * Método de acceso al campo seguridadUtil.
 	 * @return El valor del campo seguridadUtil
@@ -234,6 +257,5 @@ public class ConsultaGeneralSolicitudesController extends SimpleFormController{
 	public void setGeneraArchivoConsultaGeneralExcel(GeneraArchivoConsultaGeneralExcel generaArchivoConsultaGeneralExcel) {
 		this.generaArchivoConsultaGeneralExcel = generaArchivoConsultaGeneralExcel;
 	}
-	
 	
 }

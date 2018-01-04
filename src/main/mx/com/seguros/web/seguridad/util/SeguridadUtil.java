@@ -8,6 +8,7 @@ import mx.com.seguros.data.dao.IAgenteDao;
 import mx.com.seguros.model.Agente;
 import mx.com.seguros.model.Empleado;
 import mx.com.seguros.model.seguridad.Menu;
+import mx.com.seguros.model.seguridad.Rol;
 
 import org.acegisecurity.GrantedAuthority;
 import org.acegisecurity.context.SecurityContextHolder;
@@ -223,6 +224,8 @@ public class SeguridadUtil {
 	public Usuario getUsuario(){
 		return (Usuario)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 	}
+	
+	
 	/**
 	 * Método de acceso al campo agenteDao.
 	 * @return El valor del campo agenteDao

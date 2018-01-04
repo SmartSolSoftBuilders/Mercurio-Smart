@@ -122,5 +122,7 @@ public interface ISolicitudDao {
     HistoricoTarifa consultarHistoricoTarifaEnFecha(Solicitud sol, Date fecha);
     
 	void consultarSolicitudesEsp(CriteriosConsultaSolicitudesDTO criterios, ResultadoPaginadoDTO resultado);
+	
+	 void carteraSolicitudes(ResultadoPaginadoDTO resultado);
     
 }
